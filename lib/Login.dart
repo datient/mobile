@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert' as JSON;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'Home.dart' as home;
 
 class LoginPage extends StatefulWidget {
@@ -14,25 +15,16 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  var _token = 'token';
-
-  Future _getDoctors() async {
-    await http.get('http://10.0.2.2:8000/api/doctor/',
-        headers: {'Authorization': 'JWT ${_token}'}).then((res) {
-      print(res.body);
-    });
-  }
-
   Future _getToken(email, password) async {
-    await http
-        .post('http://10.0.2.2:8000/token/',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.jsonEncode({'email': email, 'password': password}))
-        .then((res) {
-      setState(() {
-        _token = JSON.jsonDecode(res.body)['token'];
-      });
-    });
+    final response = await http.post('http://10.0.2.2:8000/token/',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.jsonEncode({'email': email, 'password': password}));
+    if (response.statusCode == 200) {
+      final responseJson = JSON.jsonDecode(response.body)['token'];
+      print(response.body);
+    } else {
+      print('error');
+    }
   }
 
   @override
@@ -93,12 +85,6 @@ class _LoginPageState extends State<LoginPage> {
                     child: RaisedButton(
                       onPressed: () {
                         _getToken(mailcontroller.text, pwcontroller.text);
-                        Navigator.push(
-                          context,
-                          new MaterialPageRoute(
-                            builder: (context) => home.HomePage(),
-                          ),
-                        );
                       },
                       child: Text('Iniciar Sesion'),
                     ),
