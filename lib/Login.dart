@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert' as JSON;
-import 'package:shared_preferences/shared_preferences.dart';
-import 'Home.dart' as home;
+import 'Home.dart';
+import 'Token.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.title}) : super(key: key);
@@ -22,19 +22,6 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: Colors.red,
     );
     _scaffoldKey.currentState.showSnackBar(snackBar);
-  }
-
-  Future _getToken(email, password) async {
-    final response = await http.post('http://10.0.2.2:8000/token/',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.jsonEncode({'email': email, 'password': password}));
-
-    if (response.statusCode == 200) {
-      final responseJson = JSON.jsonDecode(response.body)['token'];
-      print(responseJson);
-    } else {
-      _showSnackBar();
-    }
   }
 
   @override
@@ -95,7 +82,14 @@ class _LoginPageState extends State<LoginPage> {
                     padding: EdgeInsets.all(15),
                     child: RaisedButton(
                       onPressed: () {
-                        _getToken(mailcontroller.text, pwcontroller.text);
+                        var token = Token();
+                        token.obtainToken(
+                            mailcontroller.text, pwcontroller.text);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => HomePage()),
+                        );
                       },
                       child: Text('Iniciar Sesion'),
                     ),
