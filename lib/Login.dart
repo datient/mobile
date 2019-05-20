@@ -15,15 +15,25 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  _showSnackBar() {
+    final snackBar = SnackBar(
+      content: Text('El Usuario/Correo ingresado son incorrectos'),
+      backgroundColor: Colors.red,
+    );
+    _scaffoldKey.currentState.showSnackBar(snackBar);
+  }
+
   Future _getToken(email, password) async {
     final response = await http.post('http://10.0.2.2:8000/token/',
         headers: {'Content-Type': 'application/json'},
         body: JSON.jsonEncode({'email': email, 'password': password}));
+
     if (response.statusCode == 200) {
       final responseJson = JSON.jsonDecode(response.body)['token'];
-      print(response.body);
+      print(responseJson);
     } else {
-      print('error');
+      _showSnackBar();
     }
   }
 
@@ -32,6 +42,7 @@ class _LoginPageState extends State<LoginPage> {
     final mailcontroller = TextEditingController();
     final pwcontroller = TextEditingController();
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text(widget.title),
       ),
