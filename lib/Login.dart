@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert' as JSON;
-import 'Home.dart';
+import 'HomePage.dart';
 import 'Doctor.dart';
 
 class LoginPage extends StatefulWidget {

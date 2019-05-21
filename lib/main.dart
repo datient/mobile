@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'Login.dart';
-import 'Home.dart';
-import 'Room.dart';
+import 'HomePage.dart';
+import 'RoomPage.dart';
 
 void main() => runApp(MyApp());
 
