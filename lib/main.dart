@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'Login.dart';
+import 'Home.dart';
+import 'Room.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,6 +14,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: LoginPage(title: 'Login'),
+      routes: <String, WidgetBuilder> {
+        '/login': (BuildContext context) => LoginPage(),
+        '/home': (BuildContext context) => HomePage(),
+        '/room': (BuildContext context) => RoomPage(),
+      }
     );
   }
 }

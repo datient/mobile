@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'dart:convert' as JSON;
-import 'Token.dart';
+import 'Doctor.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -12,9 +12,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   var token;
+  var doctor;
   @override
   void initState() {
-    this.token = Token();
+    this.doctor = Doctor();
+    doctor.getDoctor();
     super.initState();
   }
 
@@ -22,15 +24,61 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home'),
+        title: Text('Salas'),
       ),
-      body: Center(
-        child: FutureBuilder(
-          future: this.token.getToken(),
-          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-            print(snapshot.toString());
-            return ListView(children:[Text('${snapshot.data}')],);
-          },
+      body: Container(
+        child: Column(
+          children: [
+            Expanded(
+              flex: 1,
+              child: FutureBuilder(
+                future: this.doctor.getDoctor(),
+                builder:
+                    (BuildContext context, AsyncSnapshot<String> snapshot) {
+                  return ListView(
+                    children: [
+                      Text(
+                        'Doctor: ' + '${snapshot.data}',
+                        style: TextStyle(fontSize: 28),
+                      )
+                    ],
+                  );
+                },
+              ),
+            ),
+            Expanded(
+              flex: 9,
+              child: GridView.count(
+                crossAxisCount: 2,
+                children: List.generate(13, (index) {
+                  return Container(
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushNamed('/room');
+                      },
+                      child: Card(
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.local_hospital,
+                                size: 80,
+                              ),
+                              Text(
+                                'Sala $index',
+                                style: TextStyle(fontSize: 20),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+              ),
+            ),
+          ],
         ),
       ),
     );

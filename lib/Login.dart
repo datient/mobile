@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert' as JSON;
 import 'Home.dart';
-import 'Token.dart';
+import 'Doctor.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.title}) : super(key: key);
@@ -82,14 +82,10 @@ class _LoginPageState extends State<LoginPage> {
                     padding: EdgeInsets.all(15),
                     child: RaisedButton(
                       onPressed: () {
-                        var token = Token();
-                        token.obtainToken(
+                        var doctor = Doctor();
+                        doctor.obtainToken(
                             mailcontroller.text, pwcontroller.text);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => HomePage()),
-                        );
+                            Navigator.of(context).pushReplacementNamed('/home');
                       },
                       child: Text('Iniciar Sesion'),
                     ),
