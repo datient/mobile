@@ -52,34 +52,39 @@ class _HomePageState extends State<HomePage> {
             ),
             Expanded(
               flex: 9,
-              child: GridView.count(
-                crossAxisCount: 2,
-                children: List.generate(13, (index) {
-                  return Container(
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pushNamed('/room');
-                      },
-                      child: Card(
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.local_hospital,
-                                size: 80,
+              child: FutureBuilder(
+                future: this.room.getRoom(),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  return GridView.count(
+                    crossAxisCount: 2,
+                    children: List.generate(snapshot.data.length, (i) {
+                      return Container(
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pushNamed('/room');
+                          },
+                          child: Card(
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.local_hospital,
+                                    size: 80,
+                                  ),
+                                  Text(
+                                    snapshot.data[i]['name'],
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                'Sala $index',
-                                style: TextStyle(fontSize: 20),
-                              ),
-                            ],
+                            ),
                           ),
                         ),
-                      ),
-                    ),
+                      );
+                    }),
                   );
-                }),
+                },
               ),
             ),
           ],
