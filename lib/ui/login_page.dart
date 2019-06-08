@@ -1,12 +1,8 @@
+import 'package:datient/models/doctor.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:async';
-import 'dart:convert' as JSON;
-import 'HomePage.dart';
-import 'Doctor.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key key, this.title}) : super(key: key);
+  LoginPage({Key key, this.title,}) : super(key: key);
 
   final String title;
 
@@ -84,8 +80,10 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: () {
                         var doctor = Doctor();
                         doctor.obtainToken(
-                            mailcontroller.text, pwcontroller.text);
-                            Navigator.of(context).pushReplacementNamed('/home');
+                          mailcontroller.text,
+                          pwcontroller.text,
+                        );
+                        Navigator.of(context).pushReplacementNamed('/home');
                       },
                       child: Text('Iniciar Sesion'),
                     ),

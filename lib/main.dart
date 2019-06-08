@@ -1,7 +1,7 @@
+import 'package:datient/ui/home_page.dart';
+import 'package:datient/ui/login_page.dart';
+import 'package:datient/ui/room_page.dart';
 import 'package:flutter/material.dart';
-import 'Login.dart';
-import 'HomePage.dart';
-import 'RoomPage.dart';
 
 void main() => runApp(MyApp());
 
@@ -14,13 +14,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: LoginPage(title: 'Login'),
-      routes: <String, WidgetBuilder> {
+      routes: <String, WidgetBuilder>{
         '/login': (BuildContext context) => LoginPage(),
         '/home': (BuildContext context) => HomePage(),
         '/room': (BuildContext context) => RoomPage(),
-      }
+      },
     );
   }
 }
-
-

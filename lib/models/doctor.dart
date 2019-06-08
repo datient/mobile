@@ -3,13 +3,16 @@ import 'dart:convert' as JSON;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Doctor {
-  var first_name;
-  var last_name;
+  var firstName;
+  var lastName;
   var token;
+
   Future obtainToken(email, password) async {
-    final response = await http.post('http://10.0.2.2:8000/token/',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.jsonEncode({'email': email, 'password': password}));
+    final response = await http.post(
+      'http://10.0.2.2:8000/token/',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.jsonEncode({'email': email, 'password': password}),
+    );
 
     if (response.statusCode == 200) {
       final responseJson = JSON.jsonDecode(response.body);
@@ -22,18 +25,19 @@ class Doctor {
     }
   }
 
-  Future<String> _setToken(token) async {
+  void _setToken(token) async {
+    print(token);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('token', token);
     this.token = token;
   }
 
-  Future<String> _setDoctor(user) async {
+  void _setDoctor(user) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('first_name', user['first_name']);
     prefs.setString('last_name', user['last_name']);
-    this.first_name = first_name;
-    this.last_name = last_name;
+    this.firstName = user['first_name'];
+    this.lastName = user['last_name'];
   }
 
   Future<String> getToken() async {
@@ -45,6 +49,6 @@ class Doctor {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var name = prefs.getString('first_name');
     var lastname = prefs.getString('last_name');
-    return (name+', '+lastname);
+    return (name + ', ' + lastname);
   }
 }
