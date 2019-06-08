@@ -7,7 +7,7 @@ class Doctor {
   var lastName;
   var token;
 
-  Future obtainToken(email, password) async {
+  Future<bool> obtainToken(email, password) async {
     final response = await http.post(
       'http://10.0.2.2:8000/token/',
       headers: {'Content-Type': 'application/json'},
@@ -22,11 +22,12 @@ class Doctor {
       _setDoctor(user);
     } else {
       print('error');
+      return false;
     }
+    return true;
   }
 
   void _setToken(token) async {
-    print(token);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('token', token);
     this.token = token;
