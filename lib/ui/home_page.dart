@@ -1,10 +1,6 @@
+import 'package:datient/models/doctor.dart';
+import 'package:datient/models/room.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:async';
-import 'dart:convert' as JSON;
-import 'Doctor.dart';
-import 'Room.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -13,17 +9,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   var token;
-  var doctor;
-  var room;
-  @override
-  void initState() {
-    this.doctor = Doctor();
-    doctor.getDoctor();
-    this.room = Room();
-    room.getRoom();
-    super.initState();
-  }
-
+  Doctor doctor = Doctor();
+  Room room = Room();
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
