@@ -29,6 +29,33 @@ class _HomePageState extends State<HomePage> {
     return list;
   }
 
+  Widget _roomList(data) {
+    return GridView.count(
+      crossAxisCount: 2,
+      children: List.generate(data.length, (index) {
+        return Container(
+          child: GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushNamed('/room');
+            },
+            child: Card(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.local_hospital, size: 80),
+                  Text(
+                    data[index].roomName,
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      }),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,15 +69,10 @@ class _HomePageState extends State<HomePage> {
               flex: 1,
               child: FutureBuilder(
                 future: this.doctor.getDoctor(),
-                builder:
-                    (BuildContext context, AsyncSnapshot<String> snapshot) {
-                  return ListView(
-                    children: [
-                      Text(
-                        'Doctor: ' + '${snapshot.data}',
-                        style: TextStyle(fontSize: 28),
-                      )
-                    ],
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  return Text(
+                    'Doctor: ' + '${snapshot.data}',
+                    style: TextStyle(fontSize: 28),
                   );
                 },
               ),
@@ -61,37 +83,7 @@ class _HomePageState extends State<HomePage> {
                 future: _getRooms(),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   return snapshot.data != null
-                      ? GridView.count(
-                          crossAxisCount: 2,
-                          children:
-                              List.generate(snapshot.data.length, (index) {
-                            return Container(
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).pushNamed('/room');
-                                },
-                                child: Card(
-                                  child: Center(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.local_hospital,
-                                          size: 80,
-                                        ),
-                                        Text(
-                                          snapshot.data[index].roomName,
-                                          style: TextStyle(fontSize: 20),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
-                          }),
-                        )
+                      ? _roomList(snapshot.data)
                       : Center(child: CircularProgressIndicator());
                 },
               ),
