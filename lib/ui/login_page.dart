@@ -70,7 +70,7 @@ class _LoginPageState extends State<LoginPage> {
                 padding: EdgeInsets.all(15),
                 child: RaisedButton(
                   onPressed: () {
-                    _validateForm();
+                    _validateAndSubmit();
                   },
                   child: Text('Iniciar Sesion'),
                 ),
@@ -89,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  _validateForm() {
+  _validateAndSubmit() {
     if (_formKey.currentState.validate()) {
       String mail = _mailController.value.text;
       String password = _pwController.value.text;
