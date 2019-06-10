@@ -1,4 +1,5 @@
-import 'package:datient/models/doctor.dart';
+import 'package:datient/bloc/datient_bloc.dart';
+import 'package:datient/providers/datient_provider.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -15,7 +16,7 @@ class _LoginPageState extends State<LoginPage> {
   final _mailController = TextEditingController();
   final _pwController = TextEditingController();
 
-  Widget loginForm() {
+  Widget loginForm(DatientBloc bloc) {
     return Form(
       key: _formKey,
       child: Column(
@@ -70,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
                 padding: EdgeInsets.all(15),
                 child: RaisedButton(
                   onPressed: () {
-                    _validateAndSubmit();
+                    _validateAndSubmit(bloc);
                   },
                   child: Text('Iniciar Sesion'),
                 ),
@@ -89,22 +90,20 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  _validateAndSubmit() {
+  _validateAndSubmit(DatientBloc bloc) {
     if (_formKey.currentState.validate()) {
       String mail = _mailController.value.text;
       String password = _pwController.value.text;
-      var doctor = Doctor();
-      Future<bool> token = doctor.obtainToken(mail, password);
-      token.then((success) {
-        if (success == true) {
-          Navigator.of(context).pushReplacementNamed('/home');
-        }
+      bloc.signIn(mail, password).then((_) {
+        Navigator.of(context).pushReplacementNamed('/home');
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final bloc = DatientProvider.of(context).bloc;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -114,7 +113,7 @@ class _LoginPageState extends State<LoginPage> {
           return ListView(
             padding: EdgeInsets.symmetric(horizontal: 15),
             children: <Widget>[
-              loginForm(),
+              loginForm(bloc),
             ],
           );
         }),

@@ -1,9 +1,9 @@
 import 'dart:convert' as JSON;
 import 'package:datient/models/doctor.dart';
 import 'package:datient/models/room.dart';
+import 'package:datient/providers/datient_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -14,13 +14,11 @@ class _HomePageState extends State<HomePage> {
   var token;
   Doctor doctor = Doctor();
 
-  Future<List<Room>> _getRooms() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var _token = prefs.getString('token');
+  Future<List<Room>> _getRooms(token) async {
     List list;
     final response = await http.get(
       'http://10.0.2.2:8000/api/room/',
-      headers: {'Authorization': 'JWT $_token'},
+      headers: {'Authorization': 'JWT $token'},
     );
     if (response.statusCode == 200) {
       final extractdata = JSON.jsonDecode(response.body) as List;
@@ -29,7 +27,7 @@ class _HomePageState extends State<HomePage> {
     return list;
   }
 
-  Widget _roomList(data) {
+  Widget _buildRoomList(data) {
     return GridView.count(
       crossAxisCount: 2,
       children: List.generate(data.length, (index) {
@@ -58,6 +56,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = DatientProvider.of(context).bloc;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Salas'),
@@ -67,23 +67,31 @@ class _HomePageState extends State<HomePage> {
           children: [
             Expanded(
               flex: 1,
-              child: FutureBuilder(
-                future: this.doctor.getDoctor(),
+              child: StreamBuilder(
+                stream: bloc.doctor,
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  return Text(
-                    'Doctor: ' + '${snapshot.data}',
+                  return snapshot.hasData ? Text(
+                    'Doctor: ' + '${snapshot.data.getFullName()}',
                     style: TextStyle(fontSize: 28),
-                  );
+                  ) : Center(child: CircularProgressIndicator());
                 },
               ),
             ),
             Expanded(
               flex: 9,
-              child: FutureBuilder(
-                future: _getRooms(),
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  return snapshot.data != null
-                      ? _roomList(snapshot.data)
+              child: StreamBuilder(
+                stream: bloc.doctor,
+                builder: (context, snap) {
+                  return snap.hasData
+                      ? FutureBuilder(
+                          future: _getRooms(snap.data.token),
+                          builder:
+                              (BuildContext context, AsyncSnapshot snapshot) {
+                            return snapshot.data != null
+                                ? _buildRoomList(snapshot.data)
+                                : Center(child: CircularProgressIndicator());
+                          },
+                        )
                       : Center(child: CircularProgressIndicator());
                 },
               ),
