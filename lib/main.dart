@@ -1,3 +1,5 @@
+import 'package:datient/bloc/datient_bloc.dart';
+import 'package:datient/providers/datient_provider.dart';
 import 'package:datient/ui/home_page.dart';
 import 'package:datient/ui/login_page.dart';
 import 'package:datient/ui/room_page.dart';
@@ -8,17 +10,20 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Datient',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return DatientProvider(
+      bloc: DatientBloc(),
+      child: MaterialApp(
+        title: 'Datient',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: LoginPage(title: 'Login'),
+        routes: <String, WidgetBuilder>{
+          '/login': (BuildContext context) => LoginPage(),
+          '/home': (BuildContext context) => HomePage(),
+          '/room': (BuildContext context) => RoomPage(),
+        },
       ),
-      home: LoginPage(title: 'Login'),
-      routes: <String, WidgetBuilder>{
-        '/login': (BuildContext context) => LoginPage(),
-        '/home': (BuildContext context) => HomePage(),
-        '/room': (BuildContext context) => RoomPage(),
-      },
     );
   }
 }
