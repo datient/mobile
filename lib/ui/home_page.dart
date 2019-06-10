@@ -2,6 +2,7 @@ import 'dart:convert' as JSON;
 import 'package:datient/models/doctor.dart';
 import 'package:datient/models/room.dart';
 import 'package:datient/providers/datient_provider.dart';
+import 'package:datient/ui/room_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -34,7 +35,13 @@ class _HomePageState extends State<HomePage> {
         return Container(
           child: GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamed('/room');
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => RoomPage(
+                        room: data[index],
+                      ),
+                ),
+              );
             },
             child: Card(
               child: Column(
@@ -70,10 +77,12 @@ class _HomePageState extends State<HomePage> {
               child: StreamBuilder(
                 stream: bloc.doctor,
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  return snapshot.hasData ? Text(
-                    'Doctor: ' + '${snapshot.data.getFullName()}',
-                    style: TextStyle(fontSize: 28),
-                  ) : Center(child: CircularProgressIndicator());
+                  return snapshot.hasData
+                      ? Text(
+                          'Doctor: ' + '${snapshot.data.getFullName()}',
+                          style: TextStyle(fontSize: 28),
+                        )
+                      : Center(child: CircularProgressIndicator());
                 },
               ),
             ),
@@ -87,7 +96,7 @@ class _HomePageState extends State<HomePage> {
                           future: _getRooms(snap.data.token),
                           builder:
                               (BuildContext context, AsyncSnapshot snapshot) {
-                            return snapshot.data != null
+                            return snapshot.hasData
                                 ? _buildRoomList(snapshot.data)
                                 : Center(child: CircularProgressIndicator());
                           },
