@@ -21,69 +21,64 @@ class _LoginPageState extends State<LoginPage> {
       key: _formKey,
       child: Column(
         children: <Widget>[
-          SizedBox(height: 60),
-          TextFormField(
-            controller: _mailController,
-            validator: (value) {
-              if (value.isEmpty || !value.contains('@')) {
-                return 'Por favor, ingrese su correo electronico';
-              }
-            },
-            decoration: InputDecoration(
-              labelText: 'Correo Electronico',
-              border: OutlineInputBorder(
-                borderRadius: const BorderRadius.all(
-                  const Radius.circular(10.0),
-                ),
-              ),
-              filled: true,
-              hintStyle: TextStyle(color: Colors.grey[800]),
-              hintText: "Ingrese su correo",
-              fillColor: Colors.white70,
-            ),
-            keyboardType: TextInputType.emailAddress,
-          ),
-          SizedBox(height: 18),
-          TextFormField(
-            controller: _pwController,
-            validator: (value) {
-              if (value.isEmpty) {
-                return 'Por favor, ingrese su correo contraseña';
-              }
-            },
-            decoration: InputDecoration(
-                labelText: 'Contraseña',
-                border: OutlineInputBorder(
-                  borderRadius: const BorderRadius.all(
-                    const Radius.circular(10.0),
+          Card(
+            margin: EdgeInsets.only(right: 10, left: 10, top: 100),
+            elevation: 6,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            child: Padding(
+              padding: EdgeInsets.all(15),
+              child: Wrap(
+                children: <Widget>[
+                  TextFormField(
+                    controller: _mailController,
+                    validator: (value) {
+                      if (value.isEmpty || !value.contains('@')) {
+                        return 'Por favor, ingrese su correo electronico';
+                      }
+                    },
+                    decoration: InputDecoration(
+                      icon: Icon(Icons.email),
+                      labelText: 'Correo Electronico',
+                      hintStyle: TextStyle(color: Colors.grey[800]),
+                      hintText: "Ingrese su correo",
+                      fillColor: Colors.white70,
+                    ),
+                    keyboardType: TextInputType.emailAddress,
                   ),
-                ),
-                filled: true,
-                hintStyle: TextStyle(color: Colors.grey[800]),
-                hintText: "Ingrese su contraseña",
-                fillColor: Colors.white70),
-            obscureText: true,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(15),
-                child: RaisedButton(
-                  onPressed: () {
-                    _validateAndSubmit(bloc);
-                  },
-                  child: Text('Iniciar Sesion'),
-                ),
+                  SizedBox(height: 18),
+                  TextFormField(
+                    controller: _pwController,
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Por favor, ingrese su correo contraseña';
+                      }
+                    },
+                    decoration: InputDecoration(
+                        icon: Icon(Icons.lock),
+                        labelText: 'Contraseña',
+                        hintStyle: TextStyle(color: Colors.grey[800]),
+                        hintText: "Ingrese su contraseña",
+                        fillColor: Colors.white70),
+                    obscureText: true,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.all(15),
+                        child: RaisedButton(
+                          onPressed: () {
+                            _validateAndSubmit(bloc);
+                          },
+                          child: Text('Iniciar Sesion'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              Padding(
-                padding: EdgeInsets.all(15),
-                child: RaisedButton(
-                  onPressed: () {},
-                  child: Text('Registrarse'),
-                ),
-              ),
-            ],
+            ),
           ),
         ],
       ),
