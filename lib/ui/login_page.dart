@@ -46,7 +46,6 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     keyboardType: TextInputType.emailAddress,
                   ),
-                  SizedBox(height: 18),
                   TextFormField(
                     controller: _pwController,
                     validator: (value) {
@@ -62,20 +61,7 @@ class _LoginPageState extends State<LoginPage> {
                         fillColor: Colors.white70),
                     obscureText: true,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.all(15),
-                        child: RaisedButton(
-                          onPressed: () {
-                            _validateAndSubmit(bloc);
-                          },
-                          child: Text('Iniciar Sesion'),
-                        ),
-                      ),
-                    ],
-                  ),
+                  Container(height: 40),
                 ],
               ),
             ),
@@ -95,6 +81,32 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  Widget _buildBtnSubmit(bloc) {
+    return Padding(
+      padding: EdgeInsets.all(15),
+      child: SizedBox(
+        width: 200,
+        height: 40,
+        child: RaisedButton(
+          color: Colors.red,
+          elevation: 4,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          onPressed: () {
+            _validateAndSubmit(bloc);
+          },
+          child: Text(
+            'Iniciar Sesion',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final bloc = DatientProvider.of(context).bloc;
@@ -104,14 +116,20 @@ class _LoginPageState extends State<LoginPage> {
         title: Text(widget.title),
       ),
       body: SafeArea(
-        child: Builder(builder: (BuildContext context) {
-          return ListView(
-            padding: EdgeInsets.symmetric(horizontal: 15),
-            children: <Widget>[
-              loginForm(bloc),
-            ],
-          );
-        }),
+        child: Stack(
+          children: <Widget>[
+            ListView(
+              children: <Widget>[
+                loginForm(bloc),
+              ],
+            ),
+            Positioned(
+              top: 300,
+              left: 85,
+              child: _buildBtnSubmit(bloc),
+            ),
+          ],
+        ),
       ),
     );
   }
