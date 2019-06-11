@@ -89,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
         height: 40,
         child: RaisedButton(
           color: Colors.red,
-          elevation: 4,
+          elevation: 6,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           onPressed: () {
@@ -124,9 +124,22 @@ class _LoginPageState extends State<LoginPage> {
               ],
             ),
             Positioned(
-              top: 300,
+              top: 250,
               left: 85,
               child: _buildBtnSubmit(bloc),
+            ),
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: Tooltip(
+                  message: "Registrarse",
+                  child: FloatingActionButton(
+                    onPressed: () {},
+                    child: Icon(Icons.person_add),
+                  ),
+                ),
+              ),
             ),
           ],
         ),
