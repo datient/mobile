@@ -150,19 +150,77 @@ class _LoginPageState extends State<LoginPage> {
                 Divider(color: Colors.black, height: 40.0),
                 Form(
                   key: _regformKey,
-                  child: Column(
-                    children: <Widget>[
-                      TextFormField(
-                        decoration: InputDecoration(
-                          icon: Icon(Icons.email),
-                          labelText: 'Correo Electronico',
-                          hintStyle: TextStyle(color: Colors.grey[800]),
-                          hintText: "Ingrese su correo",
-                          fillColor: Colors.white70,
+                  child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      children: <Widget>[
+                        TextFormField(
+                          decoration: InputDecoration(
+                            icon: Icon(Icons.email),
+                            labelText: 'Correo Electronico',
+                            hintStyle: TextStyle(color: Colors.grey[800]),
+                            hintText: "Ingrese su correo",
+                            fillColor: Colors.white70,
+                          ),
+                          keyboardType: TextInputType.emailAddress,
                         ),
-                        keyboardType: TextInputType.emailAddress,
-                      ),
-                    ],
+                        DropdownButtonFormField(
+                          items: <String>[
+                            'Jefe del Servicio Medico',
+                            'Medico del servicio de clinica medica',
+                            'Medico encargado del internado'
+                          ].map((String value) {
+                            return new DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          onChanged: (_) {},
+                          decoration: InputDecoration(
+                            icon: Icon(Icons.grade),
+                            labelText: 'Seleccione su jerarquia',
+                          ),
+                        ),
+                        TextFormField(
+                          decoration: InputDecoration(
+                            icon: Icon(Icons.person),
+                            labelText: 'Nombre',
+                            hintStyle: TextStyle(color: Colors.grey[800]),
+                            hintText: "Ingrese su nombre",
+                            fillColor: Colors.white70,
+                          ),
+                          keyboardType: TextInputType.text,
+                        ),
+                        TextFormField(
+                          decoration: InputDecoration(
+                            icon: Icon(Icons.person),
+                            labelText: 'Apellido',
+                            hintStyle: TextStyle(color: Colors.grey[800]),
+                            hintText: "Ingrese su apellido",
+                            fillColor: Colors.white70,
+                          ),
+                          keyboardType: TextInputType.text,
+                        ),
+                        TextFormField(
+                          decoration: InputDecoration(
+                              icon: Icon(Icons.lock),
+                              labelText: 'Contraseña',
+                              hintStyle: TextStyle(color: Colors.grey[800]),
+                              hintText: "Ingrese su contraseña",
+                              fillColor: Colors.white70),
+                          obscureText: true,
+                        ),
+                        TextFormField(
+                          decoration: InputDecoration(
+                              icon: Icon(Icons.lock),
+                              labelText: 'Confirme su contraseña',
+                              hintStyle: TextStyle(color: Colors.grey[800]),
+                              hintText: "Vuelva a ingresar su contraseña",
+                              fillColor: Colors.white70),
+                          obscureText: true,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
