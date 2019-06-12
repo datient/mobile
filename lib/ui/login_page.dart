@@ -1,6 +1,7 @@
 import 'package:datient/bloc/datient_bloc.dart';
 import 'package:datient/providers/datient_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:expandable_card/expandable_card.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.title}) : super(key: key);
@@ -115,33 +116,30 @@ class _LoginPageState extends State<LoginPage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: SafeArea(
-        child: Stack(
-          children: <Widget>[
-            ListView(
-              children: <Widget>[
-                loginForm(bloc),
-              ],
-            ),
-            Positioned(
-              top: 250,
-              left: 85,
-              child: _buildBtnSubmit(bloc),
-            ),
-            Padding(
-              padding: EdgeInsets.all(10),
-              child: Align(
-                alignment: Alignment.bottomRight,
-                child: Tooltip(
-                  message: "Registrarse",
-                  child: FloatingActionButton(
-                    onPressed: () {},
-                    child: Icon(Icons.person_add),
-                  ),
-                ),
+      body: ExpandableCardPage(
+        page:
+        SafeArea(
+          child: Stack(
+            children: <Widget>[
+              ListView(
+                children: <Widget>[
+                  loginForm(bloc),
+                ],
               ),
-            ),
-          ],
+              Positioned(
+                top: 250,
+                left: 85,
+                child: _buildBtnSubmit(bloc),
+              ),
+            ],
+          ),
+        ),
+        expandableCard: ExpandableCard(
+          backgroundColor: Colors.white,
+          hasRoundedCorners: true,
+          maxHeight: MediaQuery.of(context).size.height - 20,
+          minHeight: 120,
+          children: <Widget>[Text('Hello World')],
         ),
       ),
     );
