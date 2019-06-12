@@ -14,6 +14,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+  final GlobalKey<FormState> _regformKey = new GlobalKey<FormState>();
   final _mailController = TextEditingController();
   final _pwController = TextEditingController();
 
@@ -117,8 +118,7 @@ class _LoginPageState extends State<LoginPage> {
         title: Text(widget.title),
       ),
       body: ExpandableCardPage(
-        page:
-        SafeArea(
+        page: SafeArea(
           child: Stack(
             children: <Widget>[
               ListView(
@@ -135,11 +135,39 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
         expandableCard: ExpandableCard(
+          hasHandle: false,
           backgroundColor: Colors.white,
           hasRoundedCorners: true,
           maxHeight: MediaQuery.of(context).size.height - 20,
-          minHeight: 120,
-          children: <Widget>[Text('Hello World')],
+          minHeight: 130,
+          children: <Widget>[
+            Column(
+              children: [
+                Text(
+                  'Registrarse',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                Divider(color: Colors.black, height: 40.0),
+                Form(
+                  key: _regformKey,
+                  child: Column(
+                    children: <Widget>[
+                      TextFormField(
+                        decoration: InputDecoration(
+                          icon: Icon(Icons.email),
+                          labelText: 'Correo Electronico',
+                          hintStyle: TextStyle(color: Colors.grey[800]),
+                          hintText: "Ingrese su correo",
+                          fillColor: Colors.white70,
+                        ),
+                        keyboardType: TextInputType.emailAddress,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
