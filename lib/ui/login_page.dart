@@ -77,8 +77,10 @@ class _LoginPageState extends State<LoginPage> {
     if (_formKey.currentState.validate()) {
       String mail = _mailController.value.text;
       String password = _pwController.value.text;
-      bloc.signIn(mail, password).then((_) {
-        Navigator.of(context).pushReplacementNamed('/home');
+      bloc.signIn(mail, password).then((success) {
+        if (success == true) {
+          Navigator.of(context).pushReplacementNamed('/home');
+        }
       });
     }
   }
@@ -109,6 +111,102 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  Widget buildRegister() {
+    return ExpandableCard(
+      hasHandle: false,
+      backgroundColor: Colors.white,
+      hasRoundedCorners: true,
+      maxHeight: MediaQuery.of(context).size.height - 20,
+      minHeight: 130,
+      children: <Widget>[
+        Column(
+          children: [
+            Text(
+              'Registrarse',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            Divider(color: Colors.black, height: 40.0),
+            Form(
+              key: _regformKey,
+              child: Padding(
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  children: <Widget>[
+                    TextFormField(
+                      decoration: InputDecoration(
+                        icon: Icon(Icons.email),
+                        labelText: 'Correo Electronico',
+                        hintStyle: TextStyle(color: Colors.grey[800]),
+                        hintText: "Ingrese su correo",
+                        fillColor: Colors.white70,
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                    DropdownButtonFormField(
+                      items: <String>[
+                        'Jefe del Servicio Medico',
+                        'Medico del servicio de clinica medica',
+                        'Medico encargado del internado'
+                      ].map((String value) {
+                        return new DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (_) {},
+                      decoration: InputDecoration(
+                        icon: Icon(Icons.grade),
+                        labelText: 'Seleccione su jerarquia',
+                      ),
+                    ),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        icon: Icon(Icons.person),
+                        labelText: 'Nombre',
+                        hintStyle: TextStyle(color: Colors.grey[800]),
+                        hintText: "Ingrese su nombre",
+                        fillColor: Colors.white70,
+                      ),
+                      keyboardType: TextInputType.text,
+                    ),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        icon: Icon(Icons.person),
+                        labelText: 'Apellido',
+                        hintStyle: TextStyle(color: Colors.grey[800]),
+                        hintText: "Ingrese su apellido",
+                        fillColor: Colors.white70,
+                      ),
+                      keyboardType: TextInputType.text,
+                    ),
+                    TextFormField(
+                      decoration: InputDecoration(
+                          icon: Icon(Icons.lock),
+                          labelText: 'Contraseña',
+                          hintStyle: TextStyle(color: Colors.grey[800]),
+                          hintText: "Ingrese su contraseña",
+                          fillColor: Colors.white70),
+                      obscureText: true,
+                    ),
+                    TextFormField(
+                      decoration: InputDecoration(
+                          icon: Icon(Icons.lock),
+                          labelText: 'Confirme su contraseña',
+                          hintStyle: TextStyle(color: Colors.grey[800]),
+                          hintText: "Vuelva a ingresar su contraseña",
+                          fillColor: Colors.white70),
+                      obscureText: true,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final bloc = DatientProvider.of(context).bloc;
@@ -118,116 +216,23 @@ class _LoginPageState extends State<LoginPage> {
         title: Text(widget.title),
       ),
       body: ExpandableCardPage(
-        page: SafeArea(
-          child: Stack(
-            children: <Widget>[
-              ListView(
-                children: <Widget>[
-                  loginForm(bloc),
-                ],
-              ),
-              Positioned(
-                top: 250,
-                left: 85,
-                child: _buildBtnSubmit(bloc),
-              ),
-            ],
-          ),
-        ),
-        expandableCard: ExpandableCard(
-          hasHandle: false,
-          backgroundColor: Colors.white,
-          hasRoundedCorners: true,
-          maxHeight: MediaQuery.of(context).size.height - 20,
-          minHeight: 130,
-          children: <Widget>[
-            Column(
-              children: [
-                Text(
-                  'Registrarse',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          page: SafeArea(
+            child: Stack(
+              children: <Widget>[
+                ListView(
+                  children: <Widget>[
+                    loginForm(bloc),
+                  ],
                 ),
-                Divider(color: Colors.black, height: 40.0),
-                Form(
-                  key: _regformKey,
-                  child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Column(
-                      children: <Widget>[
-                        TextFormField(
-                          decoration: InputDecoration(
-                            icon: Icon(Icons.email),
-                            labelText: 'Correo Electronico',
-                            hintStyle: TextStyle(color: Colors.grey[800]),
-                            hintText: "Ingrese su correo",
-                            fillColor: Colors.white70,
-                          ),
-                          keyboardType: TextInputType.emailAddress,
-                        ),
-                        DropdownButtonFormField(
-                          items: <String>[
-                            'Jefe del Servicio Medico',
-                            'Medico del servicio de clinica medica',
-                            'Medico encargado del internado'
-                          ].map((String value) {
-                            return new DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                          onChanged: (_) {},
-                          decoration: InputDecoration(
-                            icon: Icon(Icons.grade),
-                            labelText: 'Seleccione su jerarquia',
-                          ),
-                        ),
-                        TextFormField(
-                          decoration: InputDecoration(
-                            icon: Icon(Icons.person),
-                            labelText: 'Nombre',
-                            hintStyle: TextStyle(color: Colors.grey[800]),
-                            hintText: "Ingrese su nombre",
-                            fillColor: Colors.white70,
-                          ),
-                          keyboardType: TextInputType.text,
-                        ),
-                        TextFormField(
-                          decoration: InputDecoration(
-                            icon: Icon(Icons.person),
-                            labelText: 'Apellido',
-                            hintStyle: TextStyle(color: Colors.grey[800]),
-                            hintText: "Ingrese su apellido",
-                            fillColor: Colors.white70,
-                          ),
-                          keyboardType: TextInputType.text,
-                        ),
-                        TextFormField(
-                          decoration: InputDecoration(
-                              icon: Icon(Icons.lock),
-                              labelText: 'Contraseña',
-                              hintStyle: TextStyle(color: Colors.grey[800]),
-                              hintText: "Ingrese su contraseña",
-                              fillColor: Colors.white70),
-                          obscureText: true,
-                        ),
-                        TextFormField(
-                          decoration: InputDecoration(
-                              icon: Icon(Icons.lock),
-                              labelText: 'Confirme su contraseña',
-                              hintStyle: TextStyle(color: Colors.grey[800]),
-                              hintText: "Vuelva a ingresar su contraseña",
-                              fillColor: Colors.white70),
-                          obscureText: true,
-                        ),
-                      ],
-                    ),
-                  ),
+                Positioned(
+                  top: 250,
+                  left: 85,
+                  child: _buildBtnSubmit(bloc),
                 ),
               ],
             ),
-          ],
-        ),
-      ),
+          ),
+          expandableCard: buildRegister()),
     );
   }
 }

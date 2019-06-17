@@ -8,7 +8,7 @@ class DatientBloc {
 
   Stream<Doctor> get doctor => _doctorSubject.stream;
 
-  Future<Null> signIn(String mail, String password) async {
+  Future<bool> signIn(String mail, String password) async {
     Doctor doctor = Doctor();
 
     final response = await http.post(
@@ -22,9 +22,13 @@ class DatientBloc {
       var token = responseJson['token'];
       var user = responseJson['user'];
       doctor.setUser(token, user);
+      _doctorSubject.sink.add(doctor);
+      return true;
+    } else {
+      var responseError = JSON.jsonDecode(response.body);
+      print(responseError['non_field_errors']);
+      return false;
     }
-
-    _doctorSubject.sink.add(doctor);
   }
 
   dispose() {
