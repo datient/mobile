@@ -90,6 +90,18 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  _register() {
+    var doctor = DatientBloc();
+    String registerEmail = _rmailController.value.text;
+    String registerFirstName = _rfirstnameController.value.text;
+    String registerLastName = _rlastnameController.value.text;
+    int hierarchy = 1;
+    String registerPassword = _rpasswordController.value.text;
+    String registerConfirmPassword = _rpasswordconfirmController.value.text;
+    doctor.registerDoctor(registerEmail, registerFirstName, registerLastName,
+        hierarchy, registerPassword, registerConfirmPassword);
+  }
+
   Widget _buildBtnSubmit(bloc) {
     return Padding(
       padding: EdgeInsets.all(15),
@@ -138,6 +150,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Column(
                   children: <Widget>[
                     TextFormField(
+                      controller: _rmailController,
                       decoration: InputDecoration(
                         icon: Icon(Icons.email),
                         labelText: 'Correo Electronico',
@@ -165,6 +178,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     TextFormField(
+                      controller: _rfirstnameController,
                       decoration: InputDecoration(
                         icon: Icon(Icons.person),
                         labelText: 'Nombre',
@@ -175,6 +189,7 @@ class _LoginPageState extends State<LoginPage> {
                       keyboardType: TextInputType.text,
                     ),
                     TextFormField(
+                      controller: _rlastnameController,
                       decoration: InputDecoration(
                         icon: Icon(Icons.person),
                         labelText: 'Apellido',
@@ -185,6 +200,7 @@ class _LoginPageState extends State<LoginPage> {
                       keyboardType: TextInputType.text,
                     ),
                     TextFormField(
+                      controller: _rpasswordController,
                       decoration: InputDecoration(
                           icon: Icon(Icons.lock),
                           labelText: 'Contraseña',
@@ -194,6 +210,7 @@ class _LoginPageState extends State<LoginPage> {
                       obscureText: true,
                     ),
                     TextFormField(
+                      controller: _rpasswordconfirmController,
                       decoration: InputDecoration(
                           icon: Icon(Icons.lock),
                           labelText: 'Confirme su contraseña',
@@ -202,6 +219,16 @@ class _LoginPageState extends State<LoginPage> {
                           fillColor: Colors.white70),
                       obscureText: true,
                     ),
+                    Padding(
+                      padding: EdgeInsets.only(left:200,top: 20),
+                      child: RaisedButton(
+                        child: Text('Registrarse'),
+                        onPressed: () {
+                          _register();
+                        },
+                        color: Colors.lightBlueAccent,
+                      ),
+                    )
                   ],
                 ),
               ),

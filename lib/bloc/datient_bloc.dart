@@ -32,29 +32,29 @@ class DatientBloc {
     }
   }
 
-  Future<Null> registerDoctor(
+  Future registerDoctor(
       String registerEmail,
-      String firstName,
-      String lastName,
+      String registerFirstName,
+      String registerLastName,
       int hierarchy,
-      String password,
-      String passwordConfirm) async {
-    Doctor doctor = Doctor();
+      String registerPassword,
+      String registerPasswordConfirm) async {
 
     final res = await http.post(
-      'http://10.0.2.2:8000/accounts/register',
+      'http://10.0.2.2:8000/accounts/register/',
       headers: {'Content-Type': 'application/json'},
       body: JSON.jsonEncode(
         {
           'email': registerEmail,
-          'first_name': firstName,
-          'last_name': lastName,
+          'first_name': registerFirstName,
+          'last_name': registerLastName,
           'hierarchy': hierarchy,
-          'password': password,
-          'password_confirm': passwordConfirm
+          'password': registerPassword,
+          'password_confirm': registerPasswordConfirm
         },
       ),
     );
+    print(res.body);
   }
 
   dispose() {
