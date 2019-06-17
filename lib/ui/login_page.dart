@@ -17,6 +17,11 @@ class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _regformKey = new GlobalKey<FormState>();
   final _mailController = TextEditingController();
   final _pwController = TextEditingController();
+  final _rmailController = TextEditingController();
+  final _rfirstnameController = TextEditingController();
+  final _rlastnameController = TextEditingController();
+  final _rpasswordController = TextEditingController();
+  final _rpasswordconfirmController = TextEditingController();
 
   Widget loginForm(DatientBloc bloc) {
     return Form(
