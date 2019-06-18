@@ -3,6 +3,11 @@ import 'package:datient/providers/datient_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:expandable_card/expandable_card.dart';
 
+class Hierarchy {
+  const Hierarchy(this.name);
+  final String name;
+}
+
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.title}) : super(key: key);
 
@@ -13,6 +18,13 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  var hierarchyIndex;
+  Hierarchy selectedHierarchy;
+  List<Hierarchy> hierarchies = <Hierarchy>[
+    const Hierarchy('Jefe del servicio medico'),
+    const Hierarchy('Medico del servicio de clinica medica'),
+    const Hierarchy('Medico encargado del internado')
+  ];
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   final GlobalKey<FormState> _regformKey = new GlobalKey<FormState>();
   final _mailController = TextEditingController();
@@ -95,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
     String registerEmail = _rmailController.value.text;
     String registerFirstName = _rfirstnameController.value.text;
     String registerLastName = _rlastnameController.value.text;
-    int hierarchy = 1;
+    int hierarchy = hierarchyIndex;
     String registerPassword = _rpasswordController.value.text;
     String registerConfirmPassword = _rpasswordconfirmController.value.text;
     doctor.registerDoctor(registerEmail, registerFirstName, registerLastName,
@@ -160,22 +172,28 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       keyboardType: TextInputType.emailAddress,
                     ),
-                    DropdownButtonFormField(
-                      items: <String>[
-                        'Jefe del Servicio Medico',
-                        'Medico del servicio de clinica medica',
-                        'Medico encargado del internado'
-                      ].map((String value) {
-                        return new DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
+                    DropdownButtonFormField<Hierarchy>(
+                      decoration: InputDecoration(
+                        icon: Icon(Icons.star),
+                      ),
+                      hint: Text('Seleccione su jerarquia'),
+                      value: selectedHierarchy,
+                      onChanged: (Hierarchy newValue) {
+                        setState(() {
+                          selectedHierarchy = newValue;
+                          hierarchyIndex = hierarchies.indexOf(newValue);
+                          print(hierarchyIndex);
+                        });
+                      },
+                      items: hierarchies.map((Hierarchy hierarchy) {
+                        return new DropdownMenuItem<Hierarchy>(
+                          value: hierarchy,
+                          child: new Text(
+                            hierarchy.name,
+                            style: new TextStyle(color: Colors.black),
+                          ),
                         );
                       }).toList(),
-                      onChanged: (_) {},
-                      decoration: InputDecoration(
-                        icon: Icon(Icons.grade),
-                        labelText: 'Seleccione su jerarquia',
-                      ),
                     ),
                     TextFormField(
                       controller: _rfirstnameController,
@@ -220,7 +238,7 @@ class _LoginPageState extends State<LoginPage> {
                       obscureText: true,
                     ),
                     Padding(
-                      padding: EdgeInsets.only(left:200,top: 20),
+                      padding: EdgeInsets.only(left: 200, top: 20),
                       child: RaisedButton(
                         child: Text('Registrarse'),
                         onPressed: () {
