@@ -104,14 +104,16 @@ class _LoginPageState extends State<LoginPage> {
 
   _register() {
     var doctor = DatientBloc();
-    String registerEmail = _rmailController.value.text;
-    String registerFirstName = _rfirstnameController.value.text;
-    String registerLastName = _rlastnameController.value.text;
-    int hierarchy = hierarchyIndex;
-    String registerPassword = _rpasswordController.value.text;
-    String registerConfirmPassword = _rpasswordconfirmController.value.text;
-    doctor.registerDoctor(registerEmail, registerFirstName, registerLastName,
-        hierarchy, registerPassword, registerConfirmPassword);
+    if (_regformKey.currentState.validate()) {
+      String registerEmail = _rmailController.value.text;
+      String registerFirstName = _rfirstnameController.value.text;
+      String registerLastName = _rlastnameController.value.text;
+      int hierarchy = hierarchyIndex;
+      String registerPassword = _rpasswordController.value.text;
+      String registerConfirmPassword = _rpasswordconfirmController.value.text;
+      doctor.registerDoctor(registerEmail, registerFirstName, registerLastName,
+          hierarchy, registerPassword, registerConfirmPassword);
+    }
   }
 
   Widget _buildBtnSubmit(bloc) {
@@ -163,6 +165,11 @@ class _LoginPageState extends State<LoginPage> {
                   children: <Widget>[
                     TextFormField(
                       controller: _rmailController,
+                      validator: (value){
+                        if (value.isEmpty){
+                          return('Por favor, Ingrese su correo electronico');
+                        }
+                      },
                       decoration: InputDecoration(
                         icon: Icon(Icons.email),
                         labelText: 'Correo Electronico',
@@ -196,9 +203,9 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     TextFormField(
                       controller: _rfirstnameController,
-                      validator: (value){
-                        if (value.isEmpty){
-                          return('Por favor, ingrese su nombre');
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return ('Por favor, ingrese su nombre');
                         }
                       },
                       decoration: InputDecoration(
@@ -212,9 +219,9 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     TextFormField(
                       controller: _rlastnameController,
-                      validator: (value){
-                        if (value.isEmpty){
-                          return('Por favor, ingrese su apellido');
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return ('Por favor, ingrese su apellido');
                         }
                       },
                       decoration: InputDecoration(
@@ -228,9 +235,9 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     TextFormField(
                       controller: _rpasswordController,
-                      validator: (value){
-                        if (value.isEmpty){
-                          return('Por favor, ingrese su contrasena');
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return ('Por favor, ingrese su contrasena');
                         }
                       },
                       decoration: InputDecoration(
@@ -243,9 +250,9 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     TextFormField(
                       controller: _rpasswordconfirmController,
-                      validator: (value){
-                        if (value.isEmpty){
-                          return('Por favor, vuelva a ingresar su contrasena');
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return ('Por favor, vuelva a ingresar su contrasena');
                         }
                       },
                       decoration: InputDecoration(
@@ -264,7 +271,8 @@ class _LoginPageState extends State<LoginPage> {
                           _register();
                         },
                         color: Colors.lightBlueAccent,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15)),
                       ),
                     )
                   ],

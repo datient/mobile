@@ -20,7 +20,7 @@ class _RoomPageState extends State<RoomPage> {
       body: Container(
         child: Column(
           children: [
-            Text(widget.room.roomName)
+            Text(widget.room.roomName),
           ],
         ),
       ),
