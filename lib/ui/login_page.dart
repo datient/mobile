@@ -53,12 +53,12 @@ class _LoginPageState extends State<LoginPage> {
                     controller: _mailController,
                     validator: (value) {
                       if (value.isEmpty || !value.contains('@')) {
-                        return 'Por favor, ingrese su correo electronico';
+                        return 'Por favor, ingrese su correo electrónico';
                       }
                     },
                     decoration: InputDecoration(
                       icon: Icon(Icons.email),
-                      labelText: 'Correo Electronico',
+                      labelText: 'Correo Electrónico',
                       hintStyle: TextStyle(color: Colors.grey[800]),
                       hintText: "Ingrese su correo",
                       fillColor: Colors.white70,
@@ -131,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
             _validateAndSubmit(bloc);
           },
           child: Text(
-            'Iniciar Sesion',
+            'Iniciar Sesión',
             style: TextStyle(
               color: Colors.white,
               fontSize: 18,
@@ -165,14 +165,14 @@ class _LoginPageState extends State<LoginPage> {
                   children: <Widget>[
                     TextFormField(
                       controller: _rmailController,
-                      validator: (value){
-                        if (value.isEmpty){
-                          return('Por favor, Ingrese su correo electronico');
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return ('Por favor, Ingrese su correo electrónico');
                         }
                       },
                       decoration: InputDecoration(
                         icon: Icon(Icons.email),
-                        labelText: 'Correo Electronico',
+                        labelText: 'Correo Electrónico',
                         hintStyle: TextStyle(color: Colors.grey[800]),
                         hintText: "Ingrese su correo",
                         fillColor: Colors.white70,
@@ -183,7 +183,7 @@ class _LoginPageState extends State<LoginPage> {
                       decoration: InputDecoration(
                         icon: Icon(Icons.star),
                       ),
-                      hint: Text('Seleccione su jerarquia'),
+                      hint: Text('Seleccione su jerarquía'),
                       value: selectedHierarchy,
                       onChanged: (Hierarchy newValue) {
                         setState(() {
@@ -237,7 +237,7 @@ class _LoginPageState extends State<LoginPage> {
                       controller: _rpasswordController,
                       validator: (value) {
                         if (value.isEmpty) {
-                          return ('Por favor, ingrese su contrasena');
+                          return ('Por favor, ingrese su contraseña');
                         }
                       },
                       decoration: InputDecoration(
@@ -252,7 +252,7 @@ class _LoginPageState extends State<LoginPage> {
                       controller: _rpasswordconfirmController,
                       validator: (value) {
                         if (value.isEmpty) {
-                          return ('Por favor, vuelva a ingresar su contrasena');
+                          return ('Por favor, vuelva a ingresar su contraseña');
                         }
                       },
                       decoration: InputDecoration(
@@ -264,15 +264,25 @@ class _LoginPageState extends State<LoginPage> {
                       obscureText: true,
                     ),
                     Padding(
-                      padding: EdgeInsets.only(left: 200, top: 20),
-                      child: RaisedButton(
-                        child: Text('Registrarse'),
-                        onPressed: () {
-                          _register();
-                        },
-                        color: Colors.lightBlueAccent,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15)),
+                      padding: EdgeInsets.only(top: 20),
+                      child: SizedBox(
+                        width: 300,
+                        height: 40,
+                        child: RaisedButton(
+                          child: Text(
+                            'Registrarse',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                wordSpacing: 5),
+                          ),
+                          onPressed: () {
+                            _register();
+                          },
+                          color: Colors.blue,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15)),
+                        ),
                       ),
                     )
                   ],
