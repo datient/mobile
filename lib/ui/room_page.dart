@@ -18,7 +18,11 @@ class _RoomPageState extends State<RoomPage> {
         title: Text('Sala ${widget.room.id}'),
       ),
       body: Container(
-        child: Text(widget.room.roomName),
+        child: Column(
+          children: [
+            Text(widget.room.roomName)
+          ],
+        ),
       ),
     );
   }

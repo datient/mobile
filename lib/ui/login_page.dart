@@ -182,7 +182,6 @@ class _LoginPageState extends State<LoginPage> {
                         setState(() {
                           selectedHierarchy = newValue;
                           hierarchyIndex = hierarchies.indexOf(newValue);
-                          print(hierarchyIndex);
                         });
                       },
                       items: hierarchies.map((Hierarchy hierarchy) {
@@ -197,6 +196,11 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     TextFormField(
                       controller: _rfirstnameController,
+                      validator: (value){
+                        if (value.isEmpty){
+                          return('Por favor, ingrese su nombre');
+                        }
+                      },
                       decoration: InputDecoration(
                         icon: Icon(Icons.person),
                         labelText: 'Nombre',
@@ -208,6 +212,11 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     TextFormField(
                       controller: _rlastnameController,
+                      validator: (value){
+                        if (value.isEmpty){
+                          return('Por favor, ingrese su apellido');
+                        }
+                      },
                       decoration: InputDecoration(
                         icon: Icon(Icons.person),
                         labelText: 'Apellido',
@@ -219,6 +228,11 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     TextFormField(
                       controller: _rpasswordController,
+                      validator: (value){
+                        if (value.isEmpty){
+                          return('Por favor, ingrese su contrasena');
+                        }
+                      },
                       decoration: InputDecoration(
                           icon: Icon(Icons.lock),
                           labelText: 'Contraseña',
@@ -229,6 +243,11 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     TextFormField(
                       controller: _rpasswordconfirmController,
+                      validator: (value){
+                        if (value.isEmpty){
+                          return('Por favor, vuelva a ingresar su contrasena');
+                        }
+                      },
                       decoration: InputDecoration(
                           icon: Icon(Icons.lock),
                           labelText: 'Confirme su contraseña',
@@ -245,6 +264,7 @@ class _LoginPageState extends State<LoginPage> {
                           _register();
                         },
                         color: Colors.lightBlueAccent,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                       ),
                     )
                   ],
