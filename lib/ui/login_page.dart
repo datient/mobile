@@ -1,3 +1,4 @@
+import 'package:datient/bloc/room_bloc.dart';
 import 'package:datient/bloc/datient_bloc.dart';
 import 'package:datient/providers/datient_provider.dart';
 import 'package:flutter/material.dart';
@@ -90,11 +91,11 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  _validateAndSubmit(DatientBloc bloc) {
+  _validateAndSubmit(DatientBloc bloc,RoomBloc roomBloc) {
     if (_formKey.currentState.validate()) {
       String mail = _mailController.value.text;
       String password = _pwController.value.text;
-      bloc.signIn(mail, password).then((success) {
+      bloc.signIn(mail, password,roomBloc).then((success) {
         if (success == true) {
           Navigator.of(context).pushReplacementNamed('/home');
         }
@@ -116,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  Widget _buildBtnSubmit(bloc) {
+  Widget _buildBtnSubmit(bloc,roomBloc) {
     return Padding(
       padding: EdgeInsets.all(15),
       child: SizedBox(
@@ -128,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           onPressed: () {
-            _validateAndSubmit(bloc);
+            _validateAndSubmit(bloc,roomBloc);
           },
           child: Text(
             'Iniciar Sesión',
@@ -298,7 +299,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final bloc = DatientProvider.of(context).bloc;
-
+    final roomBloc = DatientProvider.of(context).roomBloc;
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -315,7 +316,7 @@ class _LoginPageState extends State<LoginPage> {
                 Positioned(
                   top: 250,
                   left: 85,
-                  child: _buildBtnSubmit(bloc),
+                  child: _buildBtnSubmit(bloc,roomBloc),
                 ),
               ],
             ),

@@ -1,4 +1,5 @@
 import 'dart:convert' as JSON;
+import 'package:datient/bloc/room_bloc.dart';
 import 'package:datient/models/doctor.dart';
 import 'package:http/http.dart' as http;
 import 'package:rxdart/rxdart.dart';
@@ -8,7 +9,7 @@ class DatientBloc {
 
   Stream<Doctor> get doctor => _doctorSubject.stream;
 
-  Future<bool> signIn(String mail, String password) async {
+  Future<bool> signIn(String mail, String password,RoomBloc roomBloc) async {
     Doctor doctor = Doctor();
 
     final response = await http.post(
@@ -23,6 +24,7 @@ class DatientBloc {
       var user = responseJson['user'];
       doctor.setUser(token, user);
       _doctorSubject.sink.add(doctor);
+      roomBloc.getRooms(token);
       return true;
     } else {
       var responseError = JSON.jsonDecode(response.body);

@@ -1,3 +1,4 @@
+import 'package:datient/bloc/room_bloc.dart';
 import 'package:datient/bloc/datient_bloc.dart';
 import 'package:datient/providers/datient_provider.dart';
 import 'package:datient/ui/home_page.dart';
@@ -12,6 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return DatientProvider(
       bloc: DatientBloc(),
+      roomBloc: RoomBloc(),
       child: MaterialApp(
         title: 'Datient',
         theme: ThemeData(

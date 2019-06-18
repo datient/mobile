@@ -14,15 +14,3 @@ class Room {
     );
   }
 }
-
-class Bed {
-  var id;
-  var bedName;
-  var patient;
-
-  Bed({
-    this.id,
-    this.bedName,
-    this.patient,
-  });
-}

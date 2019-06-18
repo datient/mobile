@@ -1,4 +1,5 @@
 import 'dart:convert' as JSON;
+import 'package:datient/bloc/room_bloc.dart';
 import 'package:datient/models/doctor.dart';
 import 'package:datient/models/room.dart';
 import 'package:datient/providers/datient_provider.dart';
@@ -14,19 +15,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   var token;
   Doctor doctor = Doctor();
-
-  Future<List<Room>> _getRooms(token) async {
-    List list;
-    final response = await http.get(
-      'http://10.0.2.2:8000/api/room/',
-      headers: {'Authorization': 'JWT $token'},
-    );
-    if (response.statusCode == 200) {
-      final extractdata = JSON.jsonDecode(response.body) as List;
-      list = extractdata.map((json) => Room.fromJson(json)).toList();
-    }
-    return list;
-  }
 
   Widget _buildRoomList(data) {
     return GridView.count(
@@ -64,6 +52,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final bloc = DatientProvider.of(context).bloc;
+    final roomBloc = DatientProvider.of(context).roomBloc;
 
     return Scaffold(
       appBar: AppBar(
@@ -92,8 +81,8 @@ class _HomePageState extends State<HomePage> {
                 stream: bloc.doctor,
                 builder: (context, snap) {
                   return snap.hasData
-                      ? FutureBuilder(
-                          future: _getRooms(snap.data.token),
+                      ? StreamBuilder(
+                          stream: roomBloc.rooms,
                           builder:
                               (BuildContext context, AsyncSnapshot snapshot) {
                             return snapshot.hasData
