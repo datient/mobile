@@ -17,7 +17,6 @@ class RoomBloc{
       final extractdata = JSON.jsonDecode(response.body) as List;
       list = extractdata.map((json) => Room.fromJson(json)).toList();
     }
-    print(list);
   _roomSubject.sink.add(list);
   return list;
   }
