@@ -91,11 +91,11 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  _validateAndSubmit(DatientBloc bloc,RoomBloc roomBloc) {
+  _validateAndSubmit(DatientBloc bloc, RoomBloc roomBloc) {
     if (_formKey.currentState.validate()) {
       String mail = _mailController.value.text;
       String password = _pwController.value.text;
-      bloc.signIn(mail, password,roomBloc).then((success) {
+      bloc.signIn(mail, password, roomBloc).then((success) {
         if (success == true) {
           Navigator.of(context).pushReplacementNamed('/home');
         }
@@ -117,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  Widget _buildBtnSubmit(bloc,roomBloc) {
+  Widget _buildBtnSubmit(bloc, roomBloc) {
     return Padding(
       padding: EdgeInsets.all(15),
       child: SizedBox(
@@ -129,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           onPressed: () {
-            _validateAndSubmit(bloc,roomBloc);
+            _validateAndSubmit(bloc, roomBloc);
           },
           child: Text(
             'Iniciar Sesión',
@@ -300,6 +300,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final bloc = DatientProvider.of(context).bloc;
     final roomBloc = DatientProvider.of(context).roomBloc;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -316,7 +317,7 @@ class _LoginPageState extends State<LoginPage> {
                 Positioned(
                   top: 250,
                   left: 85,
-                  child: _buildBtnSubmit(bloc,roomBloc),
+                  child: _buildBtnSubmit(bloc, roomBloc),
                 ),
               ],
             ),

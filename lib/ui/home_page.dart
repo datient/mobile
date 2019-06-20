@@ -1,11 +1,7 @@
-import 'dart:convert' as JSON;
-import 'package:datient/bloc/room_bloc.dart';
 import 'package:datient/models/doctor.dart';
-import 'package:datient/models/room.dart';
 import 'package:datient/providers/datient_provider.dart';
 import 'package:datient/ui/room_page.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   @override
