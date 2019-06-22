@@ -17,7 +17,7 @@ class Room {
     return Room(
       id: json['id'],
       roomName: json['name'],
-      beds: list,
+      beds: list
     );
   }
 }

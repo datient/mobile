@@ -1,4 +1,6 @@
+import 'package:datient/bloc/datient_bloc.dart';
 import 'package:datient/bloc/room_bloc.dart';
+import 'package:datient/models/bed.dart';
 import 'package:datient/models/room.dart';
 import 'package:datient/providers/datient_provider.dart';
 import 'package:flutter/material.dart';
@@ -15,19 +17,16 @@ class RoomPage extends StatefulWidget {
 class _RoomPageState extends State<RoomPage> {
   @override
   Widget build(BuildContext context) {
-    RoomBloc roomBloc = DatientProvider.of(context).roomBloc;
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Sala ${widget.room.id}'),
       ),
-      body: Container(
-        child: Column(
-          children: [
-            Text(widget.room.roomName),
-          ],
-        ),
-      ),
+      body: ListView.builder(
+          itemCount: widget.room.beds.length,
+          itemBuilder: (BuildContext context, int index) {
+            Bed beds = widget.room.beds[index];
+            return Text(beds.bedName);
+          }),
     );
   }
 }

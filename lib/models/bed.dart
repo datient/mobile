@@ -1,4 +1,4 @@
-class Bed {
+class Bed{
   var id;
   var bedName;
 
@@ -7,7 +7,7 @@ class Bed {
     this.bedName,
   });
 
-  factory Bed.fromJson(Map<String, dynamic> json) {
+    factory Bed.fromJson(Map<String, dynamic> json) {
     return Bed(
       id: json['id'],
       bedName: json['name'],
