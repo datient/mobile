@@ -26,7 +26,7 @@ class _RoomPageState extends State<RoomPage> {
           itemCount: widget.room.beds.length,
           itemBuilder: (BuildContext context, int index) {
             Bed beds = widget.room.beds[index];
-            return Card(
+            return Container(
               child: GestureDetector(
                 onTap: () {
                   Navigator.of(context).push(
@@ -37,15 +37,17 @@ class _RoomPageState extends State<RoomPage> {
                     ),
                   );
                 },
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(height: 20),
-                    Text(
-                      beds.bedName,
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    SizedBox(height: 20),
-                  ],
+                child: Card(
+                  child: Column(
+                    children: [
+                      SizedBox(height: 20),
+                      Text(
+                        beds.bedName,
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      SizedBox(height: 20),
+                    ],
+                  ),
                 ),
               ),
             );
