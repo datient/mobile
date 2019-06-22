@@ -1,6 +1,7 @@
 import 'package:datient/bloc/room_bloc.dart';
 import 'package:datient/bloc/datient_bloc.dart';
 import 'package:datient/providers/datient_provider.dart';
+import 'package:datient/ui/bed_page.dart';
 import 'package:datient/ui/home_page.dart';
 import 'package:datient/ui/login_page.dart';
 import 'package:datient/ui/room_page.dart';
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
           '/login': (BuildContext context) => LoginPage(),
           '/home': (BuildContext context) => HomePage(),
           '/room': (BuildContext context) => RoomPage(),
+          '/bed': (BuildContext context) => BedPage(),
         },
       ),
     );

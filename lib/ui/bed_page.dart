@@ -17,11 +17,16 @@ class _BedPageState extends State<BedPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('${widget.bed.bedName}'),
+      appBar: AppBar(
+        title: Text('${widget.bed.bedName}'),
+      ),
+      body: Container(
+        child: Column(
+          children: [
+            Text(widget.bed.bedName),
+          ],
         ),
-        body: Container(
-          child: Text(widget.bed.bedName),
-        ));
+      ),
+    );
   }
 }

@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
                   Icon(Icons.local_hospital, size: 80),
                   Text(
                     data[index].roomName,
-                    style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
@@ -54,6 +54,19 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Salas'),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: 0, // this will be set when a new tab is tapped
+        items: [
+          BottomNavigationBarItem(
+            icon: new Icon(Icons.local_hospital),
+            title: new Text('Salas'),
+          ),
+          BottomNavigationBarItem(
+            icon: new Icon(Icons.people),
+            title: new Text('Pacientes'),
+          ),
+        ],
       ),
       body: Container(
         child: Column(

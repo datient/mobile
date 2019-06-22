@@ -42,6 +42,7 @@ class _RoomPageState extends State<RoomPage> {
                   child: Column(
                     children: [
                       SizedBox(height: 20),
+                      Icon(Icons.hotel),
                       Text(
                         beds.bedName,
                         style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),
