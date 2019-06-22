@@ -28,13 +28,14 @@ class _HomePageState extends State<HomePage> {
               );
             },
             child: Card(
+              elevation: 6,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(Icons.local_hospital, size: 80),
                   Text(
                     data[index].roomName,
-                    style: TextStyle(fontSize: 20),
+                    style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
                   ),
                 ],
               ),

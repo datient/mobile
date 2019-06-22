@@ -38,12 +38,13 @@ class _RoomPageState extends State<RoomPage> {
                   );
                 },
                 child: Card(
+                  elevation: 6,
                   child: Column(
                     children: [
                       SizedBox(height: 20),
                       Text(
                         beds.bedName,
-                        style: TextStyle(fontSize: 18),
+                        style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 20),
                     ],
