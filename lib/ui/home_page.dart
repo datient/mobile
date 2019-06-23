@@ -1,5 +1,6 @@
 import 'package:datient/models/doctor.dart';
 import 'package:datient/providers/datient_provider.dart';
+import 'package:datient/ui/patient_page.dart';
 import 'package:datient/ui/room_page.dart';
 import 'package:flutter/material.dart';
 
@@ -46,10 +47,57 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget _buildRoomPage(bloc, roomBloc) {
+    return Container(
+      child: Column(
+        children: [
+          Expanded(
+            flex: 1,
+            child: StreamBuilder(
+              stream: bloc.doctor,
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                return snapshot.hasData
+                    ? Text(
+                        'Doctor: ' + '${snapshot.data.getFullName()}',
+                        style: TextStyle(fontSize: 28),
+                      )
+                    : Center(child: CircularProgressIndicator());
+              },
+            ),
+          ),
+          Expanded(
+            flex: 9,
+            child: StreamBuilder(
+              stream: bloc.doctor,
+              builder: (context, snap) {
+                return snap.hasData
+                    ? StreamBuilder(
+                        stream: roomBloc.rooms,
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          return snapshot.hasData
+                              ? _buildRoomList(snapshot.data)
+                              : Center(child: CircularProgressIndicator());
+                        },
+                      )
+                    : Center(child: CircularProgressIndicator());
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final bloc = DatientProvider.of(context).bloc;
     final roomBloc = DatientProvider.of(context).roomBloc;
+    int _selectedPage = 0;
+    final _pageOptions = [
+      _buildRoomPage(bloc, roomBloc),
+      PatientPage(),
+    ];
 
     return Scaffold(
       appBar: AppBar(
@@ -59,7 +107,13 @@ class _HomePageState extends State<HomePage> {
         selectedItemColor: Colors.blue,
         selectedFontSize: 15,
         unselectedFontSize: 15,
-        currentIndex: 0,
+        currentIndex: _selectedPage,
+        onTap: (int index) {
+          setState(() {
+            _selectedPage = index;
+            print(index);
+          });
+        },
         items: [
           BottomNavigationBarItem(
             icon: new Icon(Icons.local_hospital),
@@ -71,45 +125,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: Container(
-        child: Column(
-          children: [
-            Expanded(
-              flex: 1,
-              child: StreamBuilder(
-                stream: bloc.doctor,
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  return snapshot.hasData
-                      ? Text(
-                          'Doctor: ' + '${snapshot.data.getFullName()}',
-                          style: TextStyle(fontSize: 28),
-                        )
-                      : Center(child: CircularProgressIndicator());
-                },
-              ),
-            ),
-            Expanded(
-              flex: 9,
-              child: StreamBuilder(
-                stream: bloc.doctor,
-                builder: (context, snap) {
-                  return snap.hasData
-                      ? StreamBuilder(
-                          stream: roomBloc.rooms,
-                          builder:
-                              (BuildContext context, AsyncSnapshot snapshot) {
-                            return snapshot.hasData
-                                ? _buildRoomList(snapshot.data)
-                                : Center(child: CircularProgressIndicator());
-                          },
-                        )
-                      : Center(child: CircularProgressIndicator());
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
+      body: _pageOptions[_selectedPage],
     );
   }
 }
