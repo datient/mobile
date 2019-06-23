@@ -10,7 +10,8 @@ class DatientBloc {
 
   Stream<Doctor> get doctor => _doctorSubject.stream;
 
-  Future<bool> signIn(String mail, String password,RoomBloc roomBloc) async {
+  Future<bool> signIn(String mail, String password, RoomBloc roomBloc,
+      PatientBloc patientBloc) async {
     Doctor doctor = Doctor();
 
     final response = await http.post(
@@ -26,6 +27,7 @@ class DatientBloc {
       doctor.setUser(token, user);
       _doctorSubject.sink.add(doctor);
       roomBloc.getRooms(token);
+      patientBloc.getPatients(token);
       return true;
     } else {
       var responseError = JSON.jsonDecode(response.body);
@@ -35,13 +37,13 @@ class DatientBloc {
   }
 
   Future registerDoctor(
-      String registerEmail,
-      String registerFirstName,
-      String registerLastName,
-      int hierarchy,
-      String registerPassword,
-      String registerPasswordConfirm) async {
-
+    String registerEmail,
+    String registerFirstName,
+    String registerLastName,
+    int hierarchy,
+    String registerPassword,
+    String registerPasswordConfirm,
+  ) async {
     final res = await http.post(
       'http://10.0.2.2:8000/accounts/register/',
       headers: {'Content-Type': 'application/json'},

@@ -1,3 +1,4 @@
+import 'package:datient/bloc/patient_bloc.dart';
 import 'package:datient/bloc/room_bloc.dart';
 import 'package:datient/bloc/datient_bloc.dart';
 import 'package:datient/providers/datient_provider.dart';
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
     return DatientProvider(
       bloc: DatientBloc(),
       roomBloc: RoomBloc(),
+      patientBloc: PatientBloc(),
       child: MaterialApp(
         title: 'Datient',
         theme: ThemeData(

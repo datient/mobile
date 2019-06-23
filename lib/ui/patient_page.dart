@@ -1,9 +1,9 @@
-import 'package:datient/models/patient.dart';
+import 'package:datient/bloc/patient_bloc.dart';
+import 'package:datient/providers/datient_provider.dart';
 import 'package:flutter/material.dart';
 
 class PatientPage extends StatefulWidget {
-  final Patient patient;
-  PatientPage({Key key, this.patient}) : super(key: key);
+  PatientPage({Key key}) : super(key: key);
 
   @override
   _BedPageState createState() => _BedPageState();
@@ -12,13 +12,16 @@ class PatientPage extends StatefulWidget {
 class _BedPageState extends State<PatientPage> {
   @override
   Widget build(BuildContext context) {
+    PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
+
     return Scaffold(
-      body: Container(
-        child: Column(
-          children: [
-            Text('Prueba'),
-          ],
-        ),
+      body: StreamBuilder(
+        stream: patientBloc.patients,
+        builder: (context, snapshot) {
+          return snapshot.hasData
+              ? Text(snapshot.data.toString())
+              : Center(child: CircularProgressIndicator());
+        },
       ),
     );
   }

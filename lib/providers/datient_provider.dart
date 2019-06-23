@@ -8,7 +8,12 @@ class DatientProvider extends InheritedWidget {
   final RoomBloc roomBloc;
   final PatientBloc patientBloc;
 
-  DatientProvider({this.bloc,this.roomBloc,this.patientBloc, Widget child}) : super(child: child);
+  DatientProvider({
+    this.bloc,
+    this.roomBloc,
+    this.patientBloc,
+    Widget child,
+  }) : super(child: child);
 
   @override
   bool updateShouldNotify(InheritedWidget oldWidget) => true;
