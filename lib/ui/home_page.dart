@@ -56,7 +56,10 @@ class _HomePageState extends State<HomePage> {
         title: Text('Salas'),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 0, // this will be set when a new tab is tapped
+        selectedItemColor: Colors.blue,
+        selectedFontSize: 15,
+        unselectedFontSize: 15,
+        currentIndex: 0,
         items: [
           BottomNavigationBarItem(
             icon: new Icon(Icons.local_hospital),
