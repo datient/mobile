@@ -7,14 +7,15 @@ class Patient {
   var historyNumber;
   var gender;
 
-  Patient(
-      {this.dni,
-      this.age,
-      this.firstName,
-      this.lastName,
-      this.birthDate,
-      this.historyNumber,
-      this.gender});
+  Patient({
+    this.dni,
+    this.age,
+    this.firstName,
+    this.lastName,
+    this.birthDate,
+    this.historyNumber,
+    this.gender,
+  });
 
   factory Patient.fromJson(Map<String, dynamic> json) {
     return Patient(

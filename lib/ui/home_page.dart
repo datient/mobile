@@ -12,6 +12,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   var token;
   Doctor doctor = Doctor();
+  int _selectedPage = 0;
 
   Widget _buildRoomList(data) {
     return GridView.count(
@@ -93,8 +94,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final bloc = DatientProvider.of(context).bloc;
     final roomBloc = DatientProvider.of(context).roomBloc;
-    int _selectedPage = 0;
-    final _pageOptions = [
+    final _pages = [
       _buildRoomPage(bloc, roomBloc),
       PatientPage(),
     ];
@@ -111,21 +111,20 @@ class _HomePageState extends State<HomePage> {
         onTap: (int index) {
           setState(() {
             _selectedPage = index;
-            print(index);
           });
         },
         items: [
           BottomNavigationBarItem(
-            icon: new Icon(Icons.local_hospital),
-            title: new Text('Salas'),
+            icon: Icon(Icons.local_hospital),
+            title: Text('Salas'),
           ),
           BottomNavigationBarItem(
-            icon: new Icon(Icons.people),
-            title: new Text('Pacientes'),
+            icon: Icon(Icons.people),
+            title: Text('Pacientes'),
           ),
         ],
       ),
-      body: _pageOptions[_selectedPage],
+      body: _pages[_selectedPage],
     );
   }
 }
