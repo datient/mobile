@@ -12,93 +12,92 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
   @override
   Widget build(BuildContext context) {
     var _fullname = widget.patient.firstName + ' ' + widget.patient.lastName;
+    var _patientGender;
+    if (widget.patient.gender == 0){
+      _patientGender = 'Masculino';
+    }else{
+      _patientGender = 'Femenino';
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text(_fullname),
       ),
       body: Container(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Card(
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      SizedBox(width: 10),
-                      Icon(
-                        Icons.person,
-                        size: 40,
-                      ),
-                      Text(
-                        'Nombre: ',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      Text(
-                        widget.patient.firstName,
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      SizedBox(width: 30),
-                      Text(
-                        'Apellido: ',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      Text(
-                        widget.patient.lastName,
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'DNI: ',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      Text(
-                        widget.patient.dni.toString(),
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'Fecha de Nacimiento: ',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      Text(
-                        widget.patient.birthDate,
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'Numero de Historial: ',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      Text(
-                        widget.patient.historyNumber.toString(),
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'Genero: ',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      Text(
-                        widget.patient.gender.toString(),
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ],
-                  ),
-                ],
+            Chip(
+              avatar: CircleAvatar(
+                child: Icon(
+                  Icons.person,
+                  size: 20,
+                ),
               ),
-            )
+              label: Text(
+                'Nombre: ' + widget.patient.firstName,
+                style: TextStyle(fontSize: 24),
+              ),
+            ),
+            Chip(
+              avatar: CircleAvatar(
+                child: Icon(
+                  Icons.person,
+                  size: 20,
+                ),
+              ),
+              label: Text(
+                'Apellido: ' + widget.patient.lastName,
+                style: TextStyle(fontSize: 24),
+              ),
+            ),
+            Chip(
+              avatar: CircleAvatar(
+                child: Icon(
+                  Icons.featured_play_list,
+                  size: 20,
+                ),
+              ),
+              label: Text(
+                'DNI: ' + widget.patient.dni.toString(),
+                style: TextStyle(fontSize: 24),
+              ),
+            ),
+            Chip(
+              avatar: CircleAvatar(
+                child: Icon(
+                  Icons.calendar_today,
+                  size: 20,
+                ),
+              ),
+              label: Text(
+                'Fecha de Nacimiento: ' + widget.patient.birthDate,
+                style: TextStyle(fontSize: 24),
+              ),
+            ),
+            Chip(
+              avatar: CircleAvatar(
+                child: Icon(
+                  Icons.history,
+                  size: 20,
+                ),
+              ),
+              label: Text(
+                'Num. Historial: ' + widget.patient.historyNumber.toString(),
+                style: TextStyle(fontSize: 24),
+              ),
+            ),
+            Chip(
+              avatar: CircleAvatar(
+                child: Icon(
+                  Icons.people,
+                  size: 20,
+                ),
+              ),
+              label: Text(
+                'Genero: ' + _patientGender,
+                style: TextStyle(fontSize: 24),
+              ),
+            ),
           ],
         ),
       ),
