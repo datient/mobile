@@ -103,7 +103,7 @@ class _LoginPageState extends State<LoginPage> {
       bloc.signIn(mail, password, roomBloc, patientBloc).then((success) {
         if (success == true) {
           Navigator.of(context).pushReplacementNamed('/home');
-        }
+        } else {}
       });
     }
   }
@@ -312,24 +312,21 @@ class _LoginPageState extends State<LoginPage> {
         title: Text(widget.title),
       ),
       body: ExpandableCardPage(
-        page: SafeArea(
-          child: Stack(
-            children: <Widget>[
-              ListView(
-                children: <Widget>[
-                  loginForm(bloc),
-                ],
-              ),
-              Positioned(
-                top: 250,
-                left: 85,
-                child: _buildBtnSubmit(bloc, roomBloc, patientBloc),
-              ),
-            ],
+          page: SafeArea(
+            child: Stack(
+              children: [
+                ListView(
+                  children: [loginForm(bloc)],
+                ),
+                Positioned(
+                  top: 250,
+                  left: 85,
+                  child: _buildBtnSubmit(bloc, roomBloc, patientBloc),
+                ),
+              ],
+            ),
           ),
-        ),
-        expandableCard: buildRegister(),
-      ),
+          expandableCard: buildRegister()),
     );
   }
 }

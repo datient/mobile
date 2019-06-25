@@ -16,78 +16,74 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Chip(
-          avatar: CircleAvatar(
-            child: Icon(
-              Icons.person,
-              size: 20,
-            ),
+        Card(
+          margin: EdgeInsets.all(10),
+          elevation: 6,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                children: [
+                  Text('Nombre'),
+                  Text(
+                    widget.patient.firstName,
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ],
+              ),
+              Divider(),
+              Column(
+                children: [
+                  Text('Apellido'),
+                  Text(
+                    widget.patient.lastName,
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ],
+              ),
+              Divider(),
+              Column(
+                children: [
+                  Text('Fecha de nacimiento'),
+                  Text(
+                    widget.patient.birthDate,
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ],
+              ),
+              Divider(),
+              Column(
+                children: [
+                  Text('Edad'),
+                  Text(
+                    widget.patient.age.toString(),
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ],
+              ),
+              Divider(),
+              Column(
+                children: [
+                  Text('Numero de historial'),
+                  Text(
+                    widget.patient.age.toString(),
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ],
+              ),
+              Divider(),
+              Column(
+                children: [
+                  Text('Genero'),
+                  Text(
+                    _patientGender,
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ],
+              ),
+            ],
           ),
-          label: Text(
-            'Nombre: ' + widget.patient.firstName,
-            style: TextStyle(fontSize: 24),
-          ),
-        ),
-        Chip(
-          avatar: CircleAvatar(
-            child: Icon(
-              Icons.person,
-              size: 20,
-            ),
-          ),
-          label: Text(
-            'Apellido: ' + widget.patient.lastName,
-            style: TextStyle(fontSize: 24),
-          ),
-        ),
-        Chip(
-          avatar: CircleAvatar(
-            child: Icon(
-              Icons.featured_play_list,
-              size: 20,
-            ),
-          ),
-          label: Text(
-            'DNI: ' + widget.patient.dni.toString(),
-            style: TextStyle(fontSize: 24),
-          ),
-        ),
-        Chip(
-          avatar: CircleAvatar(
-            child: Icon(
-              Icons.calendar_today,
-              size: 20,
-            ),
-          ),
-          label: Text(
-            'Fecha de Nacimiento: ' + widget.patient.birthDate,
-            style: TextStyle(fontSize: 24),
-          ),
-        ),
-        Chip(
-          avatar: CircleAvatar(
-            child: Icon(
-              Icons.history,
-              size: 20,
-            ),
-          ),
-          label: Text(
-            'Num. Historial: ' + widget.patient.historyNumber.toString(),
-            style: TextStyle(fontSize: 24),
-          ),
-        ),
-        Chip(
-          avatar: CircleAvatar(
-            child: Icon(
-              Icons.people,
-              size: 20,
-            ),
-          ),
-          label: Text(
-            'Genero: ' + _patientGender,
-            style: TextStyle(fontSize: 24),
-          ),
-        ),
+        )
       ],
     );
   }
