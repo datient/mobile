@@ -13,8 +13,7 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
   var _patientGender;
 
   Widget _buildPatientInfo() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return ListView(
       children: [
         Card(
           margin: EdgeInsets.all(10),
@@ -119,6 +118,21 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
                     ),
                     Text(
                       _patientGender,
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ],
+                ),
+                Divider(),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Diagnostico Inicial',
+                      style: TextStyle(color: Colors.grey, fontSize: 15),
+                    ),
+                    Text(
+                      widget.patient.incomeDiagnostic,
+                      maxLines: 3,
                       style: TextStyle(fontSize: 20),
                     ),
                   ],

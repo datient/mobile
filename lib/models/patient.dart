@@ -6,6 +6,7 @@ class Patient {
   var birthDate;
   var historyNumber;
   var gender;
+  var incomeDiagnostic;
 
   Patient({
     this.dni,
@@ -15,6 +16,7 @@ class Patient {
     this.birthDate,
     this.historyNumber,
     this.gender,
+    this.incomeDiagnostic,
   });
 
   factory Patient.fromJson(Map<String, dynamic> json) {
@@ -26,6 +28,7 @@ class Patient {
       birthDate: json['birth_date'],
       historyNumber: json['history_number'],
       gender: json['gender'],
+      incomeDiagnostic: json['income_diagnosis']
     );
   }
 }

@@ -53,6 +53,7 @@ Widget _buildGuestList(data) {
 }
 
 class _BedPageState extends State<PatientPage> {
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     PatientBloc patientBloc = DatientProvider.of(context).patientBloc;

@@ -59,6 +59,7 @@ class DatientBloc {
       ),
     );
     print(res.body);
+    return true;
   }
 
   dispose() {

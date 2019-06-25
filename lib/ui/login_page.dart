@@ -117,8 +117,37 @@ class _LoginPageState extends State<LoginPage> {
       int hierarchy = hierarchyIndex;
       String registerPassword = _rpasswordController.value.text;
       String registerConfirmPassword = _rpasswordconfirmController.value.text;
-      doctor.registerDoctor(registerEmail, registerFirstName, registerLastName,
-          hierarchy, registerPassword, registerConfirmPassword);
+      doctor
+          .registerDoctor(registerEmail, registerFirstName, registerLastName,
+              hierarchy, registerPassword, registerConfirmPassword)
+          .then((success) {
+        if (success == true) {
+          return showDialog<void>(
+            context: context,
+            barrierDismissible: false, // user must tap button!
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('Registro de usuario'),
+                content: SingleChildScrollView(
+                  child: ListBody(
+                    children: <Widget>[
+                      Text('El usuario ha sido registrado con exito'),
+                    ],
+                  ),
+                ),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text('Cerrar'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        } else {}
+      });
     }
   }
 
