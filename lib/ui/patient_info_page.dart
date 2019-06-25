@@ -19,69 +19,112 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
         Card(
           margin: EdgeInsets.all(10),
           elevation: 6,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Column(
-                children: [
-                  Text('Nombre'),
-                  Text(
-                    widget.patient.firstName,
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ],
-              ),
-              Divider(),
-              Column(
-                children: [
-                  Text('Apellido'),
-                  Text(
-                    widget.patient.lastName,
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ],
-              ),
-              Divider(),
-              Column(
-                children: [
-                  Text('Fecha de nacimiento'),
-                  Text(
-                    widget.patient.birthDate,
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ],
-              ),
-              Divider(),
-              Column(
-                children: [
-                  Text('Edad'),
-                  Text(
-                    widget.patient.age.toString(),
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ],
-              ),
-              Divider(),
-              Column(
-                children: [
-                  Text('Numero de historial'),
-                  Text(
-                    widget.patient.age.toString(),
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ],
-              ),
-              Divider(),
-              Column(
-                children: [
-                  Text('Genero'),
-                  Text(
-                    _patientGender,
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ],
-              ),
-            ],
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Nombre',
+                      style: TextStyle(color: Colors.grey, fontSize: 15),
+                    ),
+                    Text(
+                      widget.patient.firstName,
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ],
+                ),
+                Divider(),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Apellido',
+                      style: TextStyle(color: Colors.grey, fontSize: 15),
+                    ),
+                    Text(
+                      widget.patient.lastName,
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ],
+                ),
+                Divider(),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'DNI',
+                      style: TextStyle(color: Colors.grey, fontSize: 15),
+                    ),
+                    Text(
+                      widget.patient.dni.toString(),
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ],
+                ),
+                Divider(),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Fecha de nacimiento',
+                      style: TextStyle(color: Colors.grey, fontSize: 15),
+                    ),
+                    Text(
+                      widget.patient.birthDate,
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ],
+                ),
+                Divider(),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Edad',
+                      style: TextStyle(color: Colors.grey, fontSize: 15),
+                    ),
+                    Text(
+                      widget.patient.age.toString(),
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ],
+                ),
+                Divider(),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Numero de historial',
+                      style: TextStyle(color: Colors.grey, fontSize: 15),
+                    ),
+                    Text(
+                      widget.patient.historyNumber.toString(),
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ],
+                ),
+                Divider(),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Genero',
+                      style: TextStyle(color: Colors.grey, fontSize: 15),
+                    ),
+                    Text(
+                      _patientGender,
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         )
       ],
