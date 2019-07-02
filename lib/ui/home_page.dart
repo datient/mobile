@@ -89,6 +89,13 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+  _setTitle(){
+    if (_selectedPage == 0){
+      return Text('Salas');
+    }else{
+      return Text('Pacientes');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +108,7 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Salas'),
+        title: _setTitle()
       ),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Colors.blue,
