@@ -1,3 +1,4 @@
+import 'package:datient/bloc/datient_bloc.dart';
 import 'package:datient/bloc/patient_bloc.dart';
 import 'package:datient/models/patient.dart';
 import 'package:datient/providers/datient_provider.dart';
@@ -52,10 +53,17 @@ Widget _buildGuestList(data) {
       });
 }
 
+_createPatient(token) {
+  var patient = PatientBloc();
+  patient.createPatient('Facundo', 'Barafani', 20560780,
+     '2015-06-19' , 10, 0, 'prueba',token);
+}
+
 class _BedPageState extends State<PatientPage> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    final DatientBloc bloc = DatientProvider.of(context).bloc;
     PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
 
     return Scaffold(
@@ -67,8 +75,12 @@ class _BedPageState extends State<PatientPage> {
               : Center(child: CircularProgressIndicator());
         },
       ),
-      floatingActionButton:
-          FloatingActionButton(onPressed: () {}, child: Icon(Icons.person_add)),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            bloc.doctor.listen((value) => _createPatient(value.token));
+            // bloc.doctor.listen((value)=> print(value.token)));
+          },
+          child: Icon(Icons.person_add)),
     );
   }
 }
