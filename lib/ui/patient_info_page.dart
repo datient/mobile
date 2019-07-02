@@ -156,6 +156,12 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(_fullname),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.more_vert),
+            onPressed: () {},
+          )
+        ],
       ),
       body: Container(child: _buildPatientInfo()),
       floatingActionButton: FloatingActionButton(
