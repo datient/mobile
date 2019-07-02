@@ -77,6 +77,7 @@ class _BedPageState extends State<PatientPage> {
       ),
       floatingActionButton: FloatingActionButton(
           onPressed: () {
+            Navigator.of(context).pushReplacementNamed('/patientadd');
             bloc.doctor.listen((value) => _createPatient(value.token));
             // bloc.doctor.listen((value)=> print(value.token)));
           },
