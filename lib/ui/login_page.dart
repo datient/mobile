@@ -124,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
         if (success == true) {
           return showDialog<void>(
             context: context,
-            barrierDismissible: false, // user must tap button!
+            barrierDismissible: false,
             builder: (BuildContext context) {
               return AlertDialog(
                 title: Text('Registro de usuario'),

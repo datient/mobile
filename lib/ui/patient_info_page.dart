@@ -1,7 +1,7 @@
 import 'package:datient/models/patient.dart';
 import 'package:flutter/material.dart';
-
 import 'edit_patient_page.dart';
+import 'package:intl/intl.dart';
 
 class PatientInfoPage extends StatefulWidget {
   final Patient patient;
@@ -148,6 +148,11 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
   }
 
   Widget build(BuildContext context) {
+    var _createdDate = DateTime.parse(widget.patient.createdDate);
+    var _updatedDate = DateTime.parse(widget.patient.updatedDate);
+    var formatter = new DateFormat('yMMMMEEEEd');
+    String formattedCreateDate = formatter.format(_createdDate);
+    String formattedUpdateDate = formatter.format(_updatedDate);
     var _fullname = widget.patient.firstName + ' ' + widget.patient.lastName;
 
     if (widget.patient.gender == 0) {
@@ -161,7 +166,42 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
         actions: [
           IconButton(
             icon: Icon(Icons.more_vert),
-            onPressed: () {},
+            onPressed: () {
+              showDialog<void>(
+                context: context,
+                barrierDismissible: false,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('Detalles'),
+                    content: SingleChildScrollView(
+                      child: ListBody(
+                        children: <Widget>[
+                          Text(
+                            'Fecha de creacion',
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          Text(formattedCreateDate),
+                          Divider(),
+                          Text(
+                            'Ultima actualizacion',
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          Text(formattedUpdateDate)
+                        ],
+                      ),
+                    ),
+                    actions: <Widget>[
+                      FlatButton(
+                        child: Text('Cerrar'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
           )
         ],
       ),

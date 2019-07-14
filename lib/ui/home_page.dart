@@ -97,7 +97,7 @@ class _HomePageState extends State<HomePage> {
         title: _setTitle(),
         actions: <Widget>[
           PopupMenuButton(
-            icon: Icon(Icons.account_circle),
+            icon: Icon(Icons.account_circle,size: 35,),
             itemBuilder: (BuildContext context) => [
               PopupMenuItem(
                 child: Row(
