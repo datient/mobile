@@ -1,17 +1,18 @@
 import 'package:datient/bloc/datient_bloc.dart';
 import 'package:datient/bloc/patient_bloc.dart';
+import 'package:datient/models/doctor.dart';
 import 'package:datient/models/patient.dart';
 import 'package:datient/providers/datient_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
 
-class PatientAddPage extends StatefulWidget {
+class PatientEditPage extends StatefulWidget {
   final Patient patient;
 
-  PatientAddPage({Key key, this.patient}) : super(key: key);
+  PatientEditPage({Key key, this.patient}) : super(key: key);
   @override
-  _PatientAddPageState createState() => _PatientAddPageState();
+  _PatientEditPageState createState() => _PatientEditPageState();
 }
 
 class Gender {
@@ -19,7 +20,7 @@ class Gender {
   final String name;
 }
 
-class _PatientAddPageState extends State<PatientAddPage> {
+class _PatientEditPageState extends State<PatientEditPage> {
   final _cFirstName = TextEditingController();
   final _cLastName = TextEditingController();
   final _cDni = TextEditingController();
@@ -48,7 +49,6 @@ class _PatientAddPageState extends State<PatientAddPage> {
   }
 
   Widget _buildPatientForm() {
-    final DatientBloc bloc = DatientProvider.of(context).bloc;
     return Form(
       key: _createformKey,
       child: Padding(
@@ -119,23 +119,6 @@ class _PatientAddPageState extends State<PatientAddPage> {
                   labelText: 'Diagnostico Inicial',
                   hintText: 'Ingrese el diagnostico inicial'),
             ),
-            Padding(
-              padding: EdgeInsets.only(top: 50),
-              child: RaisedButton(
-                child: Text(
-                  'Crear',
-                  style: TextStyle(
-                      color: Colors.white, fontSize: 18, wordSpacing: 5),
-                ),
-                onPressed: () {
-                  bloc.doctor
-                      .listen((value) => _validateAndSubmit(value.token));
-                },
-                color: Colors.blue,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
-              ),
-            ),
           ],
         ),
       ),
@@ -155,22 +138,36 @@ class _PatientAddPageState extends State<PatientAddPage> {
       int _gender = genderIndex;
       String _incomeDiagnosis = _cInitialDiagnosis.value.text;
       patient
-          .createPatient(_firstName, _lastName, _dni, _birthdate,
-              _historyNumber, _gender, _incomeDiagnosis, token)
+          .editPatient(_firstName, _lastName, _dni, _birthdate, _historyNumber,
+              _gender, _incomeDiagnosis, token, widget.patient)
           .then((success) {
         if (success == true) {
-          print('Usuario registrado con exito');
-        } else {
-          return false;
-        }
+          print(success);
+        } else {}
       });
     }
   }
 
   Widget build(BuildContext context) {
+    final DatientBloc bloc = DatientProvider.of(context).bloc;
+    _cFirstName.text = widget.patient.firstName;
+    _cLastName.text = widget.patient.lastName;
+    _cDni.text = widget.patient.dni.toString();
+    _cHistoryNumber.text = widget.patient.historyNumber.toString();
+    _cInitialDiagnosis.text = widget.patient.incomeDiagnostic;
+    genderIndex = widget.patient.gender;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Crear paciente'),
+        title: Text('Editar paciente'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: () {
+              bloc.doctor.listen((value) => _validateAndSubmit(value.token));
+            },
+          )
+        ],
       ),
       body: ListView(children: [
         _buildPatientForm(),

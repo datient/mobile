@@ -36,7 +36,7 @@ class PatientBloc {
       int createGender,
       String createIncomeDiagnosis,
       token) async {
-        print(token);
+    print(token);
     final res = await http.post(
       'http://10.0.2.2:8000/api/patient/',
       headers: {
@@ -55,34 +55,39 @@ class PatientBloc {
         },
       ),
     );
-    print(res.body);
-    return true;
+    if (res.statusCode == 200) {
+      print(res.body);
+      return true;
+    } else {
+      return false;
+    }
   }
 
-    Future editPatient(
-      String registerFirstName,
-      String registerLastName,
-      int registerDni,
-      String registerBirthDate,
-      int registerHistoryNumber,
-      int registerGender,
-      String registerIncomeDiagnosis,
-      token,Patient patient) async {
+  Future editPatient(
+      String editFirstName,
+      String editLastName,
+      int editDni,
+      String editBirthDate,
+      int editHistoryNumber,
+      int editGender,
+      String editIncomeDiagnosis,
+      token,
+      Patient patient) async {
     final res = await http.put(
-      'http://10.0.2.2:8000/api/patient/${patient.dni}',
+      'http://10.0.2.2:8000/api/patient/${patient.dni}/',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'JWT $token',
       },
       body: JSON.jsonEncode(
         {
-          'dni': registerDni,
-          'first_name': registerFirstName,
-          'last_name': registerLastName,
-          'birth_date': registerBirthDate,
-          'history_number': registerHistoryNumber,
-          'gender': registerGender,
-          'income_diagnosis': registerIncomeDiagnosis
+          'dni': editDni,
+          'first_name': editFirstName,
+          'last_name': editLastName,
+          'birth_date': editBirthDate,
+          'history_number': editHistoryNumber,
+          'gender': editGender,
+          'income_diagnosis': editIncomeDiagnosis
         },
       ),
     );

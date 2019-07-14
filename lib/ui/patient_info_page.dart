@@ -1,6 +1,8 @@
 import 'package:datient/models/patient.dart';
 import 'package:flutter/material.dart';
 
+import 'edit_patient_page.dart';
+
 class PatientInfoPage extends StatefulWidget {
   final Patient patient;
   PatientInfoPage({Key key, this.patient}) : super(key: key);
@@ -165,7 +167,15 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
       ),
       body: Container(child: _buildPatientInfo()),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => PatientEditPage(
+                patient: widget.patient,
+              ),
+            ),
+          );
+        },
         child: Icon(Icons.edit),
       ),
     );
