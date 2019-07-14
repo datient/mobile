@@ -24,8 +24,8 @@ class _HomePageState extends State<HomePage> {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => RoomPage(
-                        room: data[index],
-                      ),
+                    room: data[index],
+                  ),
                 ),
               );
             },
@@ -53,21 +53,6 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         children: [
           Expanded(
-            flex: 1,
-            child: StreamBuilder(
-              stream: bloc.doctor,
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                return snapshot.hasData
-                    ? Text(
-                        'Doctor: ' + '${snapshot.data.getFullName()}',
-                        style: TextStyle(fontSize: 28),
-                      )
-                    : Center(child: CircularProgressIndicator());
-              },
-            ),
-          ),
-          Expanded(
-            flex: 9,
             child: StreamBuilder(
               stream: bloc.doctor,
               builder: (context, snap) {
@@ -89,10 +74,11 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-  _setTitle(){
-    if (_selectedPage == 0){
+
+  _setTitle() {
+    if (_selectedPage == 0) {
       return Text('Salas');
-    }else{
+    } else {
       return Text('Pacientes');
     }
   }
@@ -108,7 +94,38 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: _setTitle()
+        title: _setTitle(),
+        actions: <Widget>[
+          PopupMenuButton(
+            icon: Icon(Icons.account_circle),
+            itemBuilder: (BuildContext context) => [
+              PopupMenuItem(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(Icons.person),
+                    StreamBuilder(
+                      stream: bloc.doctor,
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        return snapshot.hasData
+                            ? Text(
+                                '${snapshot.data.getFullName()}',
+                              )
+                            : Center(child: CircularProgressIndicator());
+                      },
+                    )
+                  ],
+                ),
+              ),
+              PopupMenuItem(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [Icon(Icons.exit_to_app), Text('Cerrar sesion')],
+                ),
+              )
+            ],
+          ),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Colors.blue,
