@@ -9,7 +9,6 @@ class PatientBloc {
 
   Future<List> getPatients(token) async {
     List list;
-
     final response = await http.get(
       'http://10.0.2.2:8000/api/patient/',
       headers: {'Authorization': 'JWT $token'},
@@ -53,6 +52,37 @@ class PatientBloc {
           'history_number': createHistoryNumber,
           'gender': createGender,
           'income_diagnosis': createIncomeDiagnosis
+        },
+      ),
+    );
+    print(res.body);
+    return true;
+  }
+
+    Future editPatient(
+      String registerFirstName,
+      String registerLastName,
+      int registerDni,
+      String registerBirthDate,
+      int registerHistoryNumber,
+      int registerGender,
+      String registerIncomeDiagnosis,
+      token,Patient patient) async {
+    final res = await http.put(
+      'http://10.0.2.2:8000/api/patient/${patient.dni}',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'JWT $token',
+      },
+      body: JSON.jsonEncode(
+        {
+          'dni': registerDni,
+          'first_name': registerFirstName,
+          'last_name': registerLastName,
+          'birth_date': registerBirthDate,
+          'history_number': registerHistoryNumber,
+          'gender': registerGender,
+          'income_diagnosis': registerIncomeDiagnosis
         },
       ),
     );
