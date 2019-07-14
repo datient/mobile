@@ -35,6 +35,7 @@ Widget _buildGuestList(data) {
                   SizedBox(height: 10),
                   Row(
                     children: [
+                      SizedBox(width: 10,),
                       Icon(Icons.person),
                       SizedBox(width: 20),
                       Text(

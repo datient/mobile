@@ -1,5 +1,6 @@
 import 'package:datient/bloc/datient_bloc.dart';
 import 'package:datient/bloc/patient_bloc.dart';
+import 'package:datient/models/doctor.dart';
 import 'package:datient/models/patient.dart';
 import 'package:datient/providers/datient_provider.dart';
 import 'package:flutter/material.dart';
@@ -20,45 +21,35 @@ class Gender {
 }
 
 class _PatientAddPageState extends State<PatientAddPage> {
-    var genderIndex;
+  final _cFirstName = TextEditingController();
+  final _cLastName = TextEditingController();
+  final _cDni = TextEditingController();
+  final _cHistoryNumber = TextEditingController();
+  final _cInitialDiagnosis = TextEditingController();
+  var genderIndex;
   Gender selectedGender;
   List<Gender> genders = <Gender>[
     const Gender('Masculino'),
     const Gender('Femenino'),
   ];
   final GlobalKey<FormState> _createformKey = new GlobalKey<FormState>();
-  final formats = {
-    InputType.both: DateFormat("EEEE, MMMM d, yyyy 'at' h:mma"),
-    InputType.date: DateFormat('yyyy-MM-dd'),
-    InputType.time: DateFormat("HH:mm"),
-  };
   InputType inputType = InputType.date;
-  bool editable = true;
   DateTime date;
   @override
   Widget _buildDatePicker() {
     return DateTimePickerFormField(
       inputType: inputType,
-      format: formats[inputType],
-      editable: editable,
+      format: DateFormat('yyyy-MM-dd'),
       decoration: InputDecoration(
           icon: Icon(Icons.calendar_today),
           labelText: 'Fecha de nacimiento',
           hasFloatingPlaceholder: false),
-      onChanged: (dt) => setState(() => date = dt
-      ),
-      
+      onChanged: (dt) => setState(() => date = dt),
     );
   }
 
   Widget _buildPatientForm() {
     final DatientBloc bloc = DatientProvider.of(context).bloc;
-    final _cFirstName = TextEditingController();
-    final _cLastName = TextEditingController();
-    final _cDni = TextEditingController();
-    final _cHistoryNumber = TextEditingController();
-    final _cInitialDiagnosis = TextEditingController();
-
     return Form(
       key: _createformKey,
       child: Padding(
@@ -100,28 +91,28 @@ class _PatientAddPageState extends State<PatientAddPage> {
                 hintText: 'Ingrese el numero de historial',
               ),
             ),
-                                DropdownButtonFormField<Gender>(
-                      decoration: InputDecoration(
-                        icon: Icon(Icons.people),
-                      ),
-                      hint: Text('Seleccione su genero'),
-                      value: selectedGender,
-                      onChanged: (Gender newValue) {
-                        setState(() {
-                          selectedGender = newValue;
-                          genderIndex = genders.indexOf(newValue);
-                        });
-                      },
-                      items: genders.map((Gender gender) {
-                        return new DropdownMenuItem<Gender>(
-                          value: gender,
-                          child: new Text(
-                            gender.name,
-                            style: new TextStyle(color: Colors.black),
-                          ),
-                        );
-                      }).toList(),
-                    ),
+            DropdownButtonFormField<Gender>(
+              decoration: InputDecoration(
+                icon: Icon(Icons.people),
+              ),
+              hint: Text('Seleccione su genero'),
+              value: selectedGender,
+              onChanged: (Gender newValue) {
+                setState(() {
+                  selectedGender = newValue;
+                  genderIndex = genders.indexOf(newValue);
+                });
+              },
+              items: genders.map((Gender gender) {
+                return new DropdownMenuItem<Gender>(
+                  value: gender,
+                  child: new Text(
+                    gender.name,
+                    style: new TextStyle(color: Colors.black),
+                  ),
+                );
+              }).toList(),
+            ),
             TextFormField(
               controller: _cInitialDiagnosis,
               decoration: InputDecoration(
@@ -138,7 +129,8 @@ class _PatientAddPageState extends State<PatientAddPage> {
                       color: Colors.white, fontSize: 18, wordSpacing: 5),
                 ),
                 onPressed: () {
-                  bloc.doctor.listen((value) => _createPatient(value.token));
+                  bloc.doctor
+                      .listen((value) => _validateAndSubmit(value.token));
                 },
                 color: Colors.blue,
                 shape: RoundedRectangleBorder(
@@ -149,27 +141,29 @@ class _PatientAddPageState extends State<PatientAddPage> {
         ),
       ),
     );
-    _validateAndSubmit(PatientBloc patient) {
-      if (_createformKey.currentState.validate()) {
-        String _firstName = _cFirstName.value.text;
-        String _lastName = _cLastName.value.text;
-        int _dni = int.parse(_cDni.value.text);
-        String _birthdate = date.toString();
-        int _historyNumber = int.parse(_cHistoryNumber.value.text);
-        String _incomeDiagnosis = _cInitialDiagnosis.value.text;
-        // patient.createPatient().then((success) {
-        //   if (success == true) {
-        //     //Navigator.of(context).pushReplacementNamed('/home');
-        //   } else {}
-        // });
-      }
-    }
   }
 
-  _createPatient(token) {
+  _validateAndSubmit(token) {
+    var formatter = new DateFormat('yyyy-MM-dd');
+    String formattedDate = formatter.format(date);
     var patient = PatientBloc();
-    patient.createPatient(
-        'Facundo', 'Barafani', 20560780, '2015-06-19', 10, 0, 'prueba', token);
+    if (_createformKey.currentState.validate()) {
+      String _firstName = _cFirstName.value.text;
+      String _lastName = _cLastName.value.text;
+      int _dni = int.parse(_cDni.value.text);
+      String _birthdate = formattedDate;
+      int _historyNumber = int.parse(_cHistoryNumber.value.text);
+      int _gender = genderIndex;
+      String _incomeDiagnosis = _cInitialDiagnosis.value.text;
+      patient
+          .createPatient(_firstName, _lastName, _dni, _birthdate,
+              _historyNumber, _gender, _incomeDiagnosis, token)
+          .then((success) {
+        if (success == true) {
+          print(success);
+        } else {}
+      });
+    }
   }
 
   Widget build(BuildContext context) {
