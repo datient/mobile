@@ -150,9 +150,12 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
   Widget build(BuildContext context) {
     var _createdDate = DateTime.parse(widget.patient.createdDate);
     var _updatedDate = DateTime.parse(widget.patient.updatedDate);
-    var formatter = new DateFormat('yMMMMEEEEd');
-    String formattedCreateDate = formatter.format(_createdDate);
-    String formattedUpdateDate = formatter.format(_updatedDate);
+    var dateFormatter = new DateFormat('yMMMMEEEEd');
+    var timeFormatter = new DateFormat('Hms');
+    String formattedCreateDate = dateFormatter.format(_createdDate);
+    String formattedTimeCreateDate = timeFormatter.format(_createdDate);
+    String formattedUpdateDate = dateFormatter.format(_updatedDate);
+    String formattedTimeUpdateDate = timeFormatter.format(_updatedDate);
     var _fullname = widget.patient.firstName + ' ' + widget.patient.lastName;
 
     if (widget.patient.gender == 0) {
@@ -180,13 +183,17 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
                             'Fecha de creacion',
                             style: TextStyle(color: Colors.grey),
                           ),
-                          Text(formattedCreateDate),
+                          Text(formattedCreateDate +
+                              ' a las ' +
+                              formattedTimeCreateDate),
                           Divider(),
                           Text(
                             'Ultima actualizacion',
                             style: TextStyle(color: Colors.grey),
                           ),
-                          Text(formattedUpdateDate)
+                          Text(formattedUpdateDate +
+                              ' a las ' +
+                              formattedTimeUpdateDate),
                         ],
                       ),
                     ),
