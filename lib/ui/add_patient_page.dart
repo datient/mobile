@@ -48,7 +48,6 @@ class _PatientAddPageState extends State<PatientAddPage> {
   }
 
   Widget _buildPatientForm() {
-    final DatientBloc bloc = DatientProvider.of(context).bloc;
     return Form(
       key: _createformKey,
       child: Padding(
@@ -119,23 +118,6 @@ class _PatientAddPageState extends State<PatientAddPage> {
                   labelText: 'Diagnostico Inicial',
                   hintText: 'Ingrese el diagnostico inicial'),
             ),
-            Padding(
-              padding: EdgeInsets.only(top: 50),
-              child: RaisedButton(
-                child: Text(
-                  'Crear',
-                  style: TextStyle(
-                      color: Colors.white, fontSize: 18, wordSpacing: 5),
-                ),
-                onPressed: () {
-                  bloc.doctor
-                      .listen((value) => _validateAndSubmit(value.token));
-                },
-                color: Colors.blue,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
-              ),
-            ),
           ],
         ),
       ),
@@ -168,9 +150,18 @@ class _PatientAddPageState extends State<PatientAddPage> {
   }
 
   Widget build(BuildContext context) {
+    final DatientBloc bloc = DatientProvider.of(context).bloc;
     return Scaffold(
       appBar: AppBar(
         title: Text('Crear paciente'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {
+              bloc.doctor.listen((value) => _validateAndSubmit(value.token));
+            },
+          )
+        ],
       ),
       body: ListView(children: [
         _buildPatientForm(),

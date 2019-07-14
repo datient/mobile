@@ -175,7 +175,13 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
                 barrierDismissible: false,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: Text('Detalles'),
+                    title: Row(
+                      children: [
+                        Icon(Icons.info_outline),
+                        SizedBox(width: 10),
+                        Text('Detalles'),
+                      ],
+                    ),
                     content: SingleChildScrollView(
                       child: ListBody(
                         children: <Widget>[
