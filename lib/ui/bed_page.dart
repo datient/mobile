@@ -26,26 +26,49 @@ class _BedPageState extends State<BedPage> {
           itemBuilder: (BuildContext context, int index) {
             Hospitalization hospitalizations =
                 widget.bed.hospitalizations[index];
-            return Container(
-              child: Card(
-                elevation: 6,
-                child: Column(
-                  children: [
-                    Text('Hospitalizacion',
-                        style: TextStyle(fontSize: 20, color: Colors.grey)),
-                    Divider(),
-                    Text('Paciente internado',
-                        style: TextStyle(fontSize: 16, color: Colors.grey)),
-                    Text(hospitalizations.hospitalizedPatient.toString()),
-                    Divider(),
-                    Text('Fecha de ingreso',
-                        style: TextStyle(fontSize: 16, color: Colors.grey)),
-                    Divider(),
-                    Text(hospitalizations.entryDate),
-                  ],
+            if (widget.bed.hospitalizations.isNotEmpty) {
+              return Container(
+                child: Card(
+                  margin: EdgeInsets.all(15),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  elevation: 6,
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Hospitalizacion',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold)),
+                        Divider(),
+                        Text('Paciente internado',
+                            style: TextStyle(fontSize: 16, color: Colors.grey)),
+                        Text(
+                          hospitalizations.hospitalizedPatient.toString(),
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        Divider(),
+                        Text('Fecha de ingreso',
+                            style: TextStyle(fontSize: 16, color: Colors.grey)),
+                        Text(hospitalizations.entryDate,
+                            style: TextStyle(fontSize: 18)),
+                        Divider(),
+                        Text('Atendido por',
+                            style: TextStyle(fontSize: 16, color: Colors.grey)),
+                        Text(hospitalizations.doctorInCharge.toString(),
+                            style: TextStyle(fontSize: 18)),
+                        Divider(),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-            );
+              );
+            } else {
+              return Container(
+                child: Text('No se encontro ningun paciente en esta cama'),
+              );
+            }
           }),
     );
   }

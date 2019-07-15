@@ -36,7 +36,25 @@ class DatientBloc {
     }
   }
 
-  Future registerDoctor(
+  Future<bool> signOut(token) async {
+    print(token);
+    final response = await http.post(
+      'http://10.0.2.2:8000/accounts/logout/',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'JWT $token',
+      },
+      body: JSON.jsonEncode({'revoke_token': true}),
+    );
+    if (response.statusCode == 200){
+      print(response.body);
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  Future<bool> registerDoctor(
     String registerEmail,
     String registerFirstName,
     String registerLastName,

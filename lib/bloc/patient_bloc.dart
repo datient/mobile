@@ -27,7 +27,7 @@ class PatientBloc {
     this.dispose();
   }
 
-  Future createPatient(
+  Future <bool>createPatient(
       String createFirstName,
       String createLastName,
       int createDni,

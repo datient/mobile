@@ -97,13 +97,19 @@ class _HomePageState extends State<HomePage> {
         title: _setTitle(),
         actions: <Widget>[
           PopupMenuButton(
-            icon: Icon(Icons.account_circle,size: 35,),
+            icon: Icon(
+              Icons.account_circle,
+              size: 35,
+            ),
             itemBuilder: (BuildContext context) => [
               PopupMenuItem(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Icon(Icons.person),
+                    SizedBox(
+                      width: 8,
+                    ),
                     StreamBuilder(
                       stream: bloc.doctor,
                       builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -118,11 +124,31 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               PopupMenuItem(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [Icon(Icons.exit_to_app), Text('Cerrar sesion')],
-                ),
-              )
+                  child: StreamBuilder(
+                stream: bloc.doctor,
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  return snapshot.hasData
+                      ? GestureDetector(
+                          onTap: () {
+                            bloc.signOut('${snapshot.data.token}').then(
+                              (success) {
+                                if (success == true) {
+                                  Navigator.of(context).pushNamed('/');
+                                } else {}
+                              },
+                            );
+                          },
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Icon(Icons.exit_to_app),
+                              Text('Cerrar sesion')
+                            ],
+                          ),
+                        )
+                      : Center(child: CircularProgressIndicator());
+                },
+              ))
             ],
           ),
         ],
