@@ -133,7 +133,7 @@ class _HomePageState extends State<HomePage> {
                             bloc.signOut('${snapshot.data.token}').then(
                               (success) {
                                 if (success == true) {
-                                  Navigator.of(context).pushNamed('/');
+                                  Navigator.of(context).pushReplacementNamed('/');
                                 } else {}
                               },
                             );
