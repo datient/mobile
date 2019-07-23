@@ -15,36 +15,39 @@ class _HomePageState extends State<HomePage> {
   int _selectedPage = 0;
 
   Widget _buildRoomList(data) {
-    return GridView.count(
-      crossAxisCount: 2,
-      children: List.generate(data.length, (index) {
-        return Container(
-          child: GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => RoomPage(
-                    room: data[index],
+    return Scrollbar(
+      child: GridView.count(
+        crossAxisCount: 2,
+        children: List.generate(data.length, (index) {
+          return Container(
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => RoomPage(
+                      room: data[index],
+                    ),
                   ),
+                );
+              },
+              child: Card(
+                elevation: 6,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.local_hospital, size: 80),
+                    Text(
+                      data[index].roomName,
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
-              );
-            },
-            child: Card(
-              elevation: 6,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.local_hospital, size: 80),
-                  Text(
-                    data[index].roomName,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ],
               ),
             ),
-          ),
-        );
-      }),
+          );
+        }),
+      ),
     );
   }
 
@@ -94,64 +97,63 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: _setTitle(),
-        actions: <Widget>[
-          PopupMenuButton(
-            icon: Icon(
-              Icons.account_circle,
-              size: 35,
-            ),
-            itemBuilder: (BuildContext context) => [
-              PopupMenuItem(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Icon(Icons.person),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    StreamBuilder(
-                      stream: bloc.doctor,
-                      builder: (BuildContext context, AsyncSnapshot snapshot) {
-                        return snapshot.hasData
-                            ? Text(
-                                '${snapshot.data.getFullName()}',
-                              )
-                            : Center(child: CircularProgressIndicator());
-                      },
-                    )
-                  ],
-                ),
-              ),
-              PopupMenuItem(
-                  child: StreamBuilder(
-                stream: bloc.doctor,
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  return snapshot.hasData
-                      ? GestureDetector(
-                          onTap: () {
-                            bloc.signOut('${snapshot.data.token}').then(
-                              (success) {
-                                if (success == true) {
-                                  Navigator.of(context).pushReplacementNamed('/');
-                                } else {}
-                              },
-                            );
-                          },
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Icon(Icons.exit_to_app),
-                              Text('Cerrar sesion')
-                            ],
-                          ),
-                        )
-                      : Center(child: CircularProgressIndicator());
-                },
-              ))
-            ],
+        leading: PopupMenuButton(
+          icon: Icon(
+            Icons.account_circle,
+            size: 35,
           ),
-        ],
+          itemBuilder: (BuildContext context) => [
+            PopupMenuItem(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(Icons.person),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  StreamBuilder(
+                    stream: bloc.doctor,
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      return snapshot.hasData
+                          ? Text(
+                              '${snapshot.data.getFullName()}',
+                            )
+                          : Center(child: CircularProgressIndicator());
+                    },
+                  )
+                ],
+              ),
+            ),
+            PopupMenuItem(
+                child: StreamBuilder(
+              stream: bloc.doctor,
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                return snapshot.hasData
+                    ? GestureDetector(
+                        onTap: () {
+                          bloc.signOut('${snapshot.data.token}').then(
+                            (success) {
+                              if (success == true) {
+                                Navigator.of(context).pushReplacementNamed('/');
+                              } else {}
+                            },
+                          );
+                        },
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(Icons.exit_to_app),
+                            Text('Cerrar sesion')
+                          ],
+                        ),
+                      )
+                    : Center(child: CircularProgressIndicator());
+              },
+            ))
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Colors.blue,

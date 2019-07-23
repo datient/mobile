@@ -13,45 +13,49 @@ class PatientPage extends StatefulWidget {
 }
 
 Widget _buildGuestList(data) {
-  return ListView.builder(
-      itemCount: data.length,
-      itemBuilder: (BuildContext context, int index) {
-        Patient patients = data[index];
-        return Container(
-          child: GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => PatientInfoPage(
-                        patient: data[index],
-                      ),
-                ),
-              );
-            },
-            child: Card(
-              elevation: 6,
-              child: Column(
-                children: [
-                  SizedBox(height: 10),
-                  Row(
-                    children: [
-                      SizedBox(width: 10,),
-                      Icon(Icons.person),
-                      SizedBox(width: 20),
-                      Text(
-                        patients.firstName + ' ' + patients.lastName,
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                    ],
+  return Scrollbar(
+    child: ListView.builder(
+        itemCount: data.length,
+        itemBuilder: (BuildContext context, int index) {
+          Patient patients = data[index];
+          return Container(
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => PatientInfoPage(
+                      patient: data[index],
+                    ),
                   ),
-                  SizedBox(height: 10),
-                ],
+                );
+              },
+              child: Card(
+                elevation: 6,
+                child: Column(
+                  children: [
+                    SizedBox(height: 10),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Icon(Icons.person),
+                        SizedBox(width: 20),
+                        Text(
+                          patients.firstName + ' ' + patients.lastName,
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                  ],
+                ),
               ),
             ),
-          ),
-        );
-      });
+          );
+        }),
+  );
 }
 
 class _BedPageState extends State<PatientPage> {
