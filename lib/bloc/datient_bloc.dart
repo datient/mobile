@@ -15,7 +15,7 @@ class DatientBloc {
     Doctor doctor = Doctor();
 
     final response = await http.post(
-      'http://10.0.2.2:8000/token/',
+      'http://159.65.222.187:8000/token/',
       headers: {'Content-Type': 'application/json'},
       body: JSON.jsonEncode({'email': mail, 'password': password}),
     );
@@ -39,7 +39,7 @@ class DatientBloc {
   Future<bool> signOut(token) async {
     print(token);
     final response = await http.post(
-      'http://10.0.2.2:8000/accounts/logout/',
+      'http://159.65.222.187:8000/accounts/logout/',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'JWT $token',
@@ -63,7 +63,7 @@ class DatientBloc {
     String registerPasswordConfirm,
   ) async {
     final res = await http.post(
-      'http://10.0.2.2:8000/accounts/register/',
+      'http://159.65.222.187:8000/accounts/register/',
       headers: {'Content-Type': 'application/json'},
       body: JSON.jsonEncode(
         {

@@ -103,7 +103,8 @@ class _LoginPageState extends State<LoginPage> {
       bloc.signIn(mail, password, roomBloc, patientBloc).then((success) {
         if (success == true) {
           Navigator.of(context).pushReplacementNamed('/home');
-        } else {}
+        } else {
+        }
       });
     }
   }

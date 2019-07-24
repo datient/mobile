@@ -69,14 +69,16 @@ class _BedPageState extends State<BedPage> {
                 );
               })
           : Center(
-              child: Text('No se han encontrado hospitalizaciones'),
+              child: Text('No se ha encontrado ningun paciente en esta cama'),
             ),
       floatingActionButton: _hospitalizations.isNotEmpty
           ? FloatingActionButton(
+            tooltip: 'Dar de alta paciente',
               onPressed: () {},
               child: Icon(Icons.assignment_turned_in),
             )
           : FloatingActionButton(
+            tooltip: 'Asignar paciente',
               onPressed: () {},
               child: Icon(Icons.add),
             ),

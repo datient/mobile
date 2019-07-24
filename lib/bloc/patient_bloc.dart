@@ -10,7 +10,7 @@ class PatientBloc {
   Future<List> getPatients(token) async {
     List list;
     final response = await http.get(
-      'http://10.0.2.2:8000/api/patient/',
+      'http://159.65.222.187:8000/api/patient/',
       headers: {'Authorization': 'JWT $token'},
     );
 
@@ -38,7 +38,7 @@ class PatientBloc {
       token) async {
     print(token);
     final res = await http.post(
-      'http://10.0.2.2:8000/api/patient/',
+      'http://159.65.222.187:8000/api/patient/',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'JWT $token',
@@ -74,7 +74,7 @@ class PatientBloc {
       token,
       Patient patient) async {
     final res = await http.put(
-      'http://10.0.2.2:8000/api/patient/${patient.dni}/',
+      'http://159.65.222.187:8000/api/patient/${patient.dni}/',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'JWT $token',
