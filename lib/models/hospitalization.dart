@@ -21,4 +21,5 @@ class Hospitalization {
       hospitalizedPatient: json['patient'],
     );
   }
+  
 }

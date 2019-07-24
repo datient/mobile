@@ -1,4 +1,5 @@
 import 'dart:convert' as JSON;
+import 'package:datient/models/hospitalization.dart';
 import 'package:datient/models/patient.dart';
 import 'package:http/http.dart' as http;
 import 'package:rxdart/rxdart.dart';
@@ -10,7 +11,7 @@ class PatientBloc {
   Future<List> getPatients(token) async {
     List list;
     final response = await http.get(
-      'http://159.65.222.187:8000/api/patient/',
+      'http://10.0.2.2:8000/api/patient/',
       headers: {'Authorization': 'JWT $token'},
     );
 
@@ -38,7 +39,7 @@ class PatientBloc {
       token) async {
     print(token);
     final res = await http.post(
-      'http://159.65.222.187:8000/api/patient/',
+      'http://10.0.2.2:8000/api/patient/',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'JWT $token',
@@ -74,7 +75,7 @@ class PatientBloc {
       token,
       Patient patient) async {
     final res = await http.put(
-      'http://159.65.222.187:8000/api/patient/${patient.dni}/',
+      'http://10.0.2.2:8000/api/patient/${patient.dni}/',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'JWT $token',
@@ -90,6 +91,20 @@ class PatientBloc {
           'income_diagnosis': editIncomeDiagnosis
         },
       ),
+    );
+    print(res.body);
+    return true;
+  }
+
+    Future getHospitalizedPatient(
+      token,
+      Hospitalization hospitalization) async {
+    final res = await http.get(
+      'http://10.0.2.2:8000/api/patient/${hospitalization.hospitalizedPatient}/',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'JWT $token',
+      },
     );
     print(res.body);
     return true;

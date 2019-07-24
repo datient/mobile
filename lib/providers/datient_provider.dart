@@ -1,3 +1,4 @@
+import 'package:datient/bloc/hospitalization_bloc.dart';
 import 'package:datient/bloc/patient_bloc.dart';
 import 'package:datient/bloc/datient_bloc.dart';
 import 'package:datient/bloc/room_bloc.dart';
@@ -7,11 +8,13 @@ class DatientProvider extends InheritedWidget {
   final DatientBloc bloc;
   final RoomBloc roomBloc;
   final PatientBloc patientBloc;
+  final HospitalizationBloc hospitalizationBloc;
 
   DatientProvider({
     this.bloc,
     this.roomBloc,
     this.patientBloc,
+    this.hospitalizationBloc,
     Widget child,
   }) : super(child: child);
 

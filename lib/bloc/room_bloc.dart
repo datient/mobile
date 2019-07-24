@@ -11,7 +11,7 @@ class RoomBloc {
     List list;
 
     final response = await http.get(
-      'http://159.65.222.187:8000/api/room/',
+      'http://10.0.2.2:8000/api/room/',
       headers: {'Authorization': 'JWT $token'},
     );
 

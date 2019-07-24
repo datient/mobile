@@ -1,10 +1,9 @@
-import 'package:datient/bloc/datient_bloc.dart';
-import 'package:datient/bloc/room_bloc.dart';
+import 'dart:convert' as JSON;
 import 'package:datient/models/bed.dart';
 import 'package:datient/models/hospitalization.dart';
-import 'package:datient/models/room.dart';
 import 'package:datient/providers/datient_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class BedPage extends StatefulWidget {
   final Bed bed;
@@ -16,17 +15,11 @@ class BedPage extends StatefulWidget {
 
 class _BedPageState extends State<BedPage> {
   @override
-  Widget build(BuildContext context) {
-    var _hospitalizations = widget.bed.hospitalizations;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('${widget.bed.bedName}'),
-      ),
-      body: _hospitalizations.isNotEmpty
-          ? ListView.builder(
-              itemCount: 1,
+Widget _buildHospitalization(data){
+         return ListView.builder(
+              itemCount: data.length,
               itemBuilder: (BuildContext context, int index) {
-                Hospitalization hospitalizations = _hospitalizations.last;
+                Hospitalization hospitalizations = data[index];
                 return Container(
                   child: Card(
                     margin: EdgeInsets.all(15),
@@ -67,21 +60,36 @@ class _BedPageState extends State<BedPage> {
                     ),
                   ),
                 );
-              })
-          : Center(
-              child: Text('No se ha encontrado ningun paciente en esta cama'),
-            ),
-      floatingActionButton: _hospitalizations.isNotEmpty
-          ? FloatingActionButton(
-            tooltip: 'Dar de alta paciente',
-              onPressed: () {},
-              child: Icon(Icons.assignment_turned_in),
-            )
-          : FloatingActionButton(
-            tooltip: 'Asignar paciente',
-              onPressed: () {},
-              child: Icon(Icons.add),
-            ),
+              });
+}
+
+  Widget build(BuildContext context) {
+    final bloc = DatientProvider.of(context).bloc;
+    final hospitalizationBloc = DatientProvider.of(context).hospitalizationBloc;
+    bloc.doctor.listen((value) => hospitalizationBloc.getHospitalization(value.token));
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('${widget.bed.bedName}'),
+      ),
+      body: StreamBuilder(
+        stream: hospitalizationBloc.hospitalizations,
+        builder: (context, snapshot) {
+          return snapshot.hasData
+              ? _buildHospitalization(snapshot.data)
+              : Center(child: CircularProgressIndicator());
+        },
+      ),
+      // floatingActionButton: _hospitalizations.isNotEmpty
+      //     ? FloatingActionButton(
+      //         tooltip: 'Dar de alta paciente',
+      //         onPressed: () {},
+      //         child: Icon(Icons.assignment_turned_in),
+      //       )
+      //     : FloatingActionButton(
+      //         tooltip: 'Asignar paciente',
+      //         onPressed: () {},
+      //         child: Icon(Icons.add),
+      //       ),
     );
   }
 }
