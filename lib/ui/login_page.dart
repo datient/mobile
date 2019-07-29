@@ -27,6 +27,7 @@ class _LoginPageState extends State<LoginPage> {
     const Hierarchy('Medico del servicio de clinica medica'),
     const Hierarchy('Medico encargado del internado')
   ];
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   final GlobalKey<FormState> _regformKey = new GlobalKey<FormState>();
   final _mailController = TextEditingController();
@@ -104,6 +105,11 @@ class _LoginPageState extends State<LoginPage> {
         if (success == true) {
           Navigator.of(context).pushReplacementNamed('/home');
         } else {
+          _scaffoldKey.currentState.showSnackBar(SnackBar(
+            backgroundColor: Colors.red,
+            content: Text(success),
+            duration: Duration(seconds: 3),
+          ));
         }
       });
     }
@@ -340,6 +346,7 @@ class _LoginPageState extends State<LoginPage> {
     final patientBloc = DatientProvider.of(context).patientBloc;
 
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(widget.title),

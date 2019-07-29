@@ -62,17 +62,20 @@ class _BedPageState extends State<PatientPage> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    DatientBloc bloc = DatientProvider.of(context).bloc;
     PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
+        bloc.doctor
+        .listen((value) => patientBloc.getPatients(value.token));
 
     return Scaffold(
       body: StreamBuilder(
-        stream: patientBloc.patients,
-        builder: (context, snapshot) {
-          return snapshot.hasData
-              ? _buildGuestList(snapshot.data)
-              : Center(child: CircularProgressIndicator());
-        },
-      ),
+          stream: patientBloc.patients,
+          builder: (context, snapshot) {
+            return snapshot.hasData
+        ? _buildGuestList(snapshot.data)
+        : Center(child: CircularProgressIndicator());
+          },
+        ),
       floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.of(context).pushNamed('/patientadd');
