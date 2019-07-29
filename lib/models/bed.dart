@@ -12,15 +12,9 @@ class Bed {
   });
 
   factory Bed.fromJson(Map<String, dynamic> json) {
-    List<Hospitalization> list = [];
-    for (final i in json['hospitalizations']) {
-      Hospitalization hospitalization = Hospitalization.fromJson(i);
-      list.add(hospitalization);
-    }
     return Bed(
       id: json['id'],
       bedName: json['name'],
-      hospitalizations :list,
     );
   }
 }

@@ -4,25 +4,26 @@ import 'package:http/http.dart' as http;
 import 'package:rxdart/rxdart.dart';
 
 class HospitalizationBloc {
-  final _hospitalizationSubject = BehaviorSubject<List<Hospitalization>>();
-  Stream<List<Hospitalization>> get hospitalizations =>
+  final _hospitalizationSubject = BehaviorSubject<Hospitalization>();
+  Stream<Hospitalization> get hospitalizations =>
       _hospitalizationSubject.stream;
 
-  Future<List> getHospitalization(token) async {
-    List list;
+  Future<Hospitalization> getHospitalization(token, int bedId) async {
+    Hospitalization hospitalization;
 
     final response = await http.get(
-      'http://10.0.2.2:8000/api/hospitalization/',
+      'http://10.0.2.2:8000/api/hospitalization/$bedId/bed_filter/',
       headers: {'Authorization': 'JWT $token'},
     );
 
     if (response.statusCode == 200) {
-      final extractdata = JSON.jsonDecode(response.body) as List;
-      list = extractdata.map((json) => Hospitalization.fromJson(json)).toList();
+      final extractdata = JSON.jsonDecode(response.body);
+      hospitalization = Hospitalization.fromJson(extractdata);
+      _hospitalizationSubject.sink.add(hospitalization);
+      return hospitalization;
+    }else{
+      return null;
     }
-
-    _hospitalizationSubject.sink.add(list);
-    return list;
   }
 
   dispose() {

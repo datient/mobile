@@ -10,10 +10,13 @@ class DatientBloc {
 
   Stream<Doctor> get doctor => _doctorSubject.stream;
 
-  Future<dynamic> signIn(String mail, String password, RoomBloc roomBloc,
-      PatientBloc patientBloc) async {
+  Future<dynamic> signIn(
+    String mail,
+    String password,
+    RoomBloc roomBloc,
+    PatientBloc patientBloc,
+  ) async {
     Doctor doctor = Doctor();
-
 
     final response = await http.post(
       'http://10.0.2.2:8000/token/',
@@ -46,10 +49,10 @@ class DatientBloc {
       },
       body: JSON.jsonEncode({'revoke_token': true}),
     );
-    if (response.statusCode == 200){
+    if (response.statusCode == 200) {
       print(response.body);
       return true;
-    }else{
+    } else {
       return false;
     }
   }
