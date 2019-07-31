@@ -13,11 +13,6 @@ class Room {
       Bed bed = Bed.fromJson(i);
       list.add(bed);
     }
-
-    return Room(
-      id: json['id'],
-      roomName: json['name'],
-      beds: list
-    );
+    return Room(id: json['id'], roomName: json['name'], beds: list);
   }
 }

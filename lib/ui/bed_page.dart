@@ -1,5 +1,6 @@
 import 'package:datient/models/bed.dart';
 import 'package:datient/models/hospitalization.dart';
+import 'package:datient/models/progress.dart';
 import 'package:datient/providers/datient_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -15,10 +16,15 @@ class BedPage extends StatefulWidget {
 }
 
 class _BedPageState extends State<BedPage> {
+  Progress progress;
+
   Widget _buildHospitalization(Hospitalization data) {
     if (data.bed == null) {
       return Center(
-        child: Text('No se ha encontrado hospitalizacion'),
+        child: Text(
+          'No se ha encontrado hospitalizacion',
+          style: TextStyle(fontSize: 18),
+        ),
       );
     } else if (data.leftDate == null) {
       var dateFormatter = new DateFormat('yMd');
@@ -57,7 +63,7 @@ class _BedPageState extends State<BedPage> {
                   style: TextStyle(fontSize: 16, color: Colors.grey),
                 ),
                 Text(
-                  formattedEntryDate+' a las '+formattedTimeEntryDate,
+                  formattedEntryDate + ' a las ' + formattedTimeEntryDate,
                   style: TextStyle(fontSize: 18),
                 ),
                 Divider(),
@@ -69,7 +75,6 @@ class _BedPageState extends State<BedPage> {
                   data.doctorInCharge.toString(),
                   style: TextStyle(fontSize: 18),
                 ),
-                Divider(),
               ],
             ),
           ),
@@ -77,7 +82,10 @@ class _BedPageState extends State<BedPage> {
       );
     } else if (data.leftDate != null) {
       return Center(
-        child: Text('No se ha encontrado hospitalizacion'),
+        child: Text(
+          'No se ha encontrado hospitalizacion',
+          style: TextStyle(fontSize: 18),
+        ),
       );
     }
   }
@@ -125,14 +133,16 @@ class _BedPageState extends State<BedPage> {
         appBar: AppBar(
           title: Text('${widget.bed.bedName}'),
         ),
-        body: StreamBuilder(
-          stream: hospitalizationBloc.hospitalizations,
-          builder: (context, snapshot) {
-            return snapshot.hasData
-                ? _buildHospitalization(snapshot.data)
-                : Center(child: CircularProgressIndicator());
-          },
-        ),
+        body: ListView(children: [
+          StreamBuilder(
+            stream: hospitalizationBloc.hospitalizations,
+            builder: (context, snapshot) {
+              return snapshot.hasData
+                  ? _buildHospitalization(snapshot.data)
+                  : Center(child: CircularProgressIndicator());
+            },
+          ),
+        ]),
         floatingActionButton: StreamBuilder(
           stream: hospitalizationBloc.hospitalizations,
           builder: (context, snapshot) {
