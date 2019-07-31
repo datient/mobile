@@ -20,10 +20,8 @@ class HospitalizationBloc {
       final extractdata = JSON.jsonDecode(response.body);
       hospitalization = Hospitalization.fromJson(extractdata);
       _hospitalizationSubject.sink.add(hospitalization);
-      return hospitalization;
-    }else{
-      return null;
     }
+    return hospitalization;
   }
 
   dispose() {

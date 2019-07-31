@@ -40,7 +40,6 @@ class DatientBloc {
   }
 
   Future<bool> signOut(token) async {
-    print(token);
     final response = await http.post(
       'http://10.0.2.2:8000/accounts/logout/',
       headers: {
