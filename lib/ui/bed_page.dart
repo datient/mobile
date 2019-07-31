@@ -4,6 +4,8 @@ import 'package:datient/models/progress.dart';
 import 'package:datient/providers/datient_provider.dart';
 import 'package:flutter/material.dart';
 
+import 'assign_patient_page.dart';
+
 class BedPage extends StatefulWidget {
   final Bed bed;
 
@@ -19,7 +21,7 @@ class _BedPageState extends State<BedPage> {
       return Center(
         child: Text('No se ha encontrado hospitalizacion'),
       );
-    } else if(data.leftDate == null){
+    } else if (data.leftDate == null) {
       return Container(
         child: Card(
           margin: EdgeInsets.all(15),
@@ -69,8 +71,8 @@ class _BedPageState extends State<BedPage> {
           ),
         ),
       );
-    }else if (data.leftDate != null){
-            return Center(
+    } else if (data.leftDate != null) {
+      return Center(
         child: Text('No se ha encontrado hospitalizacion'),
       );
     }
@@ -83,7 +85,15 @@ class _BedPageState extends State<BedPage> {
       return FloatingActionButton(
         child: Icon(Icons.add),
         tooltip: 'Agregar paciente a la cama',
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => PatientAssignPage(
+                bed: widget.bed,
+              ),
+            ),
+          );
+        },
       );
     } else {
       return FloatingActionButton(
@@ -93,7 +103,10 @@ class _BedPageState extends State<BedPage> {
           final hospitalizationBloc =
               DatientProvider.of(context).hospitalizationBloc;
           bloc.doctor.listen((value) => hospitalizationBloc.dischargePatient(
-              data.doctorInCharge,data.bed,data.hospitalizedPatient,value.token));
+              data.doctorInCharge,
+              data.bed,
+              data.hospitalizedPatient,
+              value.token));
         },
       );
     }

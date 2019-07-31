@@ -52,6 +52,35 @@ class HospitalizationBloc {
     }
   }
 
+  Future assignPatient(
+      int doctorId, int bedId, int patientDni, token) async {
+    final response = await http.post(
+      'http://10.0.2.2:8000/api/hospitalization/',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'JWT $token',
+      },
+      body: JSON.jsonEncode(
+        {
+          'doctor': doctorId,
+          'bed': bedId,
+          'patient': patientDni,
+          'entry_at': DateTime.now().toString(),
+          'progress': {
+            'diagnosis': 'hola',
+            'description': 'prueba',
+            'status': 0
+          }
+        },
+      ),
+    );
+    if (response.statusCode == 200) {
+      print(response.body);
+    }else{
+      print(response.body);
+    }
+  }
+
   dispose() {
     _hospitalizationSubject.close();
     this.dispose();

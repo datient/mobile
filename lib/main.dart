@@ -4,6 +4,7 @@ import 'package:datient/bloc/patient_bloc.dart';
 import 'package:datient/bloc/room_bloc.dart';
 import 'package:datient/providers/datient_provider.dart';
 import 'package:datient/ui/add_patient_page.dart';
+import 'package:datient/ui/assign_patient_page.dart';
 import 'package:datient/ui/bed_page.dart';
 import 'package:datient/ui/edit_patient_page.dart';
 import 'package:datient/ui/home_page.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
           '/patient': (BuildContext context) => PatientPage(),
           '/patientadd': (BuildContext context) => PatientAddPage(),
           '/patientedit': (BuildContext context) => PatientEditPage(),
+          '/patientassign': (BuildContext context) => PatientAssignPage(),
         },
       ),
     );
