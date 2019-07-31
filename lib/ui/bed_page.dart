@@ -112,13 +112,60 @@ class _BedPageState extends State<BedPage> {
         child: Icon(Icons.assignment_turned_in),
         tooltip: 'Dar del alta el paciente',
         onPressed: () {
-          final hospitalizationBloc =
-              DatientProvider.of(context).hospitalizationBloc;
-          bloc.doctor.listen((value) => hospitalizationBloc.dischargePatient(
-              data.doctorInCharge,
-              data.bed,
-              data.hospitalizedPatient,
-              value.token));
+          showDialog<void>(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
+                title: Row(
+                  children: [
+                    Icon(Icons.info_outline),
+                    SizedBox(width: 10),
+                    Text('Confirmacion de accion'),
+                  ],
+                ),
+                content: SingleChildScrollView(
+                  child: ListBody(
+                    children: <Widget>[
+                      Divider(),
+                      Text(
+                        'Esta seguro que desea dar de alta al paciente?',
+                        style: TextStyle(fontSize: 18),
+                      )
+                    ],
+                  ),
+                ),
+                actions: <Widget>[
+                  FlatButton(
+                    textColor: Colors.white,
+                    child: Text('Confirmar'),
+                    color: Colors.green,
+                    onPressed: () {
+                      final hospitalizationBloc =
+                          DatientProvider.of(context).hospitalizationBloc;
+                      bloc.doctor.listen((value) =>
+                          hospitalizationBloc.dischargePatient(
+                              data.doctorInCharge,
+                              data.bed,
+                              data.hospitalizedPatient,
+                              value.token));
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  FlatButton(
+                    textColor: Colors.white,
+                    child: Text('Cancelar'),
+                    color: Colors.red,
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
         },
       );
     }
