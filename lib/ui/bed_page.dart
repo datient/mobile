@@ -1,9 +1,8 @@
 import 'package:datient/models/bed.dart';
 import 'package:datient/models/hospitalization.dart';
-import 'package:datient/models/progress.dart';
 import 'package:datient/providers/datient_provider.dart';
 import 'package:flutter/material.dart';
-
+import 'package:intl/intl.dart';
 import 'assign_patient_page.dart';
 
 class BedPage extends StatefulWidget {
@@ -22,6 +21,11 @@ class _BedPageState extends State<BedPage> {
         child: Text('No se ha encontrado hospitalizacion'),
       );
     } else if (data.leftDate == null) {
+      var dateFormatter = new DateFormat('yMd');
+      var timeFormatter = new DateFormat('Hms');
+      var entryDate = DateTime.parse(data.entryDate);
+      String formattedEntryDate = dateFormatter.format(entryDate);
+      String formattedTimeEntryDate = timeFormatter.format(entryDate);
       return Container(
         child: Card(
           margin: EdgeInsets.all(15),
@@ -53,7 +57,7 @@ class _BedPageState extends State<BedPage> {
                   style: TextStyle(fontSize: 16, color: Colors.grey),
                 ),
                 Text(
-                  data.entryDate,
+                  formattedEntryDate+' a las '+formattedTimeEntryDate,
                   style: TextStyle(fontSize: 18),
                 ),
                 Divider(),
