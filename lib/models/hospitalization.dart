@@ -17,7 +17,7 @@ class Hospitalization {
     this.progress,
   });
   factory Hospitalization.fromJson(Map<String, dynamic> json) {
-    Progress progress = Progress.fromJson(json);
+    Progress progress = Progress.fromJson(json['progress']);
     return Hospitalization(
       entryDate: json['entry_at'],
       leftDate: json['left_at'],
