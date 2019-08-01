@@ -27,22 +27,14 @@ class _BedPageState extends State<BedPage> {
     } else if (data.progress.status == 2) {
       _patientStatus = 'Peligro';
     }
-
-    if (data.bed == null) {
-      return Center(
-        child: Text(
-          'No se ha encontrado hospitalizacion',
-          style: TextStyle(fontSize: 18),
-        ),
-      );
-    } else if (data.leftDate == null) {
-      var dateFormatter = new DateFormat('yMd');
-      var timeFormatter = new DateFormat('Hms');
+    var dateFormatter = new DateFormat('yMd');
+    var timeFormatter = new DateFormat('Hms');
+    if (data.leftDate == null) {
       var entryDate = DateTime.parse(data.entryDate);
       String formattedEntryDate = dateFormatter.format(entryDate);
       String formattedTimeEntryDate = timeFormatter.format(entryDate);
-      return Container(
-        child: Card(
+      return ListView(children: [
+        Card(
           margin: EdgeInsets.all(15),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
@@ -122,35 +114,21 @@ class _BedPageState extends State<BedPage> {
             ),
           ),
         ),
-      );
-    } else if (data.leftDate != null) {
+      ]);
+    } else {
       return Center(
         child: Text(
-          'No se ha encontrado hospitalizacion',
+          'No se han encontrado hospitalizaciones',
           style: TextStyle(fontSize: 18),
         ),
       );
     }
   }
 
-  Widget _buildFloatingActionButton(Hospitalization data) {
+  Widget _buildDischargeFloatingActionButton(Hospitalization data) {
     final bloc = DatientProvider.of(context).bloc;
     final hospitalizationBloc = DatientProvider.of(context).hospitalizationBloc;
-    if (data.bed == null) {
-      return FloatingActionButton(
-        child: Icon(Icons.add),
-        tooltip: 'Agregar paciente a la cama',
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => PatientAssignPage(
-                bed: widget.bed,
-              ),
-            ),
-          );
-        },
-      );
-    } else {
+    if (data.leftDate == null) {
       return FloatingActionButton(
         child: Icon(Icons.assignment_turned_in),
         tooltip: 'Dar del alta el paciente',
@@ -211,7 +189,50 @@ class _BedPageState extends State<BedPage> {
           );
         },
       );
+    } else {
+      return FloatingActionButton(
+        child: Icon(Icons.add),
+        tooltip: 'Agregar paciente a la cama',
+        onPressed: () {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => PatientAssignPage(
+                bed: widget.bed,
+              ),
+            ),
+          );
+        },
+      );
     }
+  }
+
+  Widget _buildHospitalizationStream() {
+    final hospitalizationBloc = DatientProvider.of(context).hospitalizationBloc;
+    return StreamBuilder(
+      stream: hospitalizationBloc.isloading,
+      builder: (context, snapshot) {
+        return (snapshot.data == true)
+            ? Center(child: CircularProgressIndicator())
+            : StreamBuilder(
+                stream: hospitalizationBloc.hospitalizations,
+                builder: (context, snapshot) {
+                  return (snapshot.hasData)
+                      ? _buildHospitalization(snapshot.data)
+                      : StreamBuilder(
+                          stream: hospitalizationBloc.error,
+                          builder: (context, snapshot) {
+                            return (snapshot.hasData)
+                                ? Center(
+                                    child: Text(
+                                    snapshot.data,
+                                    style: TextStyle(fontSize: 18),
+                                  ))
+                                : Center(child: CircularProgressIndicator());
+                          });
+                },
+              );
+      },
+    );
   }
 
   Widget build(BuildContext context) {
@@ -223,24 +244,26 @@ class _BedPageState extends State<BedPage> {
         appBar: AppBar(
           title: Text('${widget.bed.bedName}'),
         ),
-        body: ListView(children: [
-          StreamBuilder(
-            stream: hospitalizationBloc.hospitalizations,
-            builder: (context, snapshot) {
-              return snapshot.hasData
-                  ? _buildHospitalization(snapshot.data)
-                  : Center(child: CircularProgressIndicator());
-            },
-          ),
-        ]),
+        body: Container(
+          child: (_buildHospitalizationStream()),
+        ),
         floatingActionButton: StreamBuilder(
           stream: hospitalizationBloc.hospitalizations,
           builder: (context, snapshot) {
             return snapshot.hasData
-                ? _buildFloatingActionButton(snapshot.data)
+                ? _buildDischargeFloatingActionButton(snapshot.data)
                 : FloatingActionButton(
                     child: Icon(Icons.add),
-                    onPressed: () {},
+                    tooltip: 'Agregar paciente a la cama',
+                    onPressed: () {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => PatientAssignPage(
+                            bed: widget.bed,
+                          ),
+                        ),
+                      );
+                    },
                   );
           },
         ));
