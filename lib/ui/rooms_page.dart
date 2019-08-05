@@ -1,30 +1,30 @@
-import 'package:datient/bloc/datient_bloc.dart';
-import 'package:datient/bloc/patient_bloc.dart';
-import 'package:datient/models/patient.dart';
+import 'package:datient/models/doctor.dart';
 import 'package:datient/providers/datient_provider.dart';
-import 'package:datient/ui/patient_info_page.dart';
+import 'package:datient/ui/patient_page.dart';
+import 'package:datient/ui/room_page.dart';
 import 'package:flutter/material.dart';
 
-class PatientPage extends StatefulWidget {
-  PatientPage({Key key}) : super(key: key);
-
+class RoomsPage extends StatefulWidget {
   @override
-  _BedPageState createState() => _BedPageState();
+  _RoomsPageState createState() => _RoomsPageState();
 }
 
-Widget _buildGuestList(data) {
-  return Scrollbar(
-    child: ListView.builder(
-        itemCount: data.length,
-        itemBuilder: (BuildContext context, int index) {
-          Patient patients = data[index];
+class _RoomsPageState extends State<RoomsPage> {
+  var token;
+  Doctor doctor = Doctor();
+
+  Widget _buildRoomList(data) {
+    return Scrollbar(
+      child: GridView.count(
+        crossAxisCount: 2,
+        children: List.generate(data.length, (index) {
           return Container(
             child: GestureDetector(
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => PatientInfoPage(
-                      patient: data[index],
+                    builder: (context) => RoomPage(
+                      room: data[index],
                     ),
                   ),
                 );
@@ -32,59 +32,60 @@ Widget _buildGuestList(data) {
               child: Card(
                 elevation: 6,
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(height: 10),
-                    Column(children: [
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Icon(
-                            Icons.account_circle,
-                            size: 35,
-                          ),
-                          SizedBox(width: 20),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                patients.firstName + ' ' + patients.lastName,
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                patients.dni.toString(),
-                                style:
-                                    TextStyle(fontSize: 16, color: Colors.grey),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                    ]),
+                    Icon(Icons.local_hospital, size: 80),
+                    Text(
+                      data[index].roomName,
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
                   ],
                 ),
               ),
             ),
           );
         }),
-  );
-}
+      ),
+    );
+  }
 
-class _BedPageState extends State<PatientPage> {
-  final _formKey = GlobalKey<FormState>();
+  Widget _buildRoomPage(bloc, roomBloc) {
+    return Container(
+      child: Column(
+        children: [
+          Expanded(
+            child: StreamBuilder(
+              stream: bloc.doctor,
+              builder: (context, snap) {
+                return snap.hasData
+                    ? StreamBuilder(
+                        stream: roomBloc.rooms,
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          return snapshot.hasData
+                              ? _buildRoomList(snapshot.data)
+                              : Center(child: CircularProgressIndicator());
+                        },
+                      )
+                    : Center(child: CircularProgressIndicator());
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    DatientBloc bloc = DatientProvider.of(context).bloc;
-    PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
-    bloc.doctor.listen((value) => patientBloc.getPatients(value.token));
+    final bloc = DatientProvider.of(context).bloc;
+    final roomBloc = DatientProvider.of(context).roomBloc;
 
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('Pacientes'),
+        title: Text('Salas'),
         leading: PopupMenuButton(
           icon: Icon(
             Icons.account_circle,
@@ -141,19 +142,7 @@ class _BedPageState extends State<PatientPage> {
           ],
         ),
       ),
-      body: StreamBuilder(
-        stream: patientBloc.patients,
-        builder: (context, snapshot) {
-          return snapshot.hasData
-              ? _buildGuestList(snapshot.data)
-              : Center(child: CircularProgressIndicator());
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.of(context).pushNamed('/patientadd');
-          },
-          child: Icon(Icons.person_add)),
+      body: _buildRoomPage(bloc, roomBloc),
     );
   }
 }
