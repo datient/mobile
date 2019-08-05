@@ -33,22 +33,34 @@ Widget _buildGuestList(data) {
                 elevation: 6,
                 child: Column(
                   children: [
+                    Column(),
                     SizedBox(height: 10),
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Icon(Icons.person),
-                        SizedBox(width: 20),
-                        Text(
-                          patients.firstName + ' ' + patients.lastName,
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10),
+                    Column(children: [
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Icon(Icons.account_circle,size: 35,),
+                          SizedBox(width: 20),
+                          Column(
+                            children: [
+                              Text(
+                                patients.firstName + ' ' + patients.lastName,
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                patients.dni.toString(),
+                                style:
+                                    TextStyle(fontSize: 16, color: Colors.grey),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                    ]),
                   ],
                 ),
               ),
@@ -64,18 +76,17 @@ class _BedPageState extends State<PatientPage> {
   Widget build(BuildContext context) {
     DatientBloc bloc = DatientProvider.of(context).bloc;
     PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
-        bloc.doctor
-        .listen((value) => patientBloc.getPatients(value.token));
+    bloc.doctor.listen((value) => patientBloc.getPatients(value.token));
 
     return Scaffold(
       body: StreamBuilder(
-          stream: patientBloc.patients,
-          builder: (context, snapshot) {
-            return snapshot.hasData
-        ? _buildGuestList(snapshot.data)
-        : Center(child: CircularProgressIndicator());
-          },
-        ),
+        stream: patientBloc.patients,
+        builder: (context, snapshot) {
+          return snapshot.hasData
+              ? _buildGuestList(snapshot.data)
+              : Center(child: CircularProgressIndicator());
+        },
+      ),
       floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.of(context).pushNamed('/patientadd');

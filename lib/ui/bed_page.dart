@@ -256,7 +256,7 @@ class _BedPageState extends State<BedPage> {
                     child: Icon(Icons.add),
                     tooltip: 'Agregar paciente a la cama',
                     onPressed: () {
-                      Navigator.of(context).pushReplacement(
+                      Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => PatientAssignPage(
                             bed: widget.bed,
