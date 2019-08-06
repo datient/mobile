@@ -12,77 +12,41 @@ class PatientPage extends StatefulWidget {
   _BedPageState createState() => _BedPageState();
 }
 
-Widget _buildGuestList(data) {
-  return Scrollbar(
-    child: ListView.builder(
-        itemCount: data.length,
-        itemBuilder: (BuildContext context, int index) {
-          Patient patients = data[index];
-          return Container(
-            child: GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => PatientInfoPage(
-                      patient: data[index],
-                    ),
-                  ),
-                );
-              },
-              child: Card(
-                elevation: 6,
-                child: Column(
-                  children: [
-                    SizedBox(height: 10),
-                    Column(children: [
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Icon(
-                            Icons.account_circle,
-                            size: 35,
-                          ),
-                          SizedBox(width: 20),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                patients.firstName + ' ' + patients.lastName,
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                patients.dni.toString(),
-                                style:
-                                    TextStyle(fontSize: 16, color: Colors.grey),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                    ]),
-                  ],
-                ),
-              ),
-            ),
-          );
-        }),
-  );
-}
-
 class _BedPageState extends State<PatientPage> {
   final _formKey = GlobalKey<FormState>();
-  @override
-  Widget build(BuildContext context) {
-    DatientBloc bloc = DatientProvider.of(context).bloc;
-    PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
-    bloc.doctor.listen((value) => patientBloc.getPatients(value.token));
+  bool activeSearch;
 
-    return Scaffold(
-      appBar: AppBar(
+  @override
+  void initState() {
+    super.initState();
+    activeSearch = false;
+  }
+
+  PreferredSizeWidget _appBar() {
+    DatientBloc bloc = DatientProvider.of(context).bloc;
+    if (activeSearch) {
+      return AppBar(
+        leading: Icon(Icons.search),
+        title: TextField(
+          decoration: InputDecoration(
+            hintText: 'Buscar paciente',
+            hintStyle: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.close),
+            onPressed: () => setState(() => activeSearch = false),
+          )
+        ],
+      );
+    } else {
+      return AppBar(
         automaticallyImplyLeading: false,
         title: Text('Pacientes'),
         leading: PopupMenuButton(
@@ -140,7 +104,85 @@ class _BedPageState extends State<PatientPage> {
             ))
           ],
         ),
-      ),
+        actions: [
+          IconButton(
+            onPressed: () => setState(() => activeSearch = true),
+            icon: Icon(Icons.search),
+          ),
+        ],
+      );
+    }
+  }
+
+  Widget _buildGuestList(data) {
+    return Scrollbar(
+      child: ListView.builder(
+          itemCount: data.length,
+          itemBuilder: (BuildContext context, int index) {
+            Patient patients = data[index];
+            return Container(
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => PatientInfoPage(
+                        patient: data[index],
+                      ),
+                    ),
+                  );
+                },
+                child: Card(
+                  elevation: 6,
+                  child: Column(
+                    children: [
+                      SizedBox(height: 10),
+                      Column(children: [
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Icon(
+                              Icons.account_circle,
+                              size: 35,
+                            ),
+                            SizedBox(width: 20),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  patients.firstName + ' ' + patients.lastName,
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  patients.dni.toString(),
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.grey),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                      ]),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }),
+    );
+  }
+
+  Widget build(BuildContext context) {
+    DatientBloc bloc = DatientProvider.of(context).bloc;
+    PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
+    bloc.doctor.listen((value) => patientBloc.getPatients(value.token));
+
+    return Scaffold(
+      appBar: _appBar(),
       body: StreamBuilder(
         stream: patientBloc.patients,
         builder: (context, snapshot) {

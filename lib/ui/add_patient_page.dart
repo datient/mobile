@@ -153,7 +153,7 @@ class _PatientAddPageState extends State<PatientAddPage> {
     final DatientBloc bloc = DatientProvider.of(context).bloc;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Crear paciente'),
+        title: Text('Nuevo paciente'),
         actions: [
           IconButton(
             icon: Icon(Icons.add),
