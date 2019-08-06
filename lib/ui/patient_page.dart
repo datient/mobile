@@ -54,7 +54,9 @@ class _BedPageState extends State<PatientPage> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.close),
-            onPressed: () => setState(() => activeSearch = false),
+            onPressed: () { setState(() => activeSearch = false);
+            _searchController.clear();
+            },
           )
         ],
       );

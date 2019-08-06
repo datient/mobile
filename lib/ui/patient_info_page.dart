@@ -18,7 +18,7 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
     return ListView(
       children: [
         Card(
-          margin: EdgeInsets.all(10),
+          margin: EdgeInsets.all(15),
           elevation: 6,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
