@@ -7,8 +7,10 @@ import 'package:rxdart/rxdart.dart';
 
 class DatientBloc {
   final _doctorSubject = BehaviorSubject<Doctor>();
+  final _doctorSpecificSubject = BehaviorSubject<Doctor>();
 
   Stream<Doctor> get doctor => _doctorSubject.stream;
+  Stream<Doctor> get specificDoctor => _doctorSpecificSubject.stream;
 
   Future<dynamic> signIn(
     String mail,
@@ -81,6 +83,20 @@ class DatientBloc {
     print(res.body);
     return true;
   }
+
+      Future <Doctor>getSpecificDoctor(token,id) async {
+      Doctor doctor;
+    final response = await http.get(
+      'http://10.0.2.2:8000/api/doctor/${id}',
+      headers: {'Authorization': 'JWT $token'},
+    );
+        if (response.statusCode == 200) {
+      final extractdata = JSON.jsonDecode(response.body);
+      doctor = Doctor.fromJson(extractdata);
+      _doctorSpecificSubject.sink.add(doctor);
+    }
+    return doctor;
+    }
 
   dispose() {
     _doctorSubject.close();

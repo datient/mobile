@@ -7,8 +7,10 @@ import 'package:rxdart/rxdart.dart';
 class PatientBloc {
   final _patientSubject = BehaviorSubject<List<Patient>>();
   final _patientSearchSubject = BehaviorSubject<List<Patient>>();
+  final _patientSpecificSubject = BehaviorSubject<Patient>();
   Stream<List<Patient>> get patients => _patientSubject.stream;
   Stream<List<Patient>> get searchedPatients => _patientSearchSubject.stream;
+  Stream<Patient> get specificPatient => _patientSpecificSubject.stream;
 
   Future<List> getPatients(token) async {
     List list = [];
@@ -24,6 +26,20 @@ class PatientBloc {
     }
     return list;
   }
+
+    Future <Patient>getSpecificPatients(token,dni) async {
+      Patient patient;
+    final response = await http.get(
+      'http://10.0.2.2:8000/api/patient/${dni}',
+      headers: {'Authorization': 'JWT $token'},
+    );
+        if (response.statusCode == 200) {
+      final extractdata = JSON.jsonDecode(response.body);
+      patient = Patient.fromJson(extractdata);
+      _patientSpecificSubject.sink.add(patient);
+    }
+    return patient;
+    }
 
   Future<bool> createPatient(
       String createFirstName,
@@ -125,7 +141,7 @@ class PatientBloc {
   dispose() {
     _patientSubject.close();
     _patientSearchSubject.close();
+    _patientSpecificSubject.close();
     this.dispose();
   }
-
 }

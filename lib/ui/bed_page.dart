@@ -1,5 +1,9 @@
+import 'package:datient/bloc/datient_bloc.dart';
+import 'package:datient/bloc/patient_bloc.dart';
 import 'package:datient/models/bed.dart';
+import 'package:datient/models/doctor.dart';
 import 'package:datient/models/hospitalization.dart';
+import 'package:datient/models/patient.dart';
 import 'package:datient/models/progress.dart';
 import 'package:datient/providers/datient_provider.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +21,21 @@ class BedPage extends StatefulWidget {
 
 class _BedPageState extends State<BedPage> {
   Progress progress;
+  Patient patient;
+
+  Widget _buildPatientName(Patient data) {
+    return Text(
+      data.firstName + ' ' + data.lastName,
+      style: TextStyle(fontSize: 18),
+    );
+  }
+
+  Widget _buildDoctorName(Doctor data) {
+    return Text(
+      data.firstName + ' ' + data.lastName,
+      style: TextStyle(fontSize: 18),
+    );
+  }
 
   Widget _buildHospitalization(Hospitalization data) {
     var _patientStatus;
@@ -33,6 +52,12 @@ class _BedPageState extends State<BedPage> {
       var entryDate = DateTime.parse(data.entryDate);
       String formattedEntryDate = dateFormatter.format(entryDate);
       String formattedTimeEntryDate = timeFormatter.format(entryDate);
+      DatientBloc bloc = DatientProvider.of(context).bloc;
+      PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
+      bloc.doctor.listen((value) => patientBloc.getSpecificPatients(
+          value.token, data.hospitalizedPatient));
+      bloc.doctor.listen(
+          (value) => bloc.getSpecificDoctor(value.token, data.doctorInCharge));
       return ListView(children: [
         Card(
           margin: EdgeInsets.all(15),
@@ -54,9 +79,15 @@ class _BedPageState extends State<BedPage> {
                   'Paciente internado',
                   style: TextStyle(fontSize: 16, color: Colors.grey),
                 ),
-                Text(
-                  data.hospitalizedPatient.toString(),
-                  style: TextStyle(fontSize: 18),
+                StreamBuilder(
+                  stream: patientBloc.specificPatient,
+                  builder: (context, snapshot) {
+                    return snapshot.hasData
+                        ? _buildPatientName(snapshot.data)
+                        : Center(
+                            child: CircularProgressIndicator(),
+                          );
+                  },
                 ),
                 Divider(),
                 Text(
@@ -72,9 +103,15 @@ class _BedPageState extends State<BedPage> {
                   'Atendido por',
                   style: TextStyle(fontSize: 16, color: Colors.grey),
                 ),
-                Text(
-                  data.doctorInCharge.toString(),
-                  style: TextStyle(fontSize: 18),
+                StreamBuilder(
+                  stream: bloc.specificDoctor,
+                  builder: (context, snapshot) {
+                    return snapshot.hasData
+                        ? _buildDoctorName(snapshot.data)
+                        : Center(
+                            child: CircularProgressIndicator(),
+                          );
+                  },
                 ),
                 Divider(),
                 Text(
