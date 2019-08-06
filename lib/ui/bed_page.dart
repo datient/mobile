@@ -76,6 +76,15 @@ class _BedPageState extends State<BedPage> {
                   data.doctorInCharge.toString(),
                   style: TextStyle(fontSize: 18),
                 ),
+                Divider(),
+                Text(
+                  'Dias internado',
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                ),
+                Text(
+                  data.boardingDays.toString(),
+                  style: TextStyle(fontSize: 18),
+                ),
                 SizedBox(height: 20),
                 Divider(),
                 SizedBox(height: 20),

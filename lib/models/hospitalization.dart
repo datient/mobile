@@ -6,6 +6,7 @@ class Hospitalization {
   var bed;
   var doctorInCharge;
   var hospitalizedPatient;
+  var boardingDays;
   Progress progress;
 
   Hospitalization({
@@ -14,6 +15,7 @@ class Hospitalization {
     this.bed,
     this.doctorInCharge,
     this.hospitalizedPatient,
+    this.boardingDays,
     this.progress,
   });
   factory Hospitalization.fromJson(Map<String, dynamic> json) {
@@ -24,6 +26,7 @@ class Hospitalization {
       bed: json['bed'],
       doctorInCharge: json['doctor'],
       hospitalizedPatient: json['patient'],
+      boardingDays: json['boarding_days'],
       progress: progress,
     );
   }
