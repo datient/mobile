@@ -123,8 +123,8 @@ class _RoomsPageState extends State<RoomsPage> {
                           bloc.signOut('${snapshot.data.token}').then(
                             (success) {
                               if (success == true) {
-                                Navigator.of(context).pushReplacementNamed('/');
-                              } else {}
+                                Navigator.of(context).pushReplacementNamed('/login');
+                              }
                             },
                           );
                         },

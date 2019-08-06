@@ -4,6 +4,7 @@ import 'package:datient/bloc/room_bloc.dart';
 import 'package:datient/models/doctor.dart';
 import 'package:http/http.dart' as http;
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DatientBloc {
   final _doctorSubject = BehaviorSubject<Doctor>();
@@ -11,6 +12,29 @@ class DatientBloc {
 
   Stream<Doctor> get doctor => _doctorSubject.stream;
   Stream<Doctor> get specificDoctor => _doctorSpecificSubject.stream;
+
+  DatientBloc() {
+    _getToken().then((List list) {
+      String token = list[0];
+      String userId = list[1];
+      if (token != null) {
+        automaticSignIn(token, userId);
+      }
+    });
+  }
+
+  automaticSignIn(token, userId) async {
+    final response = await http.get(
+      'http://10.0.2.2:8000/api/doctor/$userId/',
+      headers: {'Authorization': 'JWT $token'},
+    );
+
+    if (response.statusCode == 200) {
+      var json = JSON.jsonDecode(response.body);
+      Doctor doctor = Doctor.fromJson(json, token);
+      _doctorSubject.sink.add(doctor);
+    }
+  }
 
   Future<dynamic> signIn(
     String mail,
@@ -30,6 +54,8 @@ class DatientBloc {
       final responseJson = JSON.jsonDecode(response.body);
       var token = responseJson['token'];
       var user = responseJson['user'];
+      var userId = responseJson['user']['id'].toString();
+      _saveToken(token, userId);
       doctor.setUser(token, user);
       _doctorSubject.sink.add(doctor);
       roomBloc.getRooms(token);
@@ -50,12 +76,14 @@ class DatientBloc {
       },
       body: JSON.jsonEncode({'revoke_token': true}),
     );
+
     if (response.statusCode == 200) {
       print(response.body);
+      _removeToken();
       return true;
-    } else {
-      return false;
     }
+
+    return false;
   }
 
   Future<bool> registerDoctor(
@@ -84,19 +112,39 @@ class DatientBloc {
     return true;
   }
 
-      Future <Doctor>getSpecificDoctor(token,id) async {
-      Doctor doctor;
+  Future<Doctor> getSpecificDoctor(token, id) async {
+    Doctor doctor;
     final response = await http.get(
       'http://10.0.2.2:8000/api/doctor/${id}',
       headers: {'Authorization': 'JWT $token'},
     );
-        if (response.statusCode == 200) {
+    if (response.statusCode == 200) {
       final extractdata = JSON.jsonDecode(response.body);
-      doctor = Doctor.fromJson(extractdata);
+      doctor = Doctor.fromJson(extractdata, token);
       _doctorSpecificSubject.sink.add(doctor);
     }
     return doctor;
-    }
+  }
+
+  void _saveToken(String token, String userId) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('token', token);
+    prefs.setString('userId', userId);
+  }
+
+  Future<List> _getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('token');
+    String userId = prefs.getString('userId');
+    List list = [token, userId];
+    return list;
+  }
+
+  void _removeToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove('token');
+    prefs.remove('userId');
+  }
 
   dispose() {
     _doctorSubject.close();

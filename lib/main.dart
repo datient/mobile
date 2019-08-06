@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: LoginPage(title: 'Login'),
+        home: Datient(),
         routes: <String, WidgetBuilder>{
           '/login': (BuildContext context) => LoginPage(),
           '/home': (BuildContext context) => HomePage(),
@@ -40,6 +40,33 @@ class MyApp extends StatelessWidget {
           '/patientassign': (BuildContext context) => PatientAssignPage(),
         },
       ),
+    );
+  }
+}
+
+class Datient extends StatefulWidget {
+  @override
+  _DatientState createState() => _DatientState();
+}
+
+class _DatientState extends State<Datient> {
+  @override
+  Widget build(BuildContext context) {
+    final bloc = DatientProvider.of(context).bloc;
+    final roomBloc = DatientProvider.of(context).roomBloc;
+    final patient = DatientProvider.of(context).patientBloc;
+
+    return StreamBuilder(
+      stream: bloc.doctor,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.hasData && snapshot.data.token != null) {
+          String token = snapshot.data.token;
+          roomBloc.getRooms(token);
+          patient.getPatients(token);
+          return HomePage();
+        }
+        return LoginPage();
+      },
     );
   }
 }

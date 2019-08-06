@@ -11,9 +11,7 @@ class Hierarchy {
 }
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key key, this.title}) : super(key: key);
-
-  final String title;
+  LoginPage({Key key}) : super(key: key);
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -349,7 +347,7 @@ class _LoginPageState extends State<LoginPage> {
       key: _scaffoldKey,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text(widget.title),
+        title: Text('Login'),
       ),
       body: ExpandableCardPage(
           page: SafeArea(
