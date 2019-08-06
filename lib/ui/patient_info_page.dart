@@ -163,75 +163,91 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
     } else {
       _patientGender = 'Femenino';
     }
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(_fullname),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.more_vert),
-            onPressed: () {
-              showDialog<void>(
-                context: context,
-                barrierDismissible: false,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)),
-                    title: Row(
-                      children: [
-                        Icon(Icons.info_outline),
-                        SizedBox(width: 10),
-                        Text('Detalles'),
-                      ],
-                    ),
-                    content: SingleChildScrollView(
-                      child: ListBody(
-                        children: <Widget>[
-                          Text(
-                            'Fecha de creacion',
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          Text(formattedCreateDate +
-                              ' a las ' +
-                              formattedTimeCreateDate),
-                          Divider(),
-                          Text(
-                            'Ultima actualizacion',
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          Text(formattedUpdateDate +
-                              ' a las ' +
-                              formattedTimeUpdateDate),
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(_fullname),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.more_vert),
+              onPressed: () {
+                showDialog<void>(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15)),
+                      title: Row(
+                        children: [
+                          Icon(Icons.info_outline),
+                          SizedBox(width: 10),
+                          Text('Detalles'),
                         ],
                       ),
-                    ),
-                    actions: <Widget>[
-                      FlatButton(
-                        child: Text('Cerrar'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
+                      content: SingleChildScrollView(
+                        child: ListBody(
+                          children: <Widget>[
+                            Text(
+                              'Fecha de creacion',
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                            Text(formattedCreateDate +
+                                ' a las ' +
+                                formattedTimeCreateDate),
+                            Divider(),
+                            Text(
+                              'Ultima actualizacion',
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                            Text(formattedUpdateDate +
+                                ' a las ' +
+                                formattedTimeUpdateDate),
+                          ],
+                        ),
                       ),
-                    ],
-                  );
-                },
-              );
-            },
-          )
-        ],
-      ),
-      body: Container(child: _buildPatientInfo()),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => PatientEditPage(
-                patient: widget.patient,
+                      actions: <Widget>[
+                        FlatButton(
+                          child: Text('Cerrar'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+            )
+          ],
+          bottom: TabBar(
+            tabs: [
+              Tab(icon: Icon(Icons.assignment), text: 'Datos'),
+              Tab(icon: Icon(Icons.save), text: 'Estudios'),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            Container(child: _buildPatientInfo()),
+            Center(
+              child: Text('Hola'),
+            )
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => PatientEditPage(
+                  patient: widget.patient,
+                ),
               ),
-            ),
-          );
-        },
-        child: Icon(Icons.edit),
+            );
+          },
+          child: Icon(Icons.edit),
+        ),
       ),
     );
   }
