@@ -14,6 +14,7 @@ class PatientPage extends StatefulWidget {
 
 class _BedPageState extends State<PatientPage> {
   final _formKey = GlobalKey<FormState>();
+  final _searchController = TextEditingController();
   bool activeSearch;
 
   @override
@@ -22,12 +23,24 @@ class _BedPageState extends State<PatientPage> {
     activeSearch = false;
   }
 
+  void _search(String queryString) {
+    final bloc = DatientProvider.of(context).bloc;
+    final patientBloc = DatientProvider.of(context).patientBloc;
+    setState(() {
+      var search = _searchController.value.text;
+      bloc.doctor
+          .listen((value) => patientBloc.searchPatient(value.token, search));
+    });
+  }
+
   PreferredSizeWidget _appBar() {
     DatientBloc bloc = DatientProvider.of(context).bloc;
     if (activeSearch) {
       return AppBar(
         leading: Icon(Icons.search),
         title: TextField(
+          onChanged: _search,
+          controller: _searchController,
           decoration: InputDecoration(
             hintText: 'Buscar paciente',
             hintStyle: TextStyle(
@@ -176,6 +189,29 @@ class _BedPageState extends State<PatientPage> {
     );
   }
 
+  _buildPatientStream() {
+    PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
+    if (activeSearch) {
+      return StreamBuilder(
+        stream: patientBloc.searchedPatients,
+        builder: (context, snapshot) {
+          return snapshot.hasData
+              ? _buildGuestList(snapshot.data)
+              : Center(child: CircularProgressIndicator());
+        },
+      );
+    } else {
+      return StreamBuilder(
+        stream: patientBloc.patients,
+        builder: (context, snapshot) {
+          return snapshot.hasData
+              ? _buildGuestList(snapshot.data)
+              : Center(child: CircularProgressIndicator());
+        },
+      );
+    }
+  }
+
   Widget build(BuildContext context) {
     DatientBloc bloc = DatientProvider.of(context).bloc;
     PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
@@ -183,14 +219,7 @@ class _BedPageState extends State<PatientPage> {
 
     return Scaffold(
       appBar: _appBar(),
-      body: StreamBuilder(
-        stream: patientBloc.patients,
-        builder: (context, snapshot) {
-          return snapshot.hasData
-              ? _buildGuestList(snapshot.data)
-              : Center(child: CircularProgressIndicator());
-        },
-      ),
+      body: _buildPatientStream(),
       floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.of(context).pushNamed('/patientadd');

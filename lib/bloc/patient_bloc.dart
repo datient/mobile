@@ -6,7 +6,9 @@ import 'package:rxdart/rxdart.dart';
 
 class PatientBloc {
   final _patientSubject = BehaviorSubject<List<Patient>>();
+  final _patientSearchSubject = BehaviorSubject<List<Patient>>();
   Stream<List<Patient>> get patients => _patientSubject.stream;
+  Stream<List<Patient>> get searchedPatients => _patientSearchSubject.stream;
 
   Future<List> getPatients(token) async {
     List list = [];
@@ -23,12 +25,7 @@ class PatientBloc {
     return list;
   }
 
-  dispose() {
-    _patientSubject.close();
-    this.dispose();
-  }
-
-  Future <bool>createPatient(
+  Future<bool> createPatient(
       String createFirstName,
       String createLastName,
       int createDni,
@@ -96,9 +93,7 @@ class PatientBloc {
     return true;
   }
 
-    Future getHospitalizedPatient(
-      token,
-      Hospitalization hospitalization) async {
+  Future getHospitalizedPatient(token, Hospitalization hospitalization) async {
     final res = await http.get(
       'http://10.0.2.2:8000/api/patient/${hospitalization.hospitalizedPatient}/',
       headers: {
@@ -109,4 +104,28 @@ class PatientBloc {
     print(res.body);
     return true;
   }
+
+  Future<List> searchPatient(token, dni) async {
+    List list = [];
+    final response = await http.get(
+      'http://10.0.2.2:8000/api/patient/?dni=${dni}',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'JWT $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      final extractdata = JSON.jsonDecode(response.body) as List;
+      list = extractdata.map((json) => Patient.fromJson(json)).toList();
+      _patientSearchSubject.sink.add(list);
+    }
+    return list;
+  }
+
+  dispose() {
+    _patientSubject.close();
+    _patientSearchSubject.close();
+    this.dispose();
+  }
+
 }
