@@ -152,25 +152,32 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
   }
 
   Widget _buildPatientStudies() {
-    return ListView.builder(
-      itemCount: widget.patient.studies.length,
-      itemBuilder: (BuildContext context, int index) {
-        Study studies = widget.patient.studies[index];
-        return Container(
-          child: GestureDetector(
-            child: Hero(
-              tag: 'studyHero$index',
-              child: Image.network(studies.image),
-            ),
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (_) {
-                return DetailScreen(image: studies.image, index: index);
-              }));
+    return (widget.patient.studies.isNotEmpty)
+        ? ListView.builder(
+            itemCount: widget.patient.studies.length,
+            itemBuilder: (BuildContext context, int index) {
+              Study studies = widget.patient.studies[index];
+              return Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Container(
+                  child: GestureDetector(
+                    child: Hero(
+                      tag: 'studyHero$index',
+                      child: Image.network(studies.image),
+                    ),
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (_) {
+                        return DetailScreen(image: studies.image, index: index);
+                      }));
+                    },
+                  ),
+                ),
+              );
             },
-          ),
-        );
-      },
-    );
+          )
+        : Center(
+            child: Text('No se han encontrado estudios'),
+          );
   }
 
   Widget build(BuildContext context) {
@@ -285,19 +292,22 @@ class DetailScreen extends StatelessWidget {
   DetailScreen({Key key, this.image, this.index}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: GestureDetector(
-        child: Center(
-          child: Hero(
-            tag: 'studyHero$index',
-            child: RotatedBox(
-              quarterTurns: 1,
-              child: Image.network(image),),
+    return SafeArea(
+      child: Scaffold(
+        body: GestureDetector(
+          child: Center(
+            child: Hero(
+              tag: 'studyHero$index',
+              child: RotatedBox(
+                quarterTurns: 1,
+                child: Image.network(image),
+              ),
+            ),
           ),
+          onTap: () {
+            Navigator.pop(context);
+          },
         ),
-        onTap: () {
-          Navigator.pop(context);
-        },
       ),
     );
   }
