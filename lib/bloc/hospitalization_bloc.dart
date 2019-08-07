@@ -9,16 +9,14 @@ class HospitalizationBloc {
   final _hospitalizationErrorSubject = BehaviorSubject<String>();
   final _hospitalizationIsLoading = BehaviorSubject<bool>();
 
-  HospitalizationBloc(){
+  HospitalizationBloc() {
     _hospitalizationIsLoading.add(true);
   }
 
   Stream<Hospitalization> get hospitalizations =>
       _hospitalizationSubject.stream;
-  Stream<String> get error =>
-      _hospitalizationErrorSubject.stream;
-    Stream<bool> get isloading =>
-      _hospitalizationIsLoading.stream;
+  Stream<String> get error => _hospitalizationErrorSubject.stream;
+  Stream<bool> get isloading => _hospitalizationIsLoading.stream;
 
   Future<Hospitalization> getHospitalization(token, int bedId) async {
     _hospitalizationIsLoading.add(true);
@@ -43,6 +41,25 @@ class HospitalizationBloc {
       _hospitalizationIsLoading.add(false);
       _hospitalizationErrorSubject.add(responseError);
     }
+  }
+
+  Future createHospitalization(
+      String entryAt, int bedId, int doctorId, int patientDni, token) async {
+    final response = await http.post(
+      'http://10.0.2.2:8000/api/hospitalization/',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'JWT $token',
+      },
+      body: JSON.jsonEncode(
+        {
+          'entry_at': entryAt,
+          'bed': bedId,
+          'doctor': doctorId,
+          'patient': patientDni,
+        },
+      ),
+    );
   }
 
   Future dischargePatient(
