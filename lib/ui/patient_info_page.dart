@@ -1,4 +1,8 @@
+import 'package:datient/bloc/datient_bloc.dart';
+import 'package:datient/bloc/patient_bloc.dart';
 import 'package:datient/models/patient.dart';
+import 'package:datient/models/study.dart';
+import 'package:datient/providers/datient_provider.dart';
 import 'package:flutter/material.dart';
 import 'edit_patient_page.dart';
 import 'package:intl/intl.dart';
@@ -147,6 +151,30 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
     );
   }
 
+  Widget _buildPatientStudies() {
+    return ListView.builder(
+      itemCount: widget.patient.studies.length,
+      itemBuilder: (BuildContext context, int index) {
+        Study studies = widget.patient.studies[index];
+
+        return Container(
+          child: Card(
+            elevation: 6,
+            child: Column(
+              children: [
+                Text(
+                  studies.image.toString(),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 20),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   Widget build(BuildContext context) {
     var _createdDate = DateTime.parse(widget.patient.createdDate);
     var _updatedDate = DateTime.parse(widget.patient.updatedDate);
@@ -231,8 +259,8 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
         body: TabBarView(
           children: [
             Container(child: _buildPatientInfo()),
-            Center(
-              child: Text('Hola'),
+            Container(
+              child: _buildPatientStudies(),
             )
           ],
         ),

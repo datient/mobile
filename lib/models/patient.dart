@@ -1,3 +1,5 @@
+import 'package:datient/models/study.dart';
+
 class Patient {
   var dni;
   var age;
@@ -9,6 +11,7 @@ class Patient {
   var incomeDiagnostic;
   var createdDate;
   var updatedDate;
+  List<Study> studies;
 
   Patient({
     this.dni,
@@ -21,9 +24,15 @@ class Patient {
     this.incomeDiagnostic,
     this.createdDate,
     this.updatedDate,
+    this.studies,
   });
 
   factory Patient.fromJson(Map<String, dynamic> json) {
+    List<Study> list = [];
+    for (final i in json['studies']) {
+      Study study = Study.fromJson(i);
+      list.add(study);
+    }
     return Patient(
       dni: json['dni'],
       age: json['age'],
@@ -35,6 +44,7 @@ class Patient {
       incomeDiagnostic: json['income_diagnosis'],
       createdDate: json['created_at'],
       updatedDate: json['updated_at'],
+      studies: list,
     );
   }
 }
