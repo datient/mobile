@@ -6,6 +6,7 @@ import 'package:datient/models/hospitalization.dart';
 import 'package:datient/models/patient.dart';
 import 'package:datient/models/progress.dart';
 import 'package:datient/providers/datient_provider.dart';
+import 'package:datient/ui/add_hospitalization_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -182,17 +183,23 @@ class _BedPageState extends State<BedPage> {
         visible: true,
         curve: Curves.bounceIn,
         children: [
-          // FAB 1
           SpeedDialChild(
               child: Icon(Icons.add),
-              onTap: () {/* do anything */},
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => HospitalizationAddPage(
+                      hospitalization: data,
+                    ),
+                  ),
+                );
+              },
               label: 'Nueva hospitalizacion',
               labelStyle: TextStyle(
                   fontWeight: FontWeight.w500,
                   color: Colors.white,
                   fontSize: 16.0),
               labelBackgroundColor: Colors.blue),
-          // FAB 2
           SpeedDialChild(
               child: Icon(Icons.assignment_turned_in),
               onTap: () {

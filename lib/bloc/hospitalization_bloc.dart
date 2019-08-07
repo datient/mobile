@@ -44,7 +44,14 @@ class HospitalizationBloc {
   }
 
   Future createHospitalization(
-      String entryAt, int bedId, int doctorId, int patientDni, token) async {
+      String entryAt,
+      int bedId,
+      int doctorId,
+      int patientDni,
+      String diagnosis,
+      String description,
+      int status,
+      token) async {
     final response = await http.post(
       'http://10.0.2.2:8000/api/hospitalization/',
       headers: {
@@ -57,9 +64,15 @@ class HospitalizationBloc {
           'bed': bedId,
           'doctor': doctorId,
           'patient': patientDni,
+          'progress': {
+            'diagnosis': diagnosis,
+            'description': description,
+            'status': status,
+          }
         },
       ),
     );
+    print(response.body);
   }
 
   Future dischargePatient(
