@@ -8,6 +8,7 @@ import 'package:datient/models/progress.dart';
 import 'package:datient/providers/datient_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'assign_patient_page.dart';
 
 class BedPage extends StatefulWidget {
@@ -175,65 +176,88 @@ class _BedPageState extends State<BedPage> {
     final bloc = DatientProvider.of(context).bloc;
     final hospitalizationBloc = DatientProvider.of(context).hospitalizationBloc;
     if (data.leftDate == null) {
-      return FloatingActionButton(
-        child: Icon(Icons.assignment_turned_in),
-        tooltip: 'Dar del alta el paciente',
-        onPressed: () {
-          showDialog<void>(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
-                title: Row(
-                  children: [
-                    Icon(Icons.info_outline),
-                    SizedBox(width: 10),
-                    Text('Confirmacion de accion'),
-                  ],
-                ),
-                content: SingleChildScrollView(
-                  child: ListBody(
-                    children: <Widget>[
-                      Divider(),
-                      Text(
-                        'Esta seguro que desea dar de alta al paciente?',
-                        style: TextStyle(fontSize: 18),
-                      )
-                    ],
-                  ),
-                ),
-                actions: <Widget>[
-                  FlatButton(
-                    textColor: Colors.white,
-                    child: Text('Confirmar'),
-                    color: Colors.green,
-                    onPressed: () {
-                      final hospitalizationBloc =
-                          DatientProvider.of(context).hospitalizationBloc;
-                      bloc.doctor.listen((value) =>
-                          hospitalizationBloc.dischargePatient(
-                              data.doctorInCharge,
-                              data.bed,
-                              data.hospitalizedPatient,
-                              value.token));
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  FlatButton(
-                    textColor: Colors.white,
-                    child: Text('Cancelar'),
-                    color: Colors.red,
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              );
-            },
-          );
-        },
+      return SpeedDial(
+        animatedIcon: AnimatedIcons.menu_close,
+        animatedIconTheme: IconThemeData(size: 22),
+        visible: true,
+        curve: Curves.bounceIn,
+        children: [
+          // FAB 1
+          SpeedDialChild(
+              child: Icon(Icons.add),
+              onTap: () {/* do anything */},
+              label: 'Nueva hospitalizacion',
+              labelStyle: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white,
+                  fontSize: 16.0),
+              labelBackgroundColor: Colors.blue),
+          // FAB 2
+          SpeedDialChild(
+              child: Icon(Icons.assignment_turned_in),
+              onTap: () {
+                showDialog<void>(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15)),
+                      title: Row(
+                        children: [
+                          Icon(Icons.info_outline),
+                          SizedBox(width: 10),
+                          Text('Confirmacion de accion'),
+                        ],
+                      ),
+                      content: SingleChildScrollView(
+                        child: ListBody(
+                          children: <Widget>[
+                            Divider(),
+                            Text(
+                              'Esta seguro que desea dar de alta al paciente?',
+                              style: TextStyle(fontSize: 18),
+                            )
+                          ],
+                        ),
+                      ),
+                      actions: <Widget>[
+                        FlatButton(
+                          textColor: Colors.white,
+                          child: Text('Confirmar'),
+                          color: Colors.green,
+                          onPressed: () {
+                            final hospitalizationBloc =
+                                DatientProvider.of(context).hospitalizationBloc;
+                            bloc.doctor.listen((value) =>
+                                hospitalizationBloc.dischargePatient(
+                                    data.doctorInCharge,
+                                    data.bed,
+                                    data.hospitalizedPatient,
+                                    value.token));
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        FlatButton(
+                          textColor: Colors.white,
+                          child: Text('Cancelar'),
+                          color: Colors.red,
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              label: 'Dar de alta',
+              labelStyle: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white,
+                  fontSize: 16.0),
+              labelBackgroundColor: Colors.blue)
+        ],
       );
     } else {
       return FloatingActionButton(
