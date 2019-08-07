@@ -156,13 +156,17 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
       itemCount: widget.patient.studies.length,
       itemBuilder: (BuildContext context, int index) {
         Study studies = widget.patient.studies[index];
-
         return Container(
-          child: Card(
-            elevation: 6,
-            child: Column(
-              children: [Image.network(studies.image)],
+          child: GestureDetector(
+            child: Hero(
+              tag: 'studyHero$index',
+              child: Image.network(studies.image),
             ),
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_) {
+                return DetailScreen(image: studies.image, index: index);
+              }));
+            },
           ),
         );
       },
@@ -270,6 +274,30 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
           },
           child: Icon(Icons.edit),
         ),
+      ),
+    );
+  }
+}
+
+class DetailScreen extends StatelessWidget {
+  final String image;
+  final int index;
+  DetailScreen({Key key, this.image, this.index}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: GestureDetector(
+        child: Center(
+          child: Hero(
+            tag: 'studyHero$index',
+            child: RotatedBox(
+              quarterTurns: 1,
+              child: Image.network(image),),
+          ),
+        ),
+        onTap: () {
+          Navigator.pop(context);
+        },
       ),
     );
   }
