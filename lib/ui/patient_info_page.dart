@@ -161,13 +161,7 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
           child: Card(
             elevation: 6,
             child: Column(
-              children: [
-                Text(
-                  studies.image.toString(),
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 20),
-              ],
+              children: [Image.network(studies.image)],
             ),
           ),
         );
