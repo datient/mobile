@@ -63,64 +63,7 @@ class _BedPageState extends State<PatientPage> {
       );
     } else {
       return AppBar(
-        automaticallyImplyLeading: false,
         title: Text('Pacientes'),
-        leading: PopupMenuButton(
-          icon: Icon(
-            Icons.account_circle,
-            size: 35,
-          ),
-          itemBuilder: (BuildContext context) => [
-            PopupMenuItem(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Icon(Icons.person),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  StreamBuilder(
-                    stream: bloc.doctor,
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      return snapshot.hasData
-                          ? Text(
-                              '${snapshot.data.getFullName()}',
-                            )
-                          : Center(child: CircularProgressIndicator());
-                    },
-                  )
-                ],
-              ),
-            ),
-            PopupMenuItem(
-                child: StreamBuilder(
-              stream: bloc.doctor,
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                return snapshot.hasData
-                    ? GestureDetector(
-                        onTap: () {
-                          bloc.signOut('${snapshot.data.token}').then(
-                            (success) {
-                              if (success == true) {
-                                Navigator.of(context)
-                                    .pushReplacementNamed('/login');
-                              }
-                            },
-                          );
-                        },
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Icon(Icons.exit_to_app),
-                            Text('Cerrar sesion')
-                          ],
-                        ),
-                      )
-                    : Center(child: CircularProgressIndicator());
-              },
-            ))
-          ],
-        ),
         actions: [
           IconButton(
             onPressed: () => setState(() => activeSearch = true),
