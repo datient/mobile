@@ -77,7 +77,7 @@ class PatientBloc {
     }
   }
 
-  Future editPatient(
+  Future<dynamic> editPatient(
       String editFirstName,
       String editLastName,
       int editDni,
@@ -105,8 +105,11 @@ class PatientBloc {
         },
       ),
     );
-    print(res.body);
-    return true;
+    if (res.statusCode == 200) {
+      return true;
+    } else {
+      print(res.body);
+    }
   }
 
   Future getHospitalizedPatient(token, Hospitalization hospitalization) async {

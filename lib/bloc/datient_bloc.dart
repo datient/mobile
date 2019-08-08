@@ -82,7 +82,7 @@ class DatientBloc {
       _removeToken();
       return res['detail'];
     }
-
+    print(response.body);
     return false;
   }
 

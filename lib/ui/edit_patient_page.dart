@@ -142,7 +142,37 @@ class _PatientEditPageState extends State<PatientEditPage> {
               _gender, _incomeDiagnosis, token, widget.patient)
           .then((success) {
         if (success == true) {
-          print(success);
+          Navigator.of(context).pop();
+          return showDialog<void>(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Row(
+                  children: [
+                    Icon(Icons.info_outline),
+                    SizedBox(width: 10),
+                    Text('Paciente modificado'),
+                  ],
+                ),
+                content: SingleChildScrollView(
+                  child: ListBody(
+                    children: <Widget>[
+                      Text('El paciente ha sido modificado con exito'),
+                    ],
+                  ),
+                ),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text('Cerrar'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
         } else {}
       });
     }
