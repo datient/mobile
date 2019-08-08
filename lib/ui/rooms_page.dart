@@ -122,8 +122,46 @@ class _RoomsPageState extends State<RoomsPage> {
                         onTap: () {
                           bloc.signOut('${snapshot.data.token}').then(
                             (success) {
-                              if (success == true) {
-                                Navigator.of(context).pushReplacementNamed('/login');
+                              if (success != false) {
+                                Navigator.of(context)
+                                    .pushReplacementNamed('/login');
+                                showDialog<void>(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15)),
+                                      title: Row(
+                                        children: [
+                                          Icon(Icons.info_outline),
+                                          SizedBox(width: 10),
+                                          Text('Se ha cerrado la sesión'),
+                                        ],
+                                      ),
+                                      content: SingleChildScrollView(
+                                        child: ListBody(
+                                          children: <Widget>[
+                                            Divider(),
+                                            Text(
+                                              success,
+                                              style: TextStyle(fontSize: 18),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      actions: <Widget>[
+                                        FlatButton(
+                                          child: Text('Cerrar'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
                               }
                             },
                           );

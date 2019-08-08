@@ -42,7 +42,7 @@ class PatientBloc {
     return patient;
   }
 
-  Future<bool> createPatient(
+  Future<dynamic> createPatient(
       String createFirstName,
       String createLastName,
       int createDni,
@@ -51,7 +51,6 @@ class PatientBloc {
       int createGender,
       String createIncomeDiagnosis,
       token) async {
-    print(token);
     final res = await http.post(
       'http://10.0.2.2:8000/api/patient/',
       headers: {
@@ -70,10 +69,10 @@ class PatientBloc {
         },
       ),
     );
-    if (res.statusCode == 200) {
-      print(res.body);
+    if (res.statusCode == 201) {
       return true;
     } else {
+      print(res.body);
       return false;
     }
   }

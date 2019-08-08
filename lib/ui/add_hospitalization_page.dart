@@ -88,10 +88,55 @@ class _HospitalizationAddPageState extends State<HospitalizationAddPage> {
       int _status = statusIndex;
       var hospitalization = HospitalizationBloc();
       hospitalization
-          .createHospitalization(widget.hospitalization.entryDate,widget.hospitalization.bed,widget.hospitalization.doctorInCharge,widget.hospitalization.hospitalizedPatient,_diagnosis,_description,_status, token)
+          .createHospitalization(
+              widget.hospitalization.entryDate,
+              widget.hospitalization.bed,
+              widget.hospitalization.doctorInCharge,
+              widget.hospitalization.hospitalizedPatient,
+              _diagnosis,
+              _description,
+              _status,
+              token)
           .then((success) {
         if (success == true) {
-          print('Hospitalizacion creada con exito');
+          Navigator.of(context).pop();
+          showDialog<void>(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
+                title: Row(
+                  children: [
+                    Icon(Icons.info_outline),
+                    SizedBox(width: 10),
+                    Text('Hospitalizacion añadida'),
+                  ],
+                ),
+                content: SingleChildScrollView(
+                  child: ListBody(
+                    children: <Widget>[
+                      Divider(),
+                      Text(
+                        'La hospitalizacion se ha creado con exito',
+                        style: TextStyle(fontSize: 18),
+                      )
+                    ],
+                  ),
+                ),
+                actions: <Widget>[
+                  FlatButton(
+                    textColor: Colors.white,
+                    child: Text('Ok'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
         } else {
           return false;
         }

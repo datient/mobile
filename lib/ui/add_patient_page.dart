@@ -141,7 +141,37 @@ class _PatientAddPageState extends State<PatientAddPage> {
               _historyNumber, _gender, _incomeDiagnosis, token)
           .then((success) {
         if (success == true) {
-          print('Usuario registrado con exito');
+          Navigator.of(context).pop();
+          return showDialog<void>(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Row(
+                  children: [
+                    Icon(Icons.info_outline),
+                    SizedBox(width: 10),
+                    Text('Paciente registrado'),
+                  ],
+                ),
+                content: SingleChildScrollView(
+                  child: ListBody(
+                    children: <Widget>[
+                      Text('El paciente ha sido registrado con exito'),
+                    ],
+                  ),
+                ),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text('Cerrar'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
         } else {
           return false;
         }

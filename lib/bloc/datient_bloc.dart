@@ -67,7 +67,7 @@ class DatientBloc {
     }
   }
 
-  Future<bool> signOut(token) async {
+  Future<dynamic> signOut(token) async {
     final response = await http.post(
       'http://10.0.2.2:8000/accounts/logout/',
       headers: {
@@ -78,15 +78,15 @@ class DatientBloc {
     );
 
     if (response.statusCode == 200) {
-      print(response.body);
+      var res = JSON.jsonDecode(response.body);
       _removeToken();
-      return true;
+      return res['detail'];
     }
 
     return false;
   }
 
-  Future<bool> registerDoctor(
+  Future<dynamic> registerDoctor(
     String registerEmail,
     String registerFirstName,
     String registerLastName,
@@ -108,8 +108,10 @@ class DatientBloc {
         },
       ),
     );
+    if (res.statusCode == 201) {
+      return true;
+    }
     print(res.body);
-    return true;
   }
 
   Future<Doctor> getSpecificDoctor(token, id) async {

@@ -43,7 +43,7 @@ class HospitalizationBloc {
     }
   }
 
-  Future createHospitalization(
+  Future <dynamic> createHospitalization(
       String entryAt,
       int bedId,
       int doctorId,
@@ -72,10 +72,15 @@ class HospitalizationBloc {
         },
       ),
     );
-    print(response.body);
+    if (response.statusCode == 201){
+      return true;
+    }else{
+      var responseError = JSON.jsonDecode(response.body);
+      return responseError;
+    }
   }
 
-  Future dischargePatient(
+  Future <dynamic> dischargePatient(
       int doctorId, int bedId, int patientDni, token) async {
     final response = await http.post(
       'http://10.0.2.2:8000/api/hospitalization/',
@@ -97,7 +102,10 @@ class HospitalizationBloc {
         },
       ),
     );
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
+      return true;
+    }
+    else{
       print(response.body);
     }
   }

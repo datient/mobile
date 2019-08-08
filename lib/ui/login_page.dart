@@ -127,12 +127,19 @@ class _LoginPageState extends State<LoginPage> {
               hierarchy, registerPassword, registerConfirmPassword)
           .then((success) {
         if (success == true) {
+          Navigator.of(context).popAndPushNamed('home');
           return showDialog<void>(
             context: context,
             barrierDismissible: false,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text('Registro de usuario'),
+                title: Row(
+                  children: [
+                    Icon(Icons.info_outline),
+                    SizedBox(width: 10),
+                    Text('Usuario Registrado'),
+                  ],
+                ),
                 content: SingleChildScrollView(
                   child: ListBody(
                     children: <Widget>[
