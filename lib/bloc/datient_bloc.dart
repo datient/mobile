@@ -42,8 +42,6 @@ class DatientBloc {
     RoomBloc roomBloc,
     PatientBloc patientBloc,
   ) async {
-    Doctor doctor = Doctor();
-
     final response = await http.post(
       'http://10.0.2.2:8000/token/',
       headers: {'Content-Type': 'application/json'},
@@ -56,7 +54,7 @@ class DatientBloc {
       var user = responseJson['user'];
       var userId = responseJson['user']['id'].toString();
       _saveToken(token, userId);
-      doctor.setUser(token, user);
+      Doctor doctor = Doctor.fromJson(user, token);
       _doctorSubject.sink.add(doctor);
       roomBloc.getRooms(token);
       patientBloc.getPatients(token);

@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
-        GestureDetector(
+        ListTile(
           onTap: () {
             bloc.signOut(data.token).then(
               (success) {
@@ -79,10 +79,11 @@ class _HomePageState extends State<HomePage> {
               },
             );
           },
-          child: ListTile(
-            title: Text('Cerrar sesion'),
-            trailing: Icon(Icons.exit_to_app),
+          title: Text(
+            'Cerrar sesión',
+            style: TextStyle(fontSize: 16, color: Colors.grey),
           ),
+          trailing: Icon(Icons.exit_to_app),
         ),
       ],
     );

@@ -55,8 +55,9 @@ class _BedPageState extends State<PatientPage> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.close),
-            onPressed: () { setState(() => activeSearch = false);
-            _searchController.clear();
+            onPressed: () {
+              setState(() => activeSearch = false);
+              _searchController.clear();
             },
           )
         ],
@@ -70,6 +71,15 @@ class _BedPageState extends State<PatientPage> {
             icon: Icon(Icons.search),
           ),
         ],
+        leading: IconButton(
+          icon: Icon(
+            Icons.account_circle,
+            size: 35,
+          ),
+          onPressed: () {
+            Scaffold.of(context).openDrawer();
+          },
+        ),
       );
     }
   }

@@ -81,10 +81,17 @@ class _RoomsPageState extends State<RoomsPage> {
   Widget build(BuildContext context) {
     final bloc = DatientProvider.of(context).bloc;
     final roomBloc = DatientProvider.of(context).roomBloc;
+    bloc.doctor.listen((value) => roomBloc.getRooms(value.token));
 
     return Scaffold(
       appBar: AppBar(
         title: Text('Salas'),
+        leading: IconButton(
+          icon: Icon(Icons.account_circle,size: 35,),
+          onPressed: () {
+            Scaffold.of(context).openDrawer();
+          },
+        ),
       ),
       body: _buildRoomPage(bloc, roomBloc),
     );
