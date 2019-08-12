@@ -7,6 +7,7 @@ import 'package:datient/models/patient.dart';
 import 'package:datient/models/progress.dart';
 import 'package:datient/providers/datient_provider.dart';
 import 'package:datient/ui/add_hospitalization_page.dart';
+import 'package:datient/ui/discharge_patient_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -44,7 +45,7 @@ class _BedPageState extends State<BedPage> {
     if (data.progress.status == 0) {
       _patientStatus = 'Bien';
     } else if (data.progress.status == 1) {
-      _patientStatus = 'Precaucion';
+      _patientStatus = 'Precaución';
     } else if (data.progress.status == 2) {
       _patientStatus = 'Peligro';
     }
@@ -73,7 +74,7 @@ class _BedPageState extends State<BedPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Hospitalizacion',
+                  'Hospitalización',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 Divider(),
@@ -133,7 +134,7 @@ class _BedPageState extends State<BedPage> {
                 ),
                 Divider(),
                 Text(
-                  'Diagnostico',
+                  'Diagnóstico',
                   style: TextStyle(fontSize: 16, color: Colors.grey),
                 ),
                 Text(
@@ -142,7 +143,7 @@ class _BedPageState extends State<BedPage> {
                 ),
                 Divider(),
                 Text(
-                  'Descripcion',
+                  'Descripción',
                   style: TextStyle(fontSize: 16, color: Colors.grey),
                 ),
                 Text(
@@ -167,7 +168,7 @@ class _BedPageState extends State<BedPage> {
       return Center(
         child: Text(
           'No se han encontrado hospitalizaciones',
-          style: TextStyle(fontSize: 18),
+          style: TextStyle(fontSize: 18, color: Colors.grey),
         ),
       );
     }
@@ -194,7 +195,7 @@ class _BedPageState extends State<BedPage> {
                   ),
                 );
               },
-              label: 'Nueva hospitalizacion',
+              label: 'Nueva hospitalización',
               labelStyle: TextStyle(
                   fontWeight: FontWeight.w500,
                   color: Colors.white,
@@ -203,97 +204,105 @@ class _BedPageState extends State<BedPage> {
           SpeedDialChild(
               child: Icon(Icons.assignment_turned_in),
               onTap: () {
-                showDialog<void>(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15)),
-                      title: Row(
-                        children: [
-                          Icon(Icons.info_outline),
-                          SizedBox(width: 10),
-                          Text('Confirmación de accion'),
-                        ],
-                      ),
-                      content: SingleChildScrollView(
-                        child: ListBody(
-                          children: <Widget>[
-                            Divider(),
-                            Text(
-                              'Esta seguro que desea dar de alta al paciente?',
-                              style: TextStyle(fontSize: 18),
-                            )
-                          ],
-                        ),
-                      ),
-                      actions: <Widget>[
-                        FlatButton(
-                          textColor: Colors.white,
-                          child: Text('Confirmar'),
-                          color: Colors.green,
-                          onPressed: () {
-                            final hospitalizationBloc =
-                                DatientProvider.of(context).hospitalizationBloc;
-                            bloc.doctor.listen(
-                              (value) => hospitalizationBloc
-                                  .dischargePatient(
-                                      data.doctorInCharge,
-                                      data.bed,
-                                      data.hospitalizedPatient,
-                                      value.token)
-                                  .then(
-                                (success) {
-                                  Navigator.of(context).pop();
-                                  return showDialog<void>(
-                                    context: context,
-                                    barrierDismissible: false,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: Row(
-                                          children: [
-                                            Icon(Icons.info_outline),
-                                            SizedBox(width: 10),
-                                            Text('Paciente dado de alta'),
-                                          ],
-                                        ),
-                                        content: SingleChildScrollView(
-                                          child: ListBody(
-                                            children: <Widget>[
-                                              Text(
-                                                  'El paciente ha sido dado de alta con exito'),
-                                            ],
-                                          ),
-                                        ),
-                                        actions: <Widget>[
-                                          FlatButton(
-                                            child: Text('Cerrar'),
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                },
-                              ),
-                            );
-                          },
-                        ),
-                        FlatButton(
-                          textColor: Colors.white,
-                          child: Text('Cancelar'),
-                          color: Colors.red,
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                    );
-                  },
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => DischargePatientPage(
+                      hospitalization: data,
+                    ),
+                  ),
                 );
+                // showDialog<void>(
+                //   context: context,
+                //   barrierDismissible: false,
+                //   builder: (BuildContext context) {
+                //     return AlertDialog(
+                //       shape: RoundedRectangleBorder(
+                //           borderRadius: BorderRadius.circular(15)),
+                //       title: Row(
+                //         children: [
+                //           Icon(Icons.info_outline),
+                //           SizedBox(width: 10),
+                //           Text('Confirmación de accion'),
+                //         ],
+                //       ),
+                //       content: SingleChildScrollView(
+                //         child: ListBody(
+                //           children: <Widget>[
+                //             Divider(),
+                //             Text(
+                //               'Esta seguro que desea dar de alta al paciente?',
+                //               style: TextStyle(fontSize: 18),
+                //             )
+                //           ],
+                //         ),
+                //       ),
+                //       actions: <Widget>[
+                //         FlatButton(
+                //           textColor: Colors.white,
+                //           child: Text('Confirmar'),
+                //           color: Colors.green,
+                //           onPressed: () {
+                //             final hospitalizationBloc =
+                //                 DatientProvider.of(context).hospitalizationBloc;
+                //             bloc.doctor.listen(
+                //               (value) => hospitalizationBloc
+                //                   .dischargePatient(
+                //                       data.doctorInCharge,
+                //                       data.bed,
+                //                       data.hospitalizedPatient,
+                //                       value.token)
+                //                   .then(
+                //                 (success) {
+                //                   Navigator.of(context).pop();
+                //                   return showDialog<void>(
+                //                     context: context,
+                //                     barrierDismissible: false,
+                //                     builder: (BuildContext context) {
+                //                       return AlertDialog(
+                //                         title: Row(
+                //                           children: [
+                //                             Icon(Icons.info_outline),
+                //                             SizedBox(width: 10),
+                //                             Text('Paciente dado de alta'),
+                //                           ],
+                //                         ),
+                //                         content: SingleChildScrollView(
+                //                           child: ListBody(
+                //                             children: <Widget>[
+                //                               Text(
+                //                                   'El paciente ha sido dado de alta con exito'),
+                //                             ],
+                //                           ),
+                //                         ),
+                //                         actions: <Widget>[
+                //                           FlatButton(
+                //                             child: Text('Cerrar'),
+                //                             color: Colors.blue,
+                //                             onPressed: () {
+                //                               Navigator.of(context).pop();
+                //                             },
+                //                           ),
+                //                         ],
+                //                       );
+                //                     },
+                //                   );
+                //                 },
+                //               ),
+                //             );
+                //           },
+                //         ),
+                //         FlatButton(
+                //           textColor: Colors.white,
+                //           child: Text('Cancelar'),
+                //           color: Colors.red,
+                //           onPressed: () {
+                //             Navigator.of(context).pop();
+                //           },
+                //         ),
+                //       ],
+                //     );
+                //   },
+                // );
               },
               label: 'Dar de alta',
               labelStyle: TextStyle(
@@ -339,7 +348,8 @@ class _BedPageState extends State<BedPage> {
                                 ? Center(
                                     child: Text(
                                     snapshot.data,
-                                    style: TextStyle(fontSize: 18),
+                                    style: TextStyle(
+                                        fontSize: 18, color: Colors.grey),
                                   ))
                                 : Center(child: CircularProgressIndicator());
                           });

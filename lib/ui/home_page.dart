@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage> {
                 ? Colors.blue
                 : Colors.white,
             child: Text(
-              '${data.firstName[0]}${data.lastName[0]}',
+              '${data.firstName[0].toUpperCase()}${data.lastName[0].toUpperCase()}',
               style: TextStyle(fontSize: 40.0),
             ),
           ),
@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             Icon(Icons.info_outline),
                             SizedBox(width: 10),
-                            Text('Se ha cerrado la sesión'),
+                            Text('Cerrar Sesión'),
                           ],
                         ),
                         content: SingleChildScrollView(
@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> {
                             children: <Widget>[
                               Divider(),
                               Text(
-                                success,
+                                'Se ha cerrado la sesión',
                                 style: TextStyle(fontSize: 18),
                               )
                             ],

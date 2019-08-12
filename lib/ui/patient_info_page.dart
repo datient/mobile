@@ -105,7 +105,7 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Numero de historial',
+                      'Número de historial',
                       style: TextStyle(color: Colors.grey, fontSize: 15),
                     ),
                     Text(
@@ -119,7 +119,7 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Genero',
+                      'Género',
                       style: TextStyle(color: Colors.grey, fontSize: 15),
                     ),
                     Text(
@@ -133,7 +133,7 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Diagnostico Inicial',
+                      'Diagnóstico Inicial',
                       style: TextStyle(color: Colors.grey, fontSize: 15),
                     ),
                     Text(
@@ -176,7 +176,7 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
             },
           )
         : Center(
-            child: Text('No se han encontrado estudios'),
+            child: Text('No se han encontrado estudios',style: TextStyle(fontSize: 18,color: Colors.grey),),
           );
   }
 
@@ -223,7 +223,7 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
                         child: ListBody(
                           children: <Widget>[
                             Text(
-                              'Fecha de creacion',
+                              'Fecha de creación',
                               style: TextStyle(color: Colors.grey),
                             ),
                             Text(formattedCreateDate +
@@ -231,7 +231,7 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
                                 formattedTimeCreateDate),
                             Divider(),
                             Text(
-                              'Ultima actualizacion',
+                              'Última actualización',
                               style: TextStyle(color: Colors.grey),
                             ),
                             Text(formattedUpdateDate +
