@@ -1,9 +1,11 @@
 import 'dart:convert' as JSON;
+import 'dart:io';
 import 'package:datient/models/hospitalization.dart';
 import 'package:datient/models/patient.dart';
 import 'package:datient/models/study.dart';
 import 'package:http/http.dart' as http;
 import 'package:rxdart/rxdart.dart';
+import 'package:dio/dio.dart';
 
 class PatientBloc {
   final _patientSubject = BehaviorSubject<List<Patient>>();
@@ -139,6 +141,24 @@ class PatientBloc {
       _patientSearchSubject.sink.add(list);
     }
     return list;
+  }
+
+  Future postStudy(File image, patient, token) async {
+    Dio dio = Dio();
+    FormData formData = new FormData.from(
+        {'patient': patient, 'image': UploadFileInfo(image, image.path)});
+    final response = await dio.post(
+      'http://10.0.2.2:8000/api/study/',
+      data: formData,
+      options: Options(
+        method: 'POST',
+        responseType: ResponseType.json,
+        headers: {'Authorization': 'JWT $token'},
+      ),
+    );
+    if (response.statusCode == 200){
+      print(response.data);
+    }
   }
 
   dispose() {

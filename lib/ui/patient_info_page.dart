@@ -44,11 +44,14 @@ class _PatientInfoPageState extends State<PatientInfoPage>
   File _image;
 
   Future getImage() async {
+    final DatientBloc bloc = DatientProvider.of(context).bloc;
+    final PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-
     setState(() {
       _image = image;
     });
+    bloc.doctor.listen((value) =>
+        patientBloc.postStudy(_image, widget.patient.dni, value.token));
   }
 
   Widget _buildPatientInfo() {
