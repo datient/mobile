@@ -12,6 +12,8 @@ class Patient {
   var createdDate;
   var updatedDate;
   List<Study> studies;
+  var contact;
+  var secondContact;
 
   Patient({
     this.dni,
@@ -25,6 +27,8 @@ class Patient {
     this.createdDate,
     this.updatedDate,
     this.studies,
+    this.contact,
+    this.secondContact,
   });
 
   factory Patient.fromJson(Map<String, dynamic> json) {
@@ -45,6 +49,8 @@ class Patient {
       createdDate: json['created_at'],
       updatedDate: json['updated_at'],
       studies: list,
+      contact: json['contact'],
+      secondContact: json['contact2'],
     );
   }
 }

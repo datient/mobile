@@ -56,7 +56,7 @@ class _PatientEditPageState extends State<PatientEditPage> {
         child: Column(
           children: [
             TextFormField(
-              controller: _cFirstName,
+              controller: _cFirstName..text = widget.patient.firstName,
               decoration: InputDecoration(
                 icon: Icon(Icons.person),
                 labelText: 'Nombre',
@@ -64,7 +64,7 @@ class _PatientEditPageState extends State<PatientEditPage> {
               ),
             ),
             TextFormField(
-              controller: _cLastName,
+              controller: _cLastName..text = widget.patient.lastName,
               decoration: InputDecoration(
                 icon: Icon(Icons.person),
                 labelText: 'Apellido',
@@ -72,7 +72,7 @@ class _PatientEditPageState extends State<PatientEditPage> {
               ),
             ),
             TextFormField(
-              controller: _cDni,
+              controller: _cDni..text = widget.patient.dni.toString(),
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 icon: Icon(Icons.picture_in_picture),
@@ -82,7 +82,8 @@ class _PatientEditPageState extends State<PatientEditPage> {
             ),
             _buildDatePicker(),
             TextFormField(
-              controller: _cHistoryNumber,
+              controller: _cHistoryNumber
+                ..text = widget.patient.historyNumber.toString(),
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 icon: Icon(Icons.book),
@@ -113,7 +114,8 @@ class _PatientEditPageState extends State<PatientEditPage> {
               }).toList(),
             ),
             TextFormField(
-              controller: _cInitialDiagnosis,
+              controller: _cInitialDiagnosis
+                ..text = widget.patient.incomeDiagnostic,
               decoration: InputDecoration(
                   icon: Icon(Icons.assignment),
                   labelText: 'Diagnostico Inicial',
@@ -180,12 +182,6 @@ class _PatientEditPageState extends State<PatientEditPage> {
 
   Widget build(BuildContext context) {
     final DatientBloc bloc = DatientProvider.of(context).bloc;
-    _cFirstName.text = widget.patient.firstName;
-    _cLastName.text = widget.patient.lastName;
-    _cDni.text = widget.patient.dni.toString();
-    _cHistoryNumber.text = widget.patient.historyNumber.toString();
-    _cInitialDiagnosis.text = widget.patient.incomeDiagnostic;
-    genderIndex = widget.patient.gender;
 
     return Scaffold(
       appBar: AppBar(

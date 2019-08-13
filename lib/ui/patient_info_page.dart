@@ -101,6 +101,7 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
                   ],
                 ),
                 Divider(),
+                _buildPatientContacts(),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -151,6 +152,89 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
     );
   }
 
+  Widget _buildPatientContacts() {
+    if (widget.patient.contact != null &&
+        widget.patient.secondContact != null) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Telefono de contacto',
+                style: TextStyle(color: Colors.grey, fontSize: 15),
+              ),
+              Text(
+                widget.patient.contact.toString(),
+                style: TextStyle(fontSize: 20),
+              ),
+            ],
+          ),
+          Divider(),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Segundo telefono de contacto',
+                style: TextStyle(color: Colors.grey, fontSize: 15),
+              ),
+              Text(
+                widget.patient.secondContact.toString(),
+                style: TextStyle(fontSize: 20),
+              ),
+            ],
+          ),
+          Divider(),
+        ],
+      );
+    } else if (widget.patient.contact != null &&
+        widget.patient.secondContact == null) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Telefono de contacto',
+                style: TextStyle(color: Colors.grey, fontSize: 15),
+              ),
+              Text(
+                widget.patient.contact.toString(),
+                style: TextStyle(fontSize: 20),
+              ),
+            ],
+          ),
+          Divider(),
+        ],
+      );
+    } else if (widget.patient.secondContact != null &&
+        widget.patient.contact == null) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Segundo telefono de contacto',
+                style: TextStyle(color: Colors.grey, fontSize: 15),
+              ),
+              Text(
+                widget.patient.secondContact.toString(),
+                style: TextStyle(fontSize: 20),
+              ),
+            ],
+          ),
+          Divider(),
+        ],
+      );
+    } else {
+      return Container();
+    }
+  }
+
   Widget _buildPatientStudies() {
     return (widget.patient.studies.isNotEmpty)
         ? ListView.builder(
@@ -176,7 +260,10 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
             },
           )
         : Center(
-            child: Text('No se han encontrado estudios',style: TextStyle(fontSize: 18,color: Colors.grey),),
+            child: Text(
+              'No se han encontrado estudios',
+              style: TextStyle(fontSize: 18, color: Colors.grey),
+            ),
           );
   }
 
