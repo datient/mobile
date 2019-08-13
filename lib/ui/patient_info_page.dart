@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:datient/bloc/datient_bloc.dart';
 import 'package:datient/bloc/patient_bloc.dart';
 import 'package:datient/models/patient.dart';
 import 'package:datient/models/study.dart';
 import 'package:datient/providers/datient_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'edit_patient_page.dart';
 import 'package:intl/intl.dart';
 
@@ -14,9 +17,39 @@ class PatientInfoPage extends StatefulWidget {
   _PatientInfoPageState createState() => _PatientInfoPageState();
 }
 
-class _PatientInfoPageState extends State<PatientInfoPage> {
+class _PatientInfoPageState extends State<PatientInfoPage>
+    with SingleTickerProviderStateMixin {
   @override
   var _patientGender;
+  TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this, initialIndex: 0);
+    _tabController.addListener(_handleTabIndex);
+  }
+
+  @override
+  void dispose() {
+    _tabController.removeListener(_handleTabIndex);
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  void _handleTabIndex() {
+    setState(() {});
+  }
+
+  File _image;
+
+  Future getImage() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _image = image;
+    });
+  }
 
   Widget _buildPatientInfo() {
     return ListView(
@@ -267,6 +300,30 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
           );
   }
 
+  Widget _buildFloatingActionButton() {
+    if (_tabController.index == 0) {
+      return FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => PatientEditPage(
+                patient: widget.patient,
+              ),
+            ),
+          );
+        },
+        child: Icon(Icons.edit),
+      );
+    } else {
+      return FloatingActionButton(
+        onPressed: () {
+          getImage();
+        },
+        child: Icon(Icons.file_upload),
+      );
+    }
+  }
+
   Widget build(BuildContext context) {
     var _createdDate = DateTime.parse(widget.patient.createdDate);
     var _updatedDate = DateTime.parse(widget.patient.updatedDate);
@@ -286,89 +343,79 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(_fullname),
-          actions: [
-            IconButton(
-              icon: Icon(Icons.more_vert),
-              onPressed: () {
-                showDialog<void>(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15)),
-                      title: Row(
-                        children: [
-                          Icon(Icons.info_outline),
-                          SizedBox(width: 10),
-                          Text('Detalles'),
-                        ],
-                      ),
-                      content: SingleChildScrollView(
-                        child: ListBody(
-                          children: <Widget>[
-                            Text(
-                              'Fecha de creación',
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                            Text(formattedCreateDate +
-                                ' a las ' +
-                                formattedTimeCreateDate),
-                            Divider(),
-                            Text(
-                              'Última actualización',
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                            Text(formattedUpdateDate +
-                                ' a las ' +
-                                formattedTimeUpdateDate),
+          appBar: AppBar(
+            title: Text(_fullname),
+            actions: [
+              IconButton(
+                icon: Icon(Icons.more_vert),
+                onPressed: () {
+                  showDialog<void>(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15)),
+                        title: Row(
+                          children: [
+                            Icon(Icons.info_outline),
+                            SizedBox(width: 10),
+                            Text('Detalles'),
                           ],
                         ),
-                      ),
-                      actions: <Widget>[
-                        FlatButton(
-                          child: Text('Cerrar'),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
+                        content: SingleChildScrollView(
+                          child: ListBody(
+                            children: <Widget>[
+                              Text(
+                                'Fecha de creación',
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                              Text(formattedCreateDate +
+                                  ' a las ' +
+                                  formattedTimeCreateDate),
+                              Divider(),
+                              Text(
+                                'Última actualización',
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                              Text(formattedUpdateDate +
+                                  ' a las ' +
+                                  formattedTimeUpdateDate),
+                            ],
+                          ),
                         ),
-                      ],
-                    );
-                  },
-                );
-              },
-            )
-          ],
-          bottom: TabBar(
-            tabs: [
-              Tab(icon: Icon(Icons.assignment), text: 'Datos'),
-              Tab(icon: Icon(Icons.save), text: 'Estudios'),
+                        actions: <Widget>[
+                          FlatButton(
+                            child: Text('Cerrar'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+              )
+            ],
+            bottom: TabBar(
+              controller: _tabController,
+              tabs: [
+                Tab(icon: Icon(Icons.assignment), text: 'Datos'),
+                Tab(icon: Icon(Icons.save), text: 'Estudios'),
+              ],
+            ),
+          ),
+          body: TabBarView(
+            controller: _tabController,
+            children: [
+              Container(child: _buildPatientInfo()),
+              Container(
+                child: _buildPatientStudies(),
+              )
             ],
           ),
-        ),
-        body: TabBarView(
-          children: [
-            Container(child: _buildPatientInfo()),
-            Container(
-              child: _buildPatientStudies(),
-            )
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => PatientEditPage(
-                  patient: widget.patient,
-                ),
-              ),
-            );
-          },
-          child: Icon(Icons.edit),
-        ),
-      ),
+          floatingActionButton: _buildFloatingActionButton()),
     );
   }
 }

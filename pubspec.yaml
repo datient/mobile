@@ -26,6 +26,7 @@ dependencies:
   shared_preferences: any
   sqflite: ^1.1.6
   flutter_speed_dial: ^1.2.1
+  image_picker: any
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
