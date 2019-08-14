@@ -50,8 +50,54 @@ class _PatientInfoPageState extends State<PatientInfoPage>
     setState(() {
       _image = image;
     });
-    bloc.doctor.listen((value) =>
-        patientBloc.postStudy(_image, widget.patient.dni, value.token));
+    if (_image != null) {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Row(
+              children: [
+                Icon(Icons.info_outline),
+                SizedBox(width: 10),
+                Text('Publicar estudio'),
+              ],
+            ),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Image.file(_image),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text(
+                  'Aceptar',
+                  style: TextStyle(color: Colors.white),
+                ),
+                color: Colors.green,
+                onPressed: () {
+                  bloc.doctor.listen((value) => patientBloc.postStudy(
+                      _image, widget.patient.dni, value.token));
+                  Navigator.of(context).pop();
+                },
+              ),
+              FlatButton(
+                child: Text(
+                  'Cancelar',
+                  style: TextStyle(color: Colors.white),
+                ),
+                color: Colors.red,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   Widget _buildPatientInfo() {
