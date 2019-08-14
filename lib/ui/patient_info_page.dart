@@ -78,9 +78,42 @@ class _PatientInfoPageState extends State<PatientInfoPage>
                 ),
                 color: Colors.green,
                 onPressed: () {
-                  bloc.doctor.listen((value) => patientBloc.postStudy(
-                      _image, widget.patient.dni, value.token));
-                  Navigator.of(context).pop();
+                  bloc.doctor.listen((value) => patientBloc
+                          .postStudy(_image, widget.patient.dni, value.token)
+                          .then((success) {
+                        Navigator.of(context).pop();
+                        return showDialog<void>(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Row(
+                                children: [
+                                  Icon(Icons.info_outline),
+                                  SizedBox(width: 10),
+                                  Text('Estudio publicado'),
+                                ],
+                              ),
+                              content: SingleChildScrollView(
+                                child: ListBody(
+                                  children: <Widget>[
+                                    Text(
+                                        'El estudio se ha publicado con exito'),
+                                  ],
+                                ),
+                              ),
+                              actions: <Widget>[
+                                FlatButton(
+                                  child: Text('Cerrar'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }));
                 },
               ),
               FlatButton(

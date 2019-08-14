@@ -143,7 +143,7 @@ class PatientBloc {
     return list;
   }
 
-  Future postStudy(File image, patient, token) async {
+  Future<dynamic> postStudy(File image, patient, token) async {
     Dio dio = Dio();
     FormData formData = new FormData.from(
         {'patient': patient, 'image': UploadFileInfo(image, image.path)});
@@ -156,8 +156,8 @@ class PatientBloc {
         headers: {'Authorization': 'JWT $token'},
       ),
     );
-    if (response.statusCode == 200){
-      print(response.data);
+    if (response.statusCode == 201) {
+      return true;
     }
   }
 
