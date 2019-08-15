@@ -120,6 +120,7 @@ class _BedPageState extends State<PatientPage> {
                             Icon(
                               Icons.account_circle,
                               size: 35,
+                              color: Colors.blue,
                             ),
                             SizedBox(width: 20),
                             Column(

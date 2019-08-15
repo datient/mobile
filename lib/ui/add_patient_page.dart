@@ -156,9 +156,11 @@ class _PatientAddPageState extends State<PatientAddPage> {
       int _historyNumber = int.parse(_cHistoryNumber.value.text);
       int _gender = genderIndex;
       String _incomeDiagnosis = _cInitialDiagnosis.value.text;
+      String _contactNumber = _cContact.value.text;
+      String _secondContactNumber = _cSecondContact.value.text;
       patient
           .createPatient(_firstName, _lastName, _dni, _birthdate,
-              _historyNumber, _gender, _incomeDiagnosis, token)
+              _historyNumber, _gender, _incomeDiagnosis,_contactNumber,_secondContactNumber, token)
           .then((success) {
         if (success == true) {
           Navigator.of(context).pop();

@@ -52,6 +52,8 @@ class PatientBloc {
       int createHistoryNumber,
       int createGender,
       String createIncomeDiagnosis,
+      String contactNumber,
+      String secondContactNumber,
       token) async {
     final res = await http.post(
       'http://10.0.2.2:8000/api/patient/',
@@ -67,7 +69,9 @@ class PatientBloc {
           'birth_date': createBirthDate,
           'history_number': createHistoryNumber,
           'gender': createGender,
-          'income_diagnosis': createIncomeDiagnosis
+          'income_diagnosis': createIncomeDiagnosis,
+          'contact': contactNumber,
+          'contact2': secondContactNumber,
         },
       ),
     );

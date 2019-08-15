@@ -34,7 +34,10 @@ class _RoomsPageState extends State<RoomsPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.local_hospital, size: 80),
+                    Icon(
+                      Icons.local_hospital,
+                      size: 80,
+                    ),
                     Text(
                       data[index].roomName,
                       style:
@@ -87,7 +90,10 @@ class _RoomsPageState extends State<RoomsPage> {
       appBar: AppBar(
         title: Text('Salas'),
         leading: IconButton(
-          icon: Icon(Icons.account_circle,size: 35,),
+          icon: Icon(
+            Icons.account_circle,
+            size: 35,
+          ),
           onPressed: () {
             Scaffold.of(context).openDrawer();
           },
