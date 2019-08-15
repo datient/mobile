@@ -25,6 +25,8 @@ class _PatientAddPageState extends State<PatientAddPage> {
   final _cDni = TextEditingController();
   final _cHistoryNumber = TextEditingController();
   final _cInitialDiagnosis = TextEditingController();
+  final _cContact = TextEditingController();
+  final _cSecondContact = TextEditingController();
   var genderIndex;
   Gender selectedGender;
   List<Gender> genders = <Gender>[
@@ -110,6 +112,24 @@ class _PatientAddPageState extends State<PatientAddPage> {
                   ),
                 );
               }).toList(),
+            ),
+            TextFormField(
+              keyboardType: TextInputType.phone,
+              controller: _cContact,
+              decoration: InputDecoration(
+                icon: Icon(Icons.contact_phone),
+                labelText: 'Numero de contacto (Opcional)',
+                hintText: 'Ingrese el numero de contacto',
+              ),
+            ),
+            TextFormField(
+              keyboardType: TextInputType.phone,
+              controller: _cSecondContact,
+              decoration: InputDecoration(
+                icon: Icon(Icons.contact_phone),
+                labelText: '2do Numero de contacto (Opcional)',
+                hintText: 'Ingrese el numero de contacto',
+              ),
             ),
             TextFormField(
               controller: _cInitialDiagnosis,

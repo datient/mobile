@@ -36,6 +36,7 @@ class _BedPageState extends State<PatientPage> {
 
   PreferredSizeWidget _appBar() {
     DatientBloc bloc = DatientProvider.of(context).bloc;
+    PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
     if (activeSearch) {
       return AppBar(
         leading: Icon(Icons.search),
@@ -58,6 +59,9 @@ class _BedPageState extends State<PatientPage> {
             onPressed: () {
               setState(() => activeSearch = false);
               _searchController.clear();
+              var search = _searchController.value.text;
+              bloc.doctor.listen(
+                  (value) => patientBloc.searchPatient(value.token, search));
             },
           )
         ],
@@ -85,7 +89,8 @@ class _BedPageState extends State<PatientPage> {
   }
 
   Widget _buildGuestList(data) {
-    return Scrollbar(
+    return (data.length != 0)
+    ? Scrollbar(
       child: ListView.builder(
           itemCount: data.length,
           itemBuilder: (BuildContext context, int index) {
@@ -143,7 +148,8 @@ class _BedPageState extends State<PatientPage> {
               ),
             );
           }),
-    );
+    )
+    : Center(child: Text('No se han encontrado pacientes',style: TextStyle(fontSize:18,color: Colors.grey),),);
   }
 
   _buildPatientStream() {

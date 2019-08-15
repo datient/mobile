@@ -127,8 +127,7 @@ class _HospitalizationAddPageState extends State<HospitalizationAddPage> {
                 ),
                 actions: <Widget>[
                   FlatButton(
-                    textColor: Colors.white,
-                    child: Text('Ok'),
+                    child: Text('Cerrar'),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
