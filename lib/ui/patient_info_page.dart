@@ -26,7 +26,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this, initialIndex: 0);
+    _tabController = TabController(length: 3, vsync: this, initialIndex: 0);
     _tabController.addListener(_handleTabIndex);
   }
 
@@ -56,7 +56,8 @@ class _PatientInfoPageState extends State<PatientInfoPage>
         barrierDismissible: false,
         builder: (BuildContext context) {
           return AlertDialog(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
             title: Row(
               children: [
                 Icon(Icons.info_outline),
@@ -485,7 +486,8 @@ class _PatientInfoPageState extends State<PatientInfoPage>
               controller: _tabController,
               tabs: [
                 Tab(icon: Icon(Icons.assignment), text: 'Datos'),
-                Tab(icon: Icon(Icons.save), text: 'Estudios'),
+                Tab(icon: Icon(Icons.description), text: 'Plan Futuro'),
+                Tab(icon: Icon(Icons.folder_shared), text: 'Estudios'),
               ],
             ),
           ),
@@ -493,6 +495,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
             controller: _tabController,
             children: [
               Container(child: _buildPatientInfo()),
+              Container(child: Text('hola')),
               Container(
                 child: _buildPatientStudies(),
               )
