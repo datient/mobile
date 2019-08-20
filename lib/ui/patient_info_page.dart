@@ -147,10 +147,11 @@ class _PatientInfoPageState extends State<PatientInfoPage>
                 padding: EdgeInsets.all(8.0),
                 child: Container(
                     child: Card(
+                      elevation: 6,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),
-                  margin: EdgeInsets.all(15),
+                  margin: EdgeInsets.only(top: 4, bottom: 4),
                   child: Padding(
                     padding: EdgeInsets.all(12),
                     child: Column(
