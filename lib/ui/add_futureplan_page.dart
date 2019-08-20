@@ -1,11 +1,12 @@
 import 'package:datient/bloc/datient_bloc.dart';
+import 'package:datient/bloc/patient_bloc.dart';
 import 'package:datient/models/patient.dart';
 import 'package:datient/providers/datient_provider.dart';
 import 'package:flutter/material.dart';
 
 class FuturePlanAddPage extends StatefulWidget {
   final Patient patient;
-  FuturePlanAddPage({Key key,this.patient}) : super(key: key);
+  FuturePlanAddPage({Key key, this.patient}) : super(key: key);
   @override
   _FuturePlanAddPageState createState() => _FuturePlanAddPageState();
 }
@@ -16,7 +17,7 @@ class Status {
 }
 
 class _FuturePlanAddPageState extends State<FuturePlanAddPage> {
-  final _cDiagnosis = TextEditingController();
+  final _cTitle = TextEditingController();
   final _cDescription = TextEditingController();
   var statusIndex;
   Status selectedStatus;
@@ -35,7 +36,7 @@ class _FuturePlanAddPageState extends State<FuturePlanAddPage> {
         child: Column(
           children: [
             TextFormField(
-              controller: _cDiagnosis,
+              controller: _cTitle,
               decoration: InputDecoration(
                 icon: Icon(Icons.title),
                 labelText: 'Titulo',
@@ -56,65 +57,14 @@ class _FuturePlanAddPageState extends State<FuturePlanAddPage> {
   }
 
   _validateAndSubmit(token) {
-    // if (_createformKey.currentState.validate()) {
-    //   String _diagnosis = _cDiagnosis.value.text;
-    //   String _description = _cDescription.value.text;
-    //   int _status = statusIndex;
-    //   var hospitalization = HospitalizationBloc();
-    //   hospitalization
-    //       .createHospitalization(
-    //           widget.hospitalization.entryDate,
-    //           widget.hospitalization.bed,
-    //           widget.hospitalization.doctorInCharge,
-    //           widget.hospitalization.hospitalizedPatient,
-    //           _diagnosis,
-    //           _description,
-    //           _status,
-    //           token)
-    //       .then((success) {
-    //     if (success == true) {
-    //       Navigator.of(context).pop();
-    //       showDialog<void>(
-    //         context: context,
-    //         barrierDismissible: false,
-    //         builder: (BuildContext context) {
-    //           return AlertDialog(
-    //             shape: RoundedRectangleBorder(
-    //                 borderRadius: BorderRadius.circular(15)),
-    //             title: Row(
-    //               children: [
-    //                 Icon(Icons.info_outline),
-    //                 SizedBox(width: 10),
-    //                 Text('Hospitalizacion añadida'),
-    //               ],
-    //             ),
-    //             content: SingleChildScrollView(
-    //               child: ListBody(
-    //                 children: <Widget>[
-    //                   Divider(),
-    //                   Text(
-    //                     'La hospitalizacion se ha creado con exito',
-    //                     style: TextStyle(fontSize: 18),
-    //                   )
-    //                 ],
-    //               ),
-    //             ),
-    //             actions: <Widget>[
-    //               FlatButton(
-    //                 child: Text('Cerrar'),
-    //                 onPressed: () {
-    //                   Navigator.of(context).pop();
-    //                 },
-    //               ),
-    //             ],
-    //           );
-    //         },
-    //       );
-    //     } else {
-    //       return false;
-    //     }
-    //   });
-    // }
+    if (_createformKey.currentState.validate()) {
+      String _title = _cTitle.value.text;
+      String _description = _cDescription.value.text;
+      var patient = PatientBloc();
+      patient
+          .postFuturePlan(_title, _description, widget.patient.dni, token)
+          .then((success) {});
+    }
   }
 
   Widget build(BuildContext context) {

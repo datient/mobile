@@ -177,6 +177,24 @@ class PatientBloc {
     return true;
   }
 
+  Future <dynamic> postFuturePlan(title,description,patientDni,token) async {
+    final response = await http.post(
+      'http://10.0.2.2:8000/api/plans/',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'JWT $token',
+      },
+      body: JSON.jsonEncode(
+        {
+          'title': title,
+          'description': description,
+          'patient': patientDni,
+        },
+      ),
+    );
+    print(response.body);
+  }
+
   dispose() {
     _patientSubject.close();
     _patientSearchSubject.close();
