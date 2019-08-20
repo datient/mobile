@@ -2,11 +2,13 @@ import 'dart:io';
 
 import 'package:datient/bloc/datient_bloc.dart';
 import 'package:datient/bloc/patient_bloc.dart';
+import 'package:datient/models/future_plan.dart';
 import 'package:datient/models/patient.dart';
 import 'package:datient/models/study.dart';
 import 'package:datient/providers/datient_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'add_futureplan_page.dart';
 import 'edit_patient_page.dart';
 import 'package:intl/intl.dart';
 
@@ -133,6 +135,47 @@ class _PatientInfoPageState extends State<PatientInfoPage>
         },
       );
     }
+  }
+
+  Widget _buildFuturePlan() {
+    return (widget.patient.futurePlans.isNotEmpty)
+        ? ListView.builder(
+            itemCount: widget.patient.futurePlans.length,
+            itemBuilder: (BuildContext context, int index) {
+              FuturePlan plans = widget.patient.futurePlans[index];
+              return Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Container(
+                    child: Card(
+                  margin: EdgeInsets.all(15),
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              plans.title,
+                              style: TextStyle(fontSize: 22),
+                            ),
+                          ],
+                        ),
+                        Divider(),
+                        Text(plans.description),
+                      ],
+                    ),
+                  ),
+                )),
+              );
+            },
+          )
+        : Center(
+            child: Text(
+              'No se han encontrado planes a futuro',
+              style: TextStyle(fontSize: 18, color: Colors.grey),
+            ),
+          );
   }
 
   Widget _buildPatientInfo() {
@@ -398,7 +441,20 @@ class _PatientInfoPageState extends State<PatientInfoPage>
         },
         child: Icon(Icons.edit),
       );
-    } else {
+    } else if (_tabController.index == 1) {
+      return FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => FuturePlanAddPage(
+                patient: widget.patient,
+              ),
+            ),
+          );
+        },
+        child: Icon(Icons.add),
+      );
+    } else if (_tabController.index == 2) {
       return FloatingActionButton(
         onPressed: () {
           getImage();
@@ -495,7 +551,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
             controller: _tabController,
             children: [
               Container(child: _buildPatientInfo()),
-              Container(child: Text('hola')),
+              Container(child: _buildFuturePlan()),
               Container(
                 child: _buildPatientStudies(),
               )

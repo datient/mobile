@@ -1,4 +1,5 @@
 import 'package:datient/models/study.dart';
+import 'future_plan.dart';
 
 class Patient {
   var dni;
@@ -12,6 +13,7 @@ class Patient {
   var createdDate;
   var updatedDate;
   List<Study> studies;
+  List<FuturePlan> futurePlans;
   var contact;
   var secondContact;
 
@@ -29,13 +31,19 @@ class Patient {
     this.studies,
     this.contact,
     this.secondContact,
+    this.futurePlans,
   });
 
   factory Patient.fromJson(Map<String, dynamic> json) {
     List<Study> list = [];
+    List<FuturePlan> plans = [];
     for (final i in json['studies']) {
       Study study = Study.fromJson(i);
       list.add(study);
+    }
+    for (final i in json['plans']) {
+      FuturePlan plan = FuturePlan.fromJson(i);
+      plans.add(plan);
     }
     return Patient(
       dni: json['dni'],
@@ -51,6 +59,7 @@ class Patient {
       studies: list,
       contact: json['contact'],
       secondContact: json['contact2'],
+      futurePlans: plans,
     );
   }
 }

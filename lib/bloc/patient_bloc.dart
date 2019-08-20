@@ -165,6 +165,18 @@ class PatientBloc {
     }
   }
 
+  Future getFuturePlan(token, patientDni) async {
+    final res = await http.get(
+      'http://10.0.2.2:8000/api/plans/$patientDni/',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'JWT $token',
+      },
+    );
+    print(res.body);
+    return true;
+  }
+
   dispose() {
     _patientSubject.close();
     _patientSearchSubject.close();
