@@ -1,4 +1,5 @@
 import 'dart:convert' as JSON;
+import 'package:datient/bloc/patient_bloc.dart';
 import 'package:datient/models/hospitalization.dart';
 import 'package:datient/models/progress.dart';
 import 'package:http/http.dart' as http;
@@ -18,7 +19,8 @@ class HospitalizationBloc {
   Stream<String> get error => _hospitalizationErrorSubject.stream;
   Stream<bool> get isloading => _hospitalizationIsLoading.stream;
 
-  Future<Hospitalization> getHospitalization(token, int bedId) async {
+  Future<Hospitalization> getHospitalization(
+      token, int bedId, PatientBloc patientBloc) async {
     _hospitalizationIsLoading.add(true);
     Hospitalization hospitalization;
 
@@ -33,6 +35,8 @@ class HospitalizationBloc {
       _hospitalizationSubject.sink.add(hospitalization);
       _hospitalizationErrorSubject.sink.add(null);
       _hospitalizationIsLoading.add(false);
+      patientBloc.getSpecificPatients(
+          token, hospitalization.hospitalizedPatient);
       return hospitalization;
     } else {
       var responseError = JSON.jsonDecode(response.body);
@@ -40,15 +44,12 @@ class HospitalizationBloc {
       _hospitalizationSubject.add(null);
       _hospitalizationIsLoading.add(false);
       _hospitalizationErrorSubject.add(responseError);
+      patientBloc.setNull();
     }
   }
 
-  Future<dynamic> createHospitalization(
-      int patientDni,
-      String diagnosis,
-      String description,
-      int status,
-      token) async {
+  Future<dynamic> createHospitalization(int patientDni, String diagnosis,
+      String description, int status, token) async {
     final response = await http.post(
       'http://10.0.2.2:8000/api/progress/',
       headers: {

@@ -8,12 +8,17 @@ import 'package:rxdart/rxdart.dart';
 import 'package:dio/dio.dart';
 
 class PatientBloc {
+  PatientBloc() {
+    _isLoading.add(true);
+  }
   final _patientSubject = BehaviorSubject<List<Patient>>();
   final _patientSearchSubject = BehaviorSubject<List<Patient>>();
   final _patientSpecificSubject = BehaviorSubject<Patient>();
+  final _isLoading = BehaviorSubject<bool>();
   Stream<List<Patient>> get patients => _patientSubject.stream;
   Stream<List<Patient>> get searchedPatients => _patientSearchSubject.stream;
   Stream<Patient> get specificPatient => _patientSpecificSubject.stream;
+  Stream<bool> get isloading => _isLoading.stream;
 
   Future<List> getPatients(token) async {
     List list = [];
@@ -40,7 +45,10 @@ class PatientBloc {
       final extractdata = JSON.jsonDecode(response.body);
       patient = Patient.fromJson(extractdata);
       _patientSpecificSubject.sink.add(patient);
+    } else {
+      _patientSpecificSubject.sink.add(null);
     }
+    _isLoading.sink.add(false);
     return patient;
   }
 
@@ -177,7 +185,7 @@ class PatientBloc {
     return true;
   }
 
-  Future <dynamic> postFuturePlan(title,description,patientDni,token) async {
+  Future<dynamic> postFuturePlan(title, description, patientDni, token) async {
     final response = await http.post(
       'http://10.0.2.2:8000/api/plans/',
       headers: {
@@ -195,10 +203,17 @@ class PatientBloc {
     print(response.body);
   }
 
+  Future setNull() async {
+    _patientSpecificSubject.sink.add(null);
+    _isLoading.sink.add(false);
+    _patientSpecificSubject.sink.addError('No se han encontrado progresos');
+  }
+
   dispose() {
     _patientSubject.close();
     _patientSearchSubject.close();
     _patientSpecificSubject.close();
+    _isLoading.close();
     this.dispose();
   }
 }

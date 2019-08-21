@@ -49,8 +49,6 @@ class _BedPageState extends State<BedPage> {
       String formattedTimeEntryDate = timeFormatter.format(entryDate);
       DatientBloc bloc = DatientProvider.of(context).bloc;
       PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
-      bloc.doctor.listen((value) => patientBloc.getSpecificPatients(
-          value.token, data.hospitalizedPatient));
       bloc.doctor.listen(
           (value) => bloc.getSpecificDoctor(value.token, data.doctorInCharge));
       return ListView(children: [
@@ -133,76 +131,72 @@ class _BedPageState extends State<BedPage> {
   }
 
   Widget _buildProgress(Patient data) {
-    return (data.patientProgress.isNotEmpty)
-        ? ListView.builder(
-            itemCount: data.patientProgress.length,
-            itemBuilder: (BuildContext context, int index) {
-              Progress progress = data.patientProgress[index];
-              var _patientStatus;
-              if (progress.status == 0) {
-                _patientStatus = 'Bien';
-              } else if (progress.status == 1) {
-                _patientStatus = 'Precaución';
-              } else if (progress.status == 2) {
-                _patientStatus = 'Peligro';
-              }
-              return Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Container(
-                    child: Card(
-                  elevation: 6,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  margin: EdgeInsets.only(top: 4, bottom: 4),
-                  child: Padding(
-                      padding: EdgeInsets.all(12),
-                      child: Column(
-                        children: [
-                          Text(
-                            'Progreso',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                          Divider(),
-                          Text(
-                            'Diagnóstico',
-                            style: TextStyle(fontSize: 16, color: Colors.grey),
-                          ),
-                          Text(
-                            progress.diagnosis,
-                            style: TextStyle(fontSize: 18),
-                          ),
-                          Divider(),
-                          Text(
-                            'Descripción',
-                            style: TextStyle(fontSize: 16, color: Colors.grey),
-                          ),
-                          Text(
-                            progress.description,
-                            style: TextStyle(fontSize: 18),
-                          ),
-                          Divider(),
-                          Text(
-                            'Estado',
-                            style: TextStyle(fontSize: 16, color: Colors.grey),
-                          ),
-                          Text(
-                            _patientStatus,
-                            style: TextStyle(fontSize: 18),
-                          ),
-                        ],
-                      )),
-                )),
-              );
-            },
-          )
-        : Center(
-            child: Text(
-              'No se han encontrado planes a futuro',
-              style: TextStyle(fontSize: 18, color: Colors.grey),
+    return ListView.builder(
+      itemCount: data.patientProgress.length,
+      itemBuilder: (BuildContext context, int index) {
+        Progress progress = data.patientProgress[index];
+        var _patientStatus;
+        if (progress.status == 0) {
+          _patientStatus = 'Bien';
+        } else if (progress.status == 1) {
+          _patientStatus = 'Precaución';
+        } else if (progress.status == 2) {
+          _patientStatus = 'Peligro';
+        }
+        var _createdDate = DateTime.parse(progress.createdAt);
+        var dateFormatter = new DateFormat('yMd');
+        String formattedCreateDate = dateFormatter.format(_createdDate);
+        return Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Container(
+              child: Card(
+            elevation: 6,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
             ),
-          );
+            margin: EdgeInsets.only(top: 4, bottom: 4),
+            child: Padding(
+                padding: EdgeInsets.all(12),
+                child: Column(
+                  children: [
+                    Text(
+                      'Progreso ${formattedCreateDate}',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    Divider(),
+                    Text(
+                      'Diagnóstico',
+                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                    ),
+                    Text(
+                      progress.diagnosis,
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    Divider(),
+                    Text(
+                      'Descripción',
+                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                    ),
+                    Text(
+                      progress.description,
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    Divider(),
+                    Text(
+                      'Estado',
+                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                    ),
+                    Text(
+                      _patientStatus,
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ],
+                )),
+          )),
+        );
+      },
+    );
   }
 
   Widget _buildDischargeFloatingActionButton(Hospitalization data) {
@@ -301,22 +295,36 @@ class _BedPageState extends State<BedPage> {
   Widget _buildProgressStream() {
     PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
     return StreamBuilder(
-      stream: patientBloc.specificPatient,
-      builder: (context, snapshot) {
-        return snapshot.hasData
-            ? _buildProgress(snapshot.data)
-            : Center(
-                child: CircularProgressIndicator(),
-              );
-      },
-    );
+        stream: patientBloc.isloading,
+        builder: (context, snapshot) {
+          return (snapshot.hasData && snapshot.data)
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : StreamBuilder(
+                  stream: patientBloc.specificPatient,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Center(
+                          child: Text(
+                        snapshot.error,
+                        style: TextStyle(fontSize: 18, color: Colors.grey),
+                      ));
+                    } else {
+                      return snapshot.hasData
+                          ? _buildProgress(snapshot.data)
+                          : Container();
+                    }
+                  });
+        });
   }
 
   Widget build(BuildContext context) {
     final bloc = DatientProvider.of(context).bloc;
     final hospitalizationBloc = DatientProvider.of(context).hospitalizationBloc;
-    bloc.doctor.listen((value) =>
-        hospitalizationBloc.getHospitalization(value.token, widget.bed.id));
+    PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
+    bloc.doctor.listen((value) => hospitalizationBloc.getHospitalization(
+        value.token, widget.bed.id, patientBloc));
     return DefaultTabController(
       length: 2,
       child: Scaffold(
