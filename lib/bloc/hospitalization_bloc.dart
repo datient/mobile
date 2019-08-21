@@ -115,11 +115,6 @@ class HospitalizationBloc {
           'bed': bedId,
           'patient': patientDni,
           'entry_at': DateTime.now().toString(),
-          'progress': {
-            'diagnosis': 'hola',
-            'description': 'prueba',
-            'status': 0
-          }
         },
       ),
     );

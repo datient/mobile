@@ -69,6 +69,7 @@ class _HospitalizationAddPageState extends State<HospitalizationAddPage> {
               }).toList(),
             ),
             TextFormField(
+              maxLength: null,
               controller: _cDescription,
               decoration: InputDecoration(
                   icon: Icon(Icons.subject),

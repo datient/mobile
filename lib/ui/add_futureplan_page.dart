@@ -44,6 +44,7 @@ class _FuturePlanAddPageState extends State<FuturePlanAddPage> {
               ),
             ),
             TextFormField(
+              maxLines: null,
               controller: _cDescription,
               decoration: InputDecoration(
                   icon: Icon(Icons.subject),
