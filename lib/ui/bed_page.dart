@@ -41,14 +41,6 @@ class _BedPageState extends State<BedPage> {
   }
 
   Widget _buildHospitalization(Hospitalization data) {
-    // var _patientStatus;
-    // if (data.progress.status == 0) {
-    //   _patientStatus = 'Bien';
-    // } else if (data.progress.status == 1) {
-    //   _patientStatus = 'Precaución';
-    // } else if (data.progress.status == 2) {
-    //   _patientStatus = 'Peligro';
-    // }
     var dateFormatter = new DateFormat('yMd');
     var timeFormatter = new DateFormat('Hms');
     if (data.leftDate == null) {
@@ -125,40 +117,6 @@ class _BedPageState extends State<BedPage> {
                   data.boardingDays.toString(),
                   style: TextStyle(fontSize: 18),
                 ),
-                // SizedBox(height: 20),
-                // Divider(),
-                // SizedBox(height: 20),
-                // Text(
-                //   'Progreso',
-                //   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                // ),
-                // Divider(),
-                // Text(
-                //   'Diagnóstico',
-                //   style: TextStyle(fontSize: 16, color: Colors.grey),
-                // ),
-                // Text(
-                //   data.progress.diagnosis,
-                //   style: TextStyle(fontSize: 18),
-                // ),
-                // Divider(),
-                // Text(
-                //   'Descripción',
-                //   style: TextStyle(fontSize: 16, color: Colors.grey),
-                // ),
-                // Text(
-                //   data.progress.description,
-                //   style: TextStyle(fontSize: 18),
-                // ),
-                // Divider(),
-                // Text(
-                //   'Estado',
-                //   style: TextStyle(fontSize: 16, color: Colors.grey),
-                // ),
-                // Text(
-                //   _patientStatus,
-                //   style: TextStyle(fontSize: 18),
-                // ),
               ],
             ),
           ),
@@ -172,6 +130,79 @@ class _BedPageState extends State<BedPage> {
         ),
       );
     }
+  }
+
+  Widget _buildProgress(Patient data) {
+    return (data.patientProgress.isNotEmpty)
+        ? ListView.builder(
+            itemCount: data.patientProgress.length,
+            itemBuilder: (BuildContext context, int index) {
+              Progress progress = data.patientProgress[index];
+              var _patientStatus;
+              if (progress.status == 0) {
+                _patientStatus = 'Bien';
+              } else if (progress.status == 1) {
+                _patientStatus = 'Precaución';
+              } else if (progress.status == 2) {
+                _patientStatus = 'Peligro';
+              }
+              return Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Container(
+                    child: Card(
+                  elevation: 6,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  margin: EdgeInsets.only(top: 4, bottom: 4),
+                  child: Padding(
+                      padding: EdgeInsets.all(12),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Progreso',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          Divider(),
+                          Text(
+                            'Diagnóstico',
+                            style: TextStyle(fontSize: 16, color: Colors.grey),
+                          ),
+                          Text(
+                            progress.diagnosis,
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          Divider(),
+                          Text(
+                            'Descripción',
+                            style: TextStyle(fontSize: 16, color: Colors.grey),
+                          ),
+                          Text(
+                            progress.description,
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          Divider(),
+                          Text(
+                            'Estado',
+                            style: TextStyle(fontSize: 16, color: Colors.grey),
+                          ),
+                          Text(
+                            _patientStatus,
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ],
+                      )),
+                )),
+              );
+            },
+          )
+        : Center(
+            child: Text(
+              'No se han encontrado planes a futuro',
+              style: TextStyle(fontSize: 18, color: Colors.grey),
+            ),
+          );
   }
 
   Widget _buildDischargeFloatingActionButton(Hospitalization data) {
@@ -267,37 +298,63 @@ class _BedPageState extends State<BedPage> {
     );
   }
 
+  Widget _buildProgressStream() {
+    PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
+    return StreamBuilder(
+      stream: patientBloc.specificPatient,
+      builder: (context, snapshot) {
+        return snapshot.hasData
+            ? _buildProgress(snapshot.data)
+            : Center(
+                child: CircularProgressIndicator(),
+              );
+      },
+    );
+  }
+
   Widget build(BuildContext context) {
     final bloc = DatientProvider.of(context).bloc;
     final hospitalizationBloc = DatientProvider.of(context).hospitalizationBloc;
     bloc.doctor.listen((value) =>
         hospitalizationBloc.getHospitalization(value.token, widget.bed.id));
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('${widget.bed.bedName}'),
-        ),
-        body: Container(
-          child: (_buildHospitalizationStream()),
-        ),
-        floatingActionButton: StreamBuilder(
-          stream: hospitalizationBloc.hospitalizations,
-          builder: (context, snapshot) {
-            return snapshot.hasData
-                ? _buildDischargeFloatingActionButton(snapshot.data)
-                : FloatingActionButton(
-                    child: Icon(Icons.add),
-                    tooltip: 'Agregar paciente a la cama',
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => PatientAssignPage(
-                            bed: widget.bed,
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+          appBar: AppBar(
+            title: Text('${widget.bed.bedName}'),
+            bottom: TabBar(
+              tabs: [
+                Tab(icon: Icon(Icons.assignment), text: 'Informacion'),
+                Tab(icon: Icon(Icons.timeline), text: 'Progreso'),
+              ],
+            ),
+          ),
+          body: TabBarView(
+            children: [
+              Container(child: _buildHospitalizationStream()),
+              Container(child: _buildProgressStream()),
+            ],
+          ),
+          floatingActionButton: StreamBuilder(
+            stream: hospitalizationBloc.hospitalizations,
+            builder: (context, snapshot) {
+              return snapshot.hasData
+                  ? _buildDischargeFloatingActionButton(snapshot.data)
+                  : FloatingActionButton(
+                      child: Icon(Icons.add),
+                      tooltip: 'Agregar paciente a la cama',
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => PatientAssignPage(
+                              bed: widget.bed,
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                  );
-          },
-        ));
+                        );
+                      },
+                    );
+            },
+          )),
+    );
   }
 }

@@ -68,6 +68,7 @@ class Patient {
       contact: json['contact'],
       secondContact: json['contact2'],
       futurePlans: plans,
+      patientProgress: progresses,
     );
   }
 }
