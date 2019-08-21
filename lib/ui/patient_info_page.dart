@@ -161,7 +161,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
                           children: [
                             Text(
                               plans.title,
-                              style: TextStyle(fontSize: 22),
+                              style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),

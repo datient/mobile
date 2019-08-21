@@ -41,14 +41,14 @@ class _BedPageState extends State<BedPage> {
   }
 
   Widget _buildHospitalization(Hospitalization data) {
-    var _patientStatus;
-    if (data.progress.status == 0) {
-      _patientStatus = 'Bien';
-    } else if (data.progress.status == 1) {
-      _patientStatus = 'Precaución';
-    } else if (data.progress.status == 2) {
-      _patientStatus = 'Peligro';
-    }
+    // var _patientStatus;
+    // if (data.progress.status == 0) {
+    //   _patientStatus = 'Bien';
+    // } else if (data.progress.status == 1) {
+    //   _patientStatus = 'Precaución';
+    // } else if (data.progress.status == 2) {
+    //   _patientStatus = 'Peligro';
+    // }
     var dateFormatter = new DateFormat('yMd');
     var timeFormatter = new DateFormat('Hms');
     if (data.leftDate == null) {
@@ -125,40 +125,40 @@ class _BedPageState extends State<BedPage> {
                   data.boardingDays.toString(),
                   style: TextStyle(fontSize: 18),
                 ),
-                SizedBox(height: 20),
-                Divider(),
-                SizedBox(height: 20),
-                Text(
-                  'Progreso',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                Divider(),
-                Text(
-                  'Diagnóstico',
-                  style: TextStyle(fontSize: 16, color: Colors.grey),
-                ),
-                Text(
-                  data.progress.diagnosis,
-                  style: TextStyle(fontSize: 18),
-                ),
-                Divider(),
-                Text(
-                  'Descripción',
-                  style: TextStyle(fontSize: 16, color: Colors.grey),
-                ),
-                Text(
-                  data.progress.description,
-                  style: TextStyle(fontSize: 18),
-                ),
-                Divider(),
-                Text(
-                  'Estado',
-                  style: TextStyle(fontSize: 16, color: Colors.grey),
-                ),
-                Text(
-                  _patientStatus,
-                  style: TextStyle(fontSize: 18),
-                ),
+                // SizedBox(height: 20),
+                // Divider(),
+                // SizedBox(height: 20),
+                // Text(
+                //   'Progreso',
+                //   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                // ),
+                // Divider(),
+                // Text(
+                //   'Diagnóstico',
+                //   style: TextStyle(fontSize: 16, color: Colors.grey),
+                // ),
+                // Text(
+                //   data.progress.diagnosis,
+                //   style: TextStyle(fontSize: 18),
+                // ),
+                // Divider(),
+                // Text(
+                //   'Descripción',
+                //   style: TextStyle(fontSize: 16, color: Colors.grey),
+                // ),
+                // Text(
+                //   data.progress.description,
+                //   style: TextStyle(fontSize: 18),
+                // ),
+                // Divider(),
+                // Text(
+                //   'Estado',
+                //   style: TextStyle(fontSize: 16, color: Colors.grey),
+                // ),
+                // Text(
+                //   _patientStatus,
+                //   style: TextStyle(fontSize: 18),
+                // ),
               ],
             ),
           ),
@@ -195,7 +195,7 @@ class _BedPageState extends State<BedPage> {
                   ),
                 );
               },
-              label: 'Nueva hospitalización',
+              label: 'Nuevo progreso',
               labelStyle: TextStyle(
                   fontWeight: FontWeight.w500,
                   color: Colors.white,

@@ -1,3 +1,4 @@
+import 'package:datient/models/progress.dart';
 import 'package:datient/models/study.dart';
 import 'future_plan.dart';
 
@@ -16,6 +17,7 @@ class Patient {
   List<FuturePlan> futurePlans;
   var contact;
   var secondContact;
+  List<Progress> patientProgress;
 
   Patient({
     this.dni,
@@ -32,11 +34,13 @@ class Patient {
     this.contact,
     this.secondContact,
     this.futurePlans,
+    this.patientProgress,
   });
 
   factory Patient.fromJson(Map<String, dynamic> json) {
     List<Study> list = [];
     List<FuturePlan> plans = [];
+    List<Progress> progresses = [];
     for (final i in json['studies']) {
       Study study = Study.fromJson(i);
       list.add(study);
@@ -44,6 +48,10 @@ class Patient {
     for (final i in json['plans']) {
       FuturePlan plan = FuturePlan.fromJson(i);
       plans.add(plan);
+    }
+    for (final i in json['progress']) {
+      Progress progress = Progress.fromJson(i);
+      progresses.add(progress);
     }
     return Patient(
       dni: json['dni'],

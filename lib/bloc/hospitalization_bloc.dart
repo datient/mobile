@@ -44,31 +44,23 @@ class HospitalizationBloc {
   }
 
   Future<dynamic> createHospitalization(
-      String entryAt,
-      int bedId,
-      int doctorId,
       int patientDni,
       String diagnosis,
       String description,
       int status,
       token) async {
     final response = await http.post(
-      'http://10.0.2.2:8000/api/hospitalization/',
+      'http://10.0.2.2:8000/api/progress/',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'JWT $token',
       },
       body: JSON.jsonEncode(
         {
-          'entry_at': entryAt,
-          'bed': bedId,
-          'doctor': doctorId,
           'patient': patientDni,
-          'progress': {
-            'diagnosis': diagnosis,
-            'description': description,
-            'status': status,
-          }
+          'diagnosis': diagnosis,
+          'description': description,
+          'status': status,
         },
       ),
     );

@@ -89,9 +89,6 @@ class _HospitalizationAddPageState extends State<HospitalizationAddPage> {
       var hospitalization = HospitalizationBloc();
       hospitalization
           .createHospitalization(
-              widget.hospitalization.entryDate,
-              widget.hospitalization.bed,
-              widget.hospitalization.doctorInCharge,
               widget.hospitalization.hospitalizedPatient,
               _diagnosis,
               _description,
@@ -147,7 +144,7 @@ class _HospitalizationAddPageState extends State<HospitalizationAddPage> {
     final DatientBloc bloc = DatientProvider.of(context).bloc;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Nueva hospitalizacion'),
+        title: Text('Nuevo progreso'),
         actions: [
           IconButton(
             icon: Icon(Icons.add),
