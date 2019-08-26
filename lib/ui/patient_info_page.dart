@@ -4,6 +4,7 @@ import 'package:datient/bloc/patient_bloc.dart';
 import 'package:datient/models/future_plan.dart';
 import 'package:datient/models/hospitalization.dart';
 import 'package:datient/models/patient.dart';
+import 'package:datient/models/progress.dart';
 import 'package:datient/models/study.dart';
 import 'package:datient/providers/datient_provider.dart';
 import 'package:flutter/material.dart';
@@ -473,7 +474,101 @@ class _PatientInfoPageState extends State<PatientInfoPage>
           );
   }
 
-  Widget _buildPatientProgress() {}
+  Widget _buildProgressStream() {
+    PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
+    return StreamBuilder(
+        stream: patientBloc.isloading,
+        builder: (context, snapshot) {
+          return (snapshot.hasData && snapshot.data)
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : StreamBuilder(
+                  stream: patientBloc.specificPatient,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Center(
+                          child: Text(
+                        snapshot.error,
+                        style: TextStyle(fontSize: 18, color: Colors.grey),
+                      ));
+                    } else {
+                      return snapshot.hasData
+                          ? _buildProgress(snapshot.data)
+                          : Container();
+                    }
+                  });
+        });
+  }
+
+  Widget _buildProgress(Patient data) {
+    return ListView.builder(
+      itemCount: data.patientProgress.length,
+      itemBuilder: (BuildContext context, int index) {
+        Progress progress = data.patientProgress[index];
+        var _patientStatus;
+        if (progress.status == 0) {
+          _patientStatus = 'Bien';
+        } else if (progress.status == 1) {
+          _patientStatus = 'Precaución';
+        } else if (progress.status == 2) {
+          _patientStatus = 'Peligro';
+        }
+        var _createdDate = DateTime.parse(progress.createdAt);
+        var dateFormatter = new DateFormat('yMd');
+        String formattedCreateDate = dateFormatter.format(_createdDate);
+        return Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Container(
+              child: Card(
+            elevation: 6,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+            margin: EdgeInsets.only(top: 4, bottom: 4),
+            child: Padding(
+                padding: EdgeInsets.all(12),
+                child: Column(
+                  children: [
+                    Text(
+                      'Progreso ${formattedCreateDate}',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    Divider(),
+                    Text(
+                      'Diagnóstico',
+                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                    ),
+                    Text(
+                      progress.diagnosis,
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    Divider(),
+                    Text(
+                      'Descripción',
+                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                    ),
+                    Text(
+                      progress.description,
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    Divider(),
+                    Text(
+                      'Estado',
+                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                    ),
+                    Text(
+                      _patientStatus,
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ],
+                )),
+          )),
+        );
+      },
+    );
+  }
 
   Widget _buildFloatingActionButton() {
     if (_tabController.index == 0) {
@@ -522,6 +617,11 @@ class _PatientInfoPageState extends State<PatientInfoPage>
     String formattedUpdateDate = dateFormatter.format(_updatedDate);
     String formattedTimeUpdateDate = timeFormatter.format(_updatedDate);
     var _fullname = widget.patient.firstName + ' ' + widget.patient.lastName;
+    final bloc = DatientProvider.of(context).bloc;
+  
+    PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
+    bloc.doctor.listen((value) => patientBloc.getSpecificPatients(
+        value.token, widget.patient.dni));
 
     if (widget.patient.gender == 0) {
       _patientGender = 'Masculino';
@@ -600,7 +700,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
             controller: _tabController,
             children: [
               Container(child: _buildPatientInfo()),
-              Container(child: _buildPatientProgress()),
+              Container(child: _buildProgressStream()),
               Container(child: _buildFuturePlan()),
               Container(child: _buildPatientStudies()),
             ],
