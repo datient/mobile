@@ -343,7 +343,8 @@ class _PatientInfoPageState extends State<PatientInfoPage>
                                       ? _buildBed(snapshot.data)
                                       : Text(
                                           'Ninguna cama asignada',
-                                          style: TextStyle(fontSize: 18,color: Colors.grey),
+                                          style: TextStyle(
+                                              fontSize: 18, color: Colors.grey),
                                         );
                                 },
                               );
@@ -442,12 +443,39 @@ class _PatientInfoPageState extends State<PatientInfoPage>
     }
   }
 
-  Widget _buildPatientStudies() {
+  Widget _buildStudyStream() {
+    PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
+    return StreamBuilder(
+        stream: patientBloc.isloading,
+        builder: (context, snapshot) {
+          return (snapshot.hasData && snapshot.data)
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : StreamBuilder(
+                  stream: patientBloc.patientStudy,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Center(
+                          child: Text(
+                        snapshot.error,
+                        style: TextStyle(fontSize: 18, color: Colors.grey),
+                      ));
+                    } else {
+                      return snapshot.hasData
+                          ? _buildPatientStudies(snapshot.data)
+                          : Container();
+                    }
+                  });
+        });
+  }
+
+  Widget _buildPatientStudies(Patient data) {
     return (widget.patient.studies.isNotEmpty)
         ? ListView.builder(
-            itemCount: widget.patient.studies.length,
+            itemCount: data.studies.length,
             itemBuilder: (BuildContext context, int index) {
-              Study studies = widget.patient.studies[index];
+              Study studies = data.studies[index];
               return Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Container(
@@ -618,10 +646,11 @@ class _PatientInfoPageState extends State<PatientInfoPage>
     String formattedTimeUpdateDate = timeFormatter.format(_updatedDate);
     var _fullname = widget.patient.firstName + ' ' + widget.patient.lastName;
     final bloc = DatientProvider.of(context).bloc;
-  
     PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
-    bloc.doctor.listen((value) => patientBloc.getSpecificPatients(
-        value.token, widget.patient.dni));
+    bloc.doctor.listen((value) =>
+        patientBloc.getSpecificPatients(value.token, widget.patient.dni));
+    bloc.doctor.listen((value) =>
+        patientBloc.getStudy(widget.patient.dni,value.token));
 
     if (widget.patient.gender == 0) {
       _patientGender = 'Masculino';
@@ -702,7 +731,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
               Container(child: _buildPatientInfo()),
               Container(child: _buildProgressStream()),
               Container(child: _buildFuturePlan()),
-              Container(child: _buildPatientStudies()),
+              Container(child: _buildStudyStream()),
             ],
           ),
           floatingActionButton: _buildFloatingActionButton()),

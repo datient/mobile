@@ -15,12 +15,14 @@ class PatientBloc {
   final _patientSearchSubject = BehaviorSubject<List<Patient>>();
   final _patientSpecificSubject = BehaviorSubject<Patient>();
   final _patientBedSubject = BehaviorSubject<Hospitalization>();
+  final _patientStudySubject = BehaviorSubject<Patient>();
   final _isLoading = BehaviorSubject<bool>();
   Stream<List<Patient>> get patients => _patientSubject.stream;
   Stream<List<Patient>> get searchedPatients => _patientSearchSubject.stream;
   Stream<Patient> get specificPatient => _patientSpecificSubject.stream;
   Stream<Hospitalization> get patientBed => _patientBedSubject.stream;
   Stream<bool> get isloading => _isLoading.stream;
+  Stream<Patient> get patientStudy => _patientStudySubject.stream;
 
   Future<List> getPatients(token) async {
     List list = [];
@@ -226,6 +228,27 @@ class PatientBloc {
     return hospitalization;
   }
 
+    Future getStudy(dni, token) async {
+    Patient patient;
+    final response = await http.get(
+        'http://10.0.2.2:8000/api/patient/$dni/',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'JWT $token',
+        });
+    final extractdata = JSON.jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      _isLoading.sink.add(false);
+      patient = Patient.fromJson(extractdata);
+      _patientStudySubject.sink.add(patient);
+    } else if (response.statusCode == 404) {
+      _patientStudySubject.sink.add(null);
+      _isLoading.sink.add(false);
+    }
+    _isLoading.sink.add(false);
+    return patient;
+  }
+
   Future setNull() async {
     _patientSpecificSubject.sink.add(null);
     _isLoading.sink.add(false);
@@ -238,6 +261,7 @@ class PatientBloc {
     _patientSpecificSubject.close();
     _patientBedSubject.close();
     _isLoading.close();
+    _patientStudySubject.close();
     this.dispose();
   }
 }
