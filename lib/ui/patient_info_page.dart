@@ -1,8 +1,8 @@
 import 'dart:io';
-
 import 'package:datient/bloc/datient_bloc.dart';
 import 'package:datient/bloc/patient_bloc.dart';
 import 'package:datient/models/future_plan.dart';
+import 'package:datient/models/hospitalization.dart';
 import 'package:datient/models/patient.dart';
 import 'package:datient/models/study.dart';
 import 'package:datient/providers/datient_provider.dart';
@@ -42,6 +42,13 @@ class _PatientInfoPageState extends State<PatientInfoPage>
   void _handleTabIndex() {
     setState(() {});
   }
+
+  _buildBed(Hospitalization data) {
+      return Text(
+        data.bed.toString(),
+        style: TextStyle(fontSize: 20),
+      );
+    }
 
   File _image;
 
@@ -147,7 +154,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
                 padding: EdgeInsets.all(8.0),
                 child: Container(
                     child: Card(
-                      elevation: 6,
+                  elevation: 6,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),
@@ -161,7 +168,8 @@ class _PatientInfoPageState extends State<PatientInfoPage>
                           children: [
                             Text(
                               plans.title,
-                              style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontSize: 22, fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),
@@ -183,6 +191,10 @@ class _PatientInfoPageState extends State<PatientInfoPage>
   }
 
   Widget _buildPatientInfo() {
+    final DatientBloc bloc = DatientProvider.of(context).bloc;
+    final PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
+    bloc.doctor.listen(
+        (value) => patientBloc.getPatientBed(widget.patient.dni, value.token));
     return ListView(
       children: [
         Card(
@@ -306,6 +318,36 @@ class _PatientInfoPageState extends State<PatientInfoPage>
                       maxLines: 3,
                       style: TextStyle(fontSize: 20),
                     ),
+                  ],
+                ),
+                Divider(),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Cama actual',
+                      style: TextStyle(color: Colors.grey, fontSize: 15),
+                    ),
+                    StreamBuilder(
+                      stream: patientBloc.isloading,
+                      builder: (context, snapshot) {
+                        return snapshot.data
+                            ? Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : StreamBuilder(
+                                stream: patientBloc.patientBed,
+                                builder: (context, snapshot) {
+                                  return snapshot.hasData
+                                      ? _buildBed(snapshot.data)
+                                      : Text(
+                                          'Ninguna cama asignada',
+                                          style: TextStyle(fontSize: 20),
+                                        );
+                                },
+                              );
+                      },
+                    )
                   ],
                 ),
               ],
