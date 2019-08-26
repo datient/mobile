@@ -28,7 +28,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this, initialIndex: 0);
+    _tabController = TabController(length: 4, vsync: this, initialIndex: 0);
     _tabController.addListener(_handleTabIndex);
   }
 
@@ -44,11 +44,11 @@ class _PatientInfoPageState extends State<PatientInfoPage>
   }
 
   _buildBed(Hospitalization data) {
-      return Text(
-        data.bed.toString(),
-        style: TextStyle(fontSize: 20),
-      );
-    }
+    return Text(
+      data.bed.toString(),
+      style: TextStyle(fontSize: 20),
+    );
+  }
 
   File _image;
 
@@ -473,6 +473,8 @@ class _PatientInfoPageState extends State<PatientInfoPage>
           );
   }
 
+  Widget _buildPatientProgress() {}
+
   Widget _buildFloatingActionButton() {
     if (_tabController.index == 0) {
       return FloatingActionButton(
@@ -487,7 +489,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
         },
         child: Icon(Icons.edit),
       );
-    } else if (_tabController.index == 1) {
+    } else if (_tabController.index == 2) {
       return FloatingActionButton(
         onPressed: () {
           Navigator.of(context).push(
@@ -500,7 +502,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
         },
         child: Icon(Icons.add),
       );
-    } else if (_tabController.index == 2) {
+    } else if (_tabController.index == 3) {
       return FloatingActionButton(
         onPressed: () {
           getImage();
@@ -588,6 +590,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
               controller: _tabController,
               tabs: [
                 Tab(icon: Icon(Icons.assignment), text: 'Datos'),
+                Tab(icon: Icon(Icons.timeline), text: 'Evolucion'),
                 Tab(icon: Icon(Icons.description), text: 'Plan Futuro'),
                 Tab(icon: Icon(Icons.folder_shared), text: 'Estudios'),
               ],
@@ -597,10 +600,9 @@ class _PatientInfoPageState extends State<PatientInfoPage>
             controller: _tabController,
             children: [
               Container(child: _buildPatientInfo()),
+              Container(child: _buildPatientProgress()),
               Container(child: _buildFuturePlan()),
-              Container(
-                child: _buildPatientStudies(),
-              )
+              Container(child: _buildPatientStudies()),
             ],
           ),
           floatingActionButton: _buildFloatingActionButton()),
