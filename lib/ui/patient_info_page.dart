@@ -343,7 +343,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
                                       ? _buildBed(snapshot.data)
                                       : Text(
                                           'Ninguna cama asignada',
-                                          style: TextStyle(fontSize: 20),
+                                          style: TextStyle(fontSize: 18,color: Colors.grey),
                                         );
                                 },
                               );
@@ -690,7 +690,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
               controller: _tabController,
               tabs: [
                 Tab(icon: Icon(Icons.assignment), text: 'Datos'),
-                Tab(icon: Icon(Icons.timeline), text: 'Evolucion'),
+                Tab(icon: Icon(Icons.timeline), text: 'Evolución'),
                 Tab(icon: Icon(Icons.description), text: 'Plan Futuro'),
                 Tab(icon: Icon(Icons.folder_shared), text: 'Estudios'),
               ],

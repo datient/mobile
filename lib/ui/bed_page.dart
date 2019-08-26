@@ -132,9 +132,9 @@ class _BedPageState extends State<BedPage> {
 
   Widget _buildProgress(Patient data) {
     return ListView.builder(
-      itemCount: 1,
+      itemCount: data.patientProgress.length,
       itemBuilder: (BuildContext context, int index) {
-        Progress progress = data.patientProgress.first;
+        Progress progress = data.patientProgress[index];
         var _patientStatus;
         if (progress.status == 0) {
           _patientStatus = 'Bien';

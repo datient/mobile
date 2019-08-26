@@ -114,6 +114,7 @@ class _PatientEditPageState extends State<PatientEditPage> {
               }).toList(),
             ),
             TextFormField(
+              maxLines: null,
               controller: _cInitialDiagnosis
                 ..text = widget.patient.incomeDiagnostic,
               decoration: InputDecoration(

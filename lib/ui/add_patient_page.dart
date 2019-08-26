@@ -39,12 +39,11 @@ class _PatientAddPageState extends State<PatientAddPage> {
   @override
   Widget _buildDatePicker() {
     return DateTimePickerFormField(
-      inputType: inputType,
       format: DateFormat('yyyy-MM-dd'),
       decoration: InputDecoration(
-          icon: Icon(Icons.calendar_today),
-          labelText: 'Fecha de nacimiento',
-          hasFloatingPlaceholder: false),
+        icon: Icon(Icons.calendar_today),
+        labelText: 'Fecha de nacimiento',
+      ),
       onChanged: (dt) => setState(() => date = dt),
     );
   }
@@ -132,6 +131,7 @@ class _PatientAddPageState extends State<PatientAddPage> {
               ),
             ),
             TextFormField(
+              maxLines: null,
               controller: _cInitialDiagnosis,
               decoration: InputDecoration(
                   icon: Icon(Icons.assignment),
@@ -158,9 +158,26 @@ class _PatientAddPageState extends State<PatientAddPage> {
       String _incomeDiagnosis = _cInitialDiagnosis.value.text;
       String _contactNumber = _cContact.value.text;
       String _secondContactNumber = _cSecondContact.value.text;
+
+    if (_contactNumber.isEmpty){
+      _contactNumber = null;
+    }
+    if (_secondContactNumber.isEmpty){
+      _secondContactNumber = null;
+    }
+
       patient
-          .createPatient(_firstName, _lastName, _dni, _birthdate,
-              _historyNumber, _gender, _incomeDiagnosis,_contactNumber,_secondContactNumber, token)
+          .createPatient(
+              _firstName,
+              _lastName,
+              _dni,
+              _birthdate,
+              _historyNumber,
+              _gender,
+              _incomeDiagnosis,
+              _contactNumber,
+              _secondContactNumber,
+              token)
           .then((success) {
         if (success == true) {
           Navigator.of(context).pop();
