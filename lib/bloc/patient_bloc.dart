@@ -1,5 +1,6 @@
 import 'dart:convert' as JSON;
 import 'dart:io';
+import 'package:datient/models/future_plan.dart';
 import 'package:datient/models/hospitalization.dart';
 import 'package:datient/models/patient.dart';
 import 'package:datient/models/study.dart';
@@ -16,6 +17,7 @@ class PatientBloc {
   final _patientSpecificSubject = BehaviorSubject<Patient>();
   final _patientBedSubject = BehaviorSubject<Hospitalization>();
   final _patientStudySubject = BehaviorSubject<Patient>();
+  final _patientFuturePlanSubject = BehaviorSubject<Patient>();
   final _isLoading = BehaviorSubject<bool>();
   Stream<List<Patient>> get patients => _patientSubject.stream;
   Stream<List<Patient>> get searchedPatients => _patientSearchSubject.stream;
@@ -23,6 +25,7 @@ class PatientBloc {
   Stream<Hospitalization> get patientBed => _patientBedSubject.stream;
   Stream<bool> get isloading => _isLoading.stream;
   Stream<Patient> get patientStudy => _patientStudySubject.stream;
+  Stream<Patient> get patientFuturePlan => _patientFuturePlanSubject.stream;
 
   Future<List> getPatients(token) async {
     List list = [];
@@ -177,16 +180,26 @@ class PatientBloc {
     }
   }
 
-  Future getFuturePlan(token, patientDni) async {
-    final res = await http.get(
-      'http://10.0.2.2:8000/api/plans/$patientDni/',
+  Future getFuturePlan(dni, token) async {
+    Patient patient;
+    final response = await http.get(
+      'http://10.0.2.2:8000/api/patient/$dni/',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'JWT $token',
       },
     );
-    print(res.body);
-    return true;
+    final extractdata = JSON.jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      _isLoading.sink.add(false);
+      patient = Patient.fromJson(extractdata);
+      _patientFuturePlanSubject.sink.add(patient);
+    } else if (response.statusCode == 404) {
+      _patientFuturePlanSubject.sink.add(null);
+      _isLoading.sink.add(false);
+    }
+    _isLoading.sink.add(false);
+    return patient;
   }
 
   Future<dynamic> postFuturePlan(title, description, patientDni, token) async {
@@ -228,14 +241,13 @@ class PatientBloc {
     return hospitalization;
   }
 
-    Future getStudy(dni, token) async {
+  Future getStudy(dni, token) async {
     Patient patient;
-    final response = await http.get(
-        'http://10.0.2.2:8000/api/patient/$dni/',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'JWT $token',
-        });
+    final response =
+        await http.get('http://10.0.2.2:8000/api/patient/$dni/', headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'JWT $token',
+    });
     final extractdata = JSON.jsonDecode(response.body);
     if (response.statusCode == 200) {
       _isLoading.sink.add(false);
@@ -262,6 +274,7 @@ class PatientBloc {
     _patientBedSubject.close();
     _isLoading.close();
     _patientStudySubject.close();
+    _patientFuturePlanSubject.close();
     this.dispose();
   }
 }

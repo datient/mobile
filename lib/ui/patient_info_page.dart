@@ -145,50 +145,68 @@ class _PatientInfoPageState extends State<PatientInfoPage>
     }
   }
 
-  Widget _buildFuturePlan() {
-    return (widget.patient.futurePlans.isNotEmpty)
-        ? ListView.builder(
-            itemCount: widget.patient.futurePlans.length,
-            itemBuilder: (BuildContext context, int index) {
-              FuturePlan plans = widget.patient.futurePlans[index];
-              return Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Container(
-                    child: Card(
-                  elevation: 6,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  margin: EdgeInsets.only(top: 4, bottom: 4),
-                  child: Padding(
-                    padding: EdgeInsets.all(12),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              plans.title,
-                              style: TextStyle(
-                                  fontSize: 22, fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                        Divider(),
-                        Text(plans.description),
-                      ],
-                    ),
-                  ),
-                )),
-              );
-            },
-          )
-        : Center(
-            child: Text(
-              'No se han encontrado planes a futuro',
-              style: TextStyle(fontSize: 18, color: Colors.grey),
+  Widget _buildFuturePlanStream() {
+    PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
+    return StreamBuilder(
+        stream: patientBloc.isloading,
+        builder: (context, snapshot) {
+          return (snapshot.hasData && snapshot.data)
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : StreamBuilder(
+                  stream: patientBloc.patientFuturePlan,
+                  builder: (context, snapshot) {
+                    return snapshot.hasData
+                        ? _buildFuturePlan(snapshot.data)
+                        : Container();
+                  });
+        });
+  }
+
+  Widget _buildFuturePlan(Patient data) {
+    return ListView.builder(
+      itemCount: data.futurePlans.length,
+      itemBuilder: (BuildContext context, int index) {
+        FuturePlan plans = data.futurePlans[index];
+        return Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Container(
+              child: Card(
+            elevation: 6,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
             ),
-          );
+            margin: EdgeInsets.only(top: 4, bottom: 4),
+            child: Padding(
+              padding: EdgeInsets.all(12),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        plans.title,
+                        style: TextStyle(
+                            fontSize: 22, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  Divider(),
+                  Text(plans.description),
+                ],
+              ),
+            ),
+          )),
+        );
+      },
+    );
+    // : Center(
+    //     child: Text(
+    //       'No se han encontrado planes a futuro',
+    //       style: TextStyle(fontSize: 18, color: Colors.grey),
+    //     ),
+    //   );
   }
 
   Widget _buildPatientInfo() {
@@ -559,7 +577,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
                 child: Column(
                   children: [
                     Text(
-                      'Progreso ${formattedCreateDate}',
+                      'Progreso $formattedCreateDate',
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
@@ -649,8 +667,10 @@ class _PatientInfoPageState extends State<PatientInfoPage>
     PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
     bloc.doctor.listen((value) =>
         patientBloc.getSpecificPatients(value.token, widget.patient.dni));
-    bloc.doctor.listen((value) =>
-        patientBloc.getStudy(widget.patient.dni,value.token));
+    bloc.doctor.listen(
+        (value) => patientBloc.getStudy(widget.patient.dni, value.token));
+    bloc.doctor.listen(
+        (value) => patientBloc.getFuturePlan(widget.patient.dni, value.token));
 
     if (widget.patient.gender == 0) {
       _patientGender = 'Masculino';
@@ -730,7 +750,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
             children: [
               Container(child: _buildPatientInfo()),
               Container(child: _buildProgressStream()),
-              Container(child: _buildFuturePlan()),
+              Container(child: _buildFuturePlanStream()),
               Container(child: _buildStudyStream()),
             ],
           ),
