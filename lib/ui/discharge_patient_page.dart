@@ -88,14 +88,8 @@ class _DischargePatientPageState extends State<DischargePatientPage> {
       int _status = statusIndex;
       var hospitalization = HospitalizationBloc();
       hospitalization
-          .dischargePatient(
-              widget.hospitalization.doctorInCharge,
-              widget.hospitalization.bed,
-              widget.hospitalization.hospitalizedPatient,
-              _diagnosis,
-              _description,
-              _status,
-              token)
+          .dischargePatient(widget.hospitalization.hospitalizedPatient,
+              _diagnosis, _description, _status, token)
           .then((success) {
         if (success == true) {
           Navigator.of(context).pop();

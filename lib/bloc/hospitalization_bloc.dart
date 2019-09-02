@@ -73,25 +73,21 @@ class HospitalizationBloc {
     }
   }
 
-  Future<dynamic> dischargePatient(int doctorId, int bedId, int patientDni,
+  Future<dynamic> dischargePatient(int patientDni,
       String diagnosis, String description, status, token) async {
     final response = await http.post(
-      'http://10.0.2.2:8000/api/hospitalization/',
+      'http://10.0.2.2:8000/api/progress/',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'JWT $token',
       },
       body: JSON.jsonEncode(
         {
-          'doctor': doctorId,
-          'bed': bedId,
           'patient': patientDni,
-          'left_at': DateTime.now().toString(),
-          'progress': {
-            'diagnosis': diagnosis,
-            'description': description,
-            'status': status,
-          }
+          'has_left': true,
+          'diagnosis': diagnosis,
+          'description': description,
+          'status': status,
         },
       ),
     );

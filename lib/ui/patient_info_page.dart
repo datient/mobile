@@ -520,6 +520,15 @@ class _PatientInfoPageState extends State<PatientInfoPage>
           );
   }
 
+  Widget _buildHasLeft(data) {
+    return data == true
+        ? Chip(
+            backgroundColor: Colors.red,
+            label: Text('Dado de alta',style: TextStyle(color: Colors.white,fontSize: 15),),
+          )
+        : Container();
+  }
+
   Widget _buildProgressStream() {
     PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
     return StreamBuilder(
@@ -576,10 +585,15 @@ class _PatientInfoPageState extends State<PatientInfoPage>
                 padding: EdgeInsets.all(12),
                 child: Column(
                   children: [
-                    Text(
-                      'Progreso $formattedCreateDate',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    Row(
+                      children: [
+                        Text(
+                          'Progreso $formattedCreateDate',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),Container(width: 70,),
+                        _buildHasLeft(progress.hasLeft)
+                      ],
                     ),
                     Divider(),
                     Text(
