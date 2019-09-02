@@ -197,6 +197,8 @@ class PatientBloc {
     } else if (response.statusCode == 404) {
       _patientFuturePlanSubject.sink.add(null);
       _isLoading.sink.add(false);
+      _patientFuturePlanSubject
+          .addError('No se han encontrado planes a futuro');
     }
     _isLoading.sink.add(false);
     return patient;
@@ -217,7 +219,7 @@ class PatientBloc {
         },
       ),
     );
-    if (response.statusCode == 201){
+    if (response.statusCode == 201) {
       return true;
     }
   }
