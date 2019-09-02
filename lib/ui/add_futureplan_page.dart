@@ -64,7 +64,41 @@ class _FuturePlanAddPageState extends State<FuturePlanAddPage> {
       var patient = PatientBloc();
       patient
           .postFuturePlan(_title, _description, widget.patient.dni, token)
-          .then((success) {});
+          .then((success) {
+        if (success == true) {
+          Navigator.of(context).pop();
+          return showDialog<void>(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Row(
+                  children: [
+                    Icon(Icons.info_outline),
+                    SizedBox(width: 10),
+                    Text('Plan Futuro actualizado'),
+                  ],
+                ),
+                content: SingleChildScrollView(
+                  child: ListBody(
+                    children: <Widget>[
+                      Text('Plan futuro agregado con exito'),
+                    ],
+                  ),
+                ),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text('Cerrar'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        }
+      });
     }
   }
 

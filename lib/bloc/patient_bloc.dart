@@ -217,7 +217,9 @@ class PatientBloc {
         },
       ),
     );
-    print(response.body);
+    if (response.statusCode == 201){
+      return true;
+    }
   }
 
   Future getPatientBed(dni, token) async {
