@@ -123,7 +123,7 @@ class HospitalizationBloc {
     }
   }
 
-  Future assignPatient(diagnosis,description,status,patient,int doctorId, int bedId,token) async {
+  Future <dynamic>assignPatient(diagnosis,description,status,patient,int doctorId, int bedId,token) async {
     final response = await http.post(
       'http://10.0.2.2:8000/api/hospitalization/',
       headers: {
@@ -142,8 +142,10 @@ class HospitalizationBloc {
     if (response.statusCode == 201) {
       print(response.body);
       assignPatientProgress(diagnosis, description, status, patient, token);
+      return true;
     } else {
       print(response.body);
+      return false;
     }
   }
 
@@ -164,7 +166,6 @@ class HospitalizationBloc {
         },
       ),
     );
-    print(response.body);
   }
 
   dispose() {

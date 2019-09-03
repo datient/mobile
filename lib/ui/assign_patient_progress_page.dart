@@ -97,8 +97,58 @@ class _AssignPatientProgressPageState extends State<AssignPatientProgressPage> {
       int _status = statusIndex;
       var hospitalization = HospitalizationBloc();
       final bloc = DatientProvider.of(context).bloc;
-      bloc.doctor.listen((value) => hospitalization.assignPatient(
-          _diagnosis,_description,_status,widget.patient.dni,value.id, widget.bed.id,value.token));
+      bloc.doctor.listen(
+        (value) => hospitalization
+            .assignPatient(_diagnosis, _description, _status,
+                widget.patient.dni, value.id, widget.bed.id, value.token)
+            .then((success) {
+          if (success == true) {
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
+            showDialog<void>(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  title: Row(
+                    children: [
+                      Icon(Icons.check_circle_outline),
+                      SizedBox(width: 10),
+                      Text('Paciente asignado'),
+                    ],
+                  ),
+                  content: SingleChildScrollView(
+                    child: ListBody(
+                      children: <Widget>[
+                        Divider(),
+                        Text(
+                          'El paciente ' +
+                              widget.patient.firstName +
+                              ' ' +
+                              widget.patient.lastName +
+                              ' ha sido asignado con exito a la cama ' +
+                              widget.bed.id.toString(),
+                          style: TextStyle(fontSize: 18),
+                        )
+                      ],
+                    ),
+                  ),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text('Cerrar'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          }
+        }),
+      );
     }
   }
 
@@ -142,54 +192,6 @@ class _AssignPatientProgressPageState extends State<AssignPatientProgressPage> {
               onPressed: () {
                 final bloc = DatientProvider.of(context).bloc;
                 bloc.doctor.listen((value) => _validateAndSubmit(value.token));
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) => BedPage(
-                      bed: widget.bed,
-                    ),
-                  ),
-                );
-                showDialog<void>(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15)),
-                      title: Row(
-                        children: [
-                          Icon(Icons.check_circle_outline),
-                          SizedBox(width: 10),
-                          Text('Paciente asignado'),
-                        ],
-                      ),
-                      content: SingleChildScrollView(
-                        child: ListBody(
-                          children: <Widget>[
-                            Divider(),
-                            Text(
-                              'El paciente ' +
-                                  widget.patient.firstName +
-                                  ' ' +
-                                  widget.patient.lastName +
-                                  ' ha sido asignado con exito a la cama ' +
-                                  widget.bed.id.toString(),
-                              style: TextStyle(fontSize: 18),
-                            )
-                          ],
-                        ),
-                      ),
-                      actions: <Widget>[
-                        FlatButton(
-                          child: Text('Cerrar'),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                );
               },
             ),
             FlatButton(
