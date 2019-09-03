@@ -73,8 +73,8 @@ class HospitalizationBloc {
     }
   }
 
-  Future<dynamic> dischargePatient(bed,doctor,int patientDni, String diagnosis,
-      String description, status, token) async {
+  Future<dynamic> dischargePatient(bed, doctor, int patientDni,
+      String diagnosis, String description, status, token) async {
     final response = await http.post(
       'http://10.0.2.2:8000/api/progress/',
       headers: {
@@ -123,7 +123,7 @@ class HospitalizationBloc {
     }
   }
 
-  Future assignPatient(int doctorId, int bedId, int patientDni, token) async {
+  Future assignPatient(diagnosis,description,status,patient,int doctorId, int bedId,token) async {
     final response = await http.post(
       'http://10.0.2.2:8000/api/hospitalization/',
       headers: {
@@ -134,16 +134,37 @@ class HospitalizationBloc {
         {
           'doctor': doctorId,
           'bed': bedId,
-          'patient': patientDni,
+          'patient': patient,
           'entry_at': DateTime.now().toString(),
         },
       ),
     );
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
       print(response.body);
+      assignPatientProgress(diagnosis, description, status, patient, token);
     } else {
       print(response.body);
     }
+  }
+
+  Future assignPatientProgress(
+      diagnosis, description, status, patient, token) async {
+    final response = await http.post(
+      'http://10.0.2.2:8000/api/progress/',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'JWT $token',
+      },
+      body: JSON.jsonEncode(
+        {
+          'diagnosis': diagnosis,
+          'description': description,
+          'status': status,
+          'patient': patient,
+        },
+      ),
+    );
+    print(response.body);
   }
 
   dispose() {
