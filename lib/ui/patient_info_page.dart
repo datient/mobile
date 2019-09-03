@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:datient/bloc/datient_bloc.dart';
 import 'package:datient/bloc/patient_bloc.dart';
+import 'package:datient/bloc/room_bloc.dart';
 import 'package:datient/models/future_plan.dart';
 import 'package:datient/models/hospitalization.dart';
 import 'package:datient/models/patient.dart';
@@ -45,6 +46,12 @@ class _PatientInfoPageState extends State<PatientInfoPage>
   }
 
   _buildBed(Hospitalization data) {
+    final DatientBloc bloc = DatientProvider.of(context).bloc;
+    final PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
+    bloc.doctor.listen(
+        (value) => patientBloc.getBedName(data.bed, value.token).then((bedName){
+          print(bedName);
+        }));
     return Text(
       data.bed.toString(),
       style: TextStyle(fontSize: 20),
@@ -524,7 +531,10 @@ class _PatientInfoPageState extends State<PatientInfoPage>
     return data == true
         ? Chip(
             backgroundColor: Colors.red,
-            label: Text('Dado de alta',style: TextStyle(color: Colors.white,fontSize: 15),),
+            label: Text(
+              'Dado de alta',
+              style: TextStyle(color: Colors.white, fontSize: 15),
+            ),
           )
         : Container();
   }
@@ -591,7 +601,10 @@ class _PatientInfoPageState extends State<PatientInfoPage>
                           'Progreso $formattedCreateDate',
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
-                        ),Container(width: 70,),
+                        ),
+                        Container(
+                          width: 70,
+                        ),
                         _buildHasLeft(progress.hasLeft)
                       ],
                     ),

@@ -56,6 +56,11 @@ class _PatientAddPageState extends State<PatientAddPage> {
         child: Column(
           children: [
             TextFormField(
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Ingrese un nombre válido';
+                }
+              },
               controller: _cFirstName,
               decoration: InputDecoration(
                 icon: Icon(Icons.person),
@@ -64,6 +69,11 @@ class _PatientAddPageState extends State<PatientAddPage> {
               ),
             ),
             TextFormField(
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Ingrese un apellido válido';
+                }
+              },
               controller: _cLastName,
               decoration: InputDecoration(
                 icon: Icon(Icons.person),
@@ -159,12 +169,12 @@ class _PatientAddPageState extends State<PatientAddPage> {
       String _contactNumber = _cContact.value.text;
       String _secondContactNumber = _cSecondContact.value.text;
 
-    if (_contactNumber.isEmpty){
-      _contactNumber = null;
-    }
-    if (_secondContactNumber.isEmpty){
-      _secondContactNumber = null;
-    }
+      if (_contactNumber.isEmpty) {
+        _contactNumber = null;
+      }
+      if (_secondContactNumber.isEmpty) {
+        _secondContactNumber = null;
+      }
 
       patient
           .createPatient(

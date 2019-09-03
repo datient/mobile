@@ -245,6 +245,18 @@ class PatientBloc {
     return hospitalization;
   }
 
+  Future getBedName(bed, token) async {
+    final response =
+        await http.get('http://10.0.2.2:8000/api/bed/$bed/', headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'JWT $token',
+    });
+    if (response.statusCode == 200) {
+      final extractdata = JSON.jsonDecode(response.body);
+      return (extractdata['name']);
+    } else {}
+  }
+
   Future getStudy(dni, token) async {
     Patient patient;
     final response =
