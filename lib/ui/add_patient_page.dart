@@ -23,6 +23,7 @@ class _PatientAddPageState extends State<PatientAddPage> {
   final _cFirstName = TextEditingController();
   final _cLastName = TextEditingController();
   final _cDni = TextEditingController();
+  final _cBirthDate = TextEditingController();
   final _cHistoryNumber = TextEditingController();
   final _cInitialDiagnosis = TextEditingController();
   final _cContact = TextEditingController();
@@ -34,18 +35,20 @@ class _PatientAddPageState extends State<PatientAddPage> {
     const Gender('Femenino'),
   ];
   final GlobalKey<FormState> _createformKey = new GlobalKey<FormState>();
-  DateTime date;
-  var selectedYear;
+  var selectedDate;
 
   void _showPicker() {
+    var formatter = new DateFormat('dd-MM-yyyy');
     showDatePicker(
-      locale: Locale('es'),
+            locale: Locale('es'),
             context: context,
             firstDate: new DateTime(1900),
             initialDate: DateTime.now(),
             lastDate: DateTime.now())
         .then((DateTime dt) {
-      selectedYear = dt.year;
+      String formattedDate = formatter.format(dt);
+      _cBirthDate.text = (formattedDate);
+      selectedDate = dt;
     });
   }
 
@@ -97,7 +100,9 @@ class _PatientAddPageState extends State<PatientAddPage> {
               },
               child: AbsorbPointer(
                 child: TextFormField(
+                  controller: _cBirthDate,
                   decoration: InputDecoration(
+                    labelText: 'Fecha de nacimiento',
                     icon: Icon(Icons.calendar_today),
                   ),
                 ),
@@ -168,13 +173,13 @@ class _PatientAddPageState extends State<PatientAddPage> {
 
   _validateAndSubmit(token) {
     var formatter = new DateFormat('yyyy-MM-dd');
-    String formattedDate = formatter.format(date);
+    String date = formatter.format(selectedDate);
     var patient = PatientBloc();
     if (_createformKey.currentState.validate()) {
       String _firstName = _cFirstName.value.text;
       String _lastName = _cLastName.value.text;
       int _dni = int.parse(_cDni.value.text);
-      String _birthdate = formattedDate;
+      String _birthdate = date;
       int _historyNumber = int.parse(_cHistoryNumber.value.text);
       int _gender = genderIndex;
       String _incomeDiagnosis = _cInitialDiagnosis.value.text;
