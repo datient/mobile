@@ -685,7 +685,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
   Widget build(BuildContext context) {
     var _createdDate = DateTime.parse(widget.patient.createdDate);
     var _updatedDate = DateTime.parse(widget.patient.updatedDate);
-    var dateFormatter = new DateFormat('yMd');
+    var dateFormatter = new DateFormat('dd-MM-yyyy');
     var timeFormatter = new DateFormat('Hms');
     String formattedCreateDate = dateFormatter.format(_createdDate);
     String formattedTimeCreateDate = timeFormatter.format(_createdDate);

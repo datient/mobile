@@ -144,7 +144,7 @@ class _BedPageState extends State<BedPage> {
           _patientStatus = 'Peligro';
         }
         var _createdDate = DateTime.parse(progress.createdAt);
-        var dateFormatter = new DateFormat('yMd');
+        var dateFormatter = new DateFormat('dd-MM-yyyy');
         String formattedCreateDate = dateFormatter.format(_createdDate);
         return Padding(
           padding: EdgeInsets.all(8.0),
