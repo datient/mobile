@@ -34,18 +34,19 @@ class _PatientAddPageState extends State<PatientAddPage> {
     const Gender('Femenino'),
   ];
   final GlobalKey<FormState> _createformKey = new GlobalKey<FormState>();
-  InputType inputType = InputType.date;
   DateTime date;
-  @override
-  Widget _buildDatePicker() {
-    return DateTimePickerFormField(
-      format: DateFormat('yyyy-MM-dd'),
-      decoration: InputDecoration(
-        icon: Icon(Icons.calendar_today),
-        labelText: 'Fecha de nacimiento',
-      ),
-      onChanged: (dt) => setState(() => date = dt),
-    );
+  var selectedYear;
+
+  void _showPicker() {
+    showDatePicker(
+      locale: Locale('es'),
+            context: context,
+            firstDate: new DateTime(1900),
+            initialDate: DateTime.now(),
+            lastDate: DateTime.now())
+        .then((DateTime dt) {
+      selectedYear = dt.year;
+    });
   }
 
   Widget _buildPatientForm() {
@@ -90,7 +91,18 @@ class _PatientAddPageState extends State<PatientAddPage> {
                 hintText: 'Ingrese el DNI del paciente',
               ),
             ),
-            _buildDatePicker(),
+            GestureDetector(
+              onTap: () {
+                _showPicker();
+              },
+              child: AbsorbPointer(
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    icon: Icon(Icons.calendar_today),
+                  ),
+                ),
+              ),
+            ),
             TextFormField(
               controller: _cHistoryNumber,
               keyboardType: TextInputType.number,

@@ -48,8 +48,8 @@ class _PatientInfoPageState extends State<PatientInfoPage>
   _buildBed(Hospitalization data) {
     final DatientBloc bloc = DatientProvider.of(context).bloc;
     final PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
-    bloc.doctor.listen(
-        (value) => patientBloc.getBedName(data.bed, value.token).then((bedName){
+    bloc.doctor.listen((value) =>
+        patientBloc.getBedName(data.bed, value.token).then((bedName) {
           print(bedName);
         }));
     return Text(
@@ -164,9 +164,17 @@ class _PatientInfoPageState extends State<PatientInfoPage>
               : StreamBuilder(
                   stream: patientBloc.patientFuturePlan,
                   builder: (context, snapshot) {
-                    return snapshot.hasData
-                        ? _buildFuturePlan(snapshot.data)
-                        : Container();
+                    if (snapshot.hasError) {
+                      return Center(
+                          child: Text(
+                        snapshot.error,
+                        style: TextStyle(fontSize: 18, color: Colors.grey),
+                      ));
+                    } else {
+                      return snapshot.hasData
+                          ? _buildFuturePlan(snapshot.data)
+                          : Container();
+                    }
                   });
         });
   }
@@ -208,12 +216,6 @@ class _PatientInfoPageState extends State<PatientInfoPage>
         );
       },
     );
-    // : Center(
-    //     child: Text(
-    //       'No se han encontrado planes a futuro',
-    //       style: TextStyle(fontSize: 18, color: Colors.grey),
-    //     ),
-    //   );
   }
 
   Widget _buildPatientInfo() {

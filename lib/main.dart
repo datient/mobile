@@ -13,6 +13,7 @@ import 'package:datient/ui/patient_page.dart';
 import 'package:datient/ui/room_page.dart';
 import 'package:datient/ui/add_hospitalization_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() => runApp(MyApp());
 
@@ -25,6 +26,14 @@ class MyApp extends StatelessWidget {
       patientBloc: PatientBloc(),
       hospitalizationBloc: HospitalizationBloc(),
       child: MaterialApp(
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: [
+          const Locale('en', 'US'),
+          const Locale('es'),
+        ],
         title: 'Datient',
         theme: ThemeData(
           primarySwatch: Colors.blue,
@@ -39,7 +48,8 @@ class MyApp extends StatelessWidget {
           '/patientadd': (BuildContext context) => PatientAddPage(),
           '/patientedit': (BuildContext context) => PatientEditPage(),
           '/patientassign': (BuildContext context) => PatientAssignPage(),
-          'hospitalizationadd': (BuildContext context) => HospitalizationAddPage(),
+          'hospitalizationadd': (BuildContext context) =>
+              HospitalizationAddPage(),
         },
       ),
     );
