@@ -48,9 +48,9 @@ class _PatientInfoPageState extends State<PatientInfoPage>
   _buildBed(Hospitalization data) {
     final DatientBloc bloc = DatientProvider.of(context).bloc;
     final PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
-    bloc.doctor.listen((value) =>
-        patientBloc.getBedName(data.bed, value.token).then((bedName) {
-        }));
+    // bloc.doctor.listen((value) =>
+    //     patientBloc.getBedName(data.bed, value.token).then((bedName) {
+    //     }));
     return Text(
       data.bed.toString(),
       style: TextStyle(fontSize: 20),
@@ -217,7 +217,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
     );
   }
 
-    Widget _buildPatientInfoStream() {
+  Widget _buildPatientInfoStream() {
     PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
     return StreamBuilder(
         stream: patientBloc.isloading,
@@ -247,8 +247,6 @@ class _PatientInfoPageState extends State<PatientInfoPage>
   Widget _buildPatientInfo(Patient data) {
     final DatientBloc bloc = DatientProvider.of(context).bloc;
     final PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
-    bloc.doctor.listen(
-        (value) => patientBloc.getPatientBed(data.dni, value.token));
     return ListView(
       children: [
         Card(
@@ -399,8 +397,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
   }
 
   Widget _buildPatientContacts(Patient data) {
-    if (data.contact != null &&
-        data.secondContact != null) {
+    if (data.contact != null && data.secondContact != null) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -434,8 +431,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
           Divider(),
         ],
       );
-    } else if (data.contact != null &&
-        data.secondContact == null) {
+    } else if (data.contact != null && data.secondContact == null) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -455,8 +451,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
           Divider(),
         ],
       );
-    } else if (data.secondContact != null &&
-        data.contact == null) {
+    } else if (data.secondContact != null && data.contact == null) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -711,6 +706,8 @@ class _PatientInfoPageState extends State<PatientInfoPage>
         (value) => patientBloc.getStudy(widget.patient.dni, value.token));
     bloc.doctor.listen(
         (value) => patientBloc.getFuturePlan(widget.patient.dni, value.token));
+    bloc.doctor
+        .listen((value) => patientBloc.getPatientBed(widget.patient.dni, value.token));
 
     if (widget.patient.gender == 0) {
       _patientGender = 'Masculino';

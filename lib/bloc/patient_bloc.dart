@@ -103,6 +103,8 @@ class PatientBloc {
       String editBirthDate,
       int editHistoryNumber,
       int editGender,
+      editContact,
+      editSecondContact,
       token,
       Patient patient) async {
     final res = await http.put(
