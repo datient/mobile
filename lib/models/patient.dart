@@ -10,7 +10,6 @@ class Patient {
   var birthDate;
   var historyNumber;
   var gender;
-  var incomeDiagnostic;
   var createdDate;
   var updatedDate;
   List<Study> studies;
@@ -27,7 +26,6 @@ class Patient {
     this.birthDate,
     this.historyNumber,
     this.gender,
-    this.incomeDiagnostic,
     this.createdDate,
     this.updatedDate,
     this.studies,
@@ -61,7 +59,6 @@ class Patient {
       birthDate: json['birth_date'],
       historyNumber: json['history_number'],
       gender: json['gender'],
-      incomeDiagnostic: json['income_diagnosis'],
       createdDate: json['created_at'],
       updatedDate: json['updated_at'],
       studies: list,

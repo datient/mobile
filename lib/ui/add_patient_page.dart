@@ -25,7 +25,6 @@ class _PatientAddPageState extends State<PatientAddPage> {
   final _cDni = TextEditingController();
   final _cBirthDate = TextEditingController();
   final _cHistoryNumber = TextEditingController();
-  final _cInitialDiagnosis = TextEditingController();
   final _cContact = TextEditingController();
   final _cSecondContact = TextEditingController();
   var genderIndex;
@@ -157,14 +156,6 @@ class _PatientAddPageState extends State<PatientAddPage> {
                 hintText: 'Ingrese el numero de contacto',
               ),
             ),
-            TextFormField(
-              maxLines: null,
-              controller: _cInitialDiagnosis,
-              decoration: InputDecoration(
-                  icon: Icon(Icons.assignment),
-                  labelText: 'Diagnostico Inicial',
-                  hintText: 'Ingrese el diagnostico inicial'),
-            ),
           ],
         ),
       ),
@@ -182,7 +173,6 @@ class _PatientAddPageState extends State<PatientAddPage> {
       String _birthdate = date;
       int _historyNumber = int.parse(_cHistoryNumber.value.text);
       int _gender = genderIndex;
-      String _incomeDiagnosis = _cInitialDiagnosis.value.text;
       String _contactNumber = _cContact.value.text;
       String _secondContactNumber = _cSecondContact.value.text;
 
@@ -201,7 +191,6 @@ class _PatientAddPageState extends State<PatientAddPage> {
               _birthdate,
               _historyNumber,
               _gender,
-              _incomeDiagnosis,
               _contactNumber,
               _secondContactNumber,
               token)

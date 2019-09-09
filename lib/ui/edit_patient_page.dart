@@ -113,15 +113,6 @@ class _PatientEditPageState extends State<PatientEditPage> {
                 );
               }).toList(),
             ),
-            TextFormField(
-              maxLines: null,
-              controller: _cInitialDiagnosis
-                ..text = widget.patient.incomeDiagnostic,
-              decoration: InputDecoration(
-                  icon: Icon(Icons.assignment),
-                  labelText: 'Diagnostico Inicial',
-                  hintText: 'Ingrese el diagnostico inicial'),
-            ),
           ],
         ),
       ),
@@ -139,10 +130,9 @@ class _PatientEditPageState extends State<PatientEditPage> {
       String _birthdate = formattedDate;
       int _historyNumber = int.parse(_cHistoryNumber.value.text);
       int _gender = genderIndex;
-      String _incomeDiagnosis = _cInitialDiagnosis.value.text;
       patient
           .editPatient(_firstName, _lastName, _dni, _birthdate, _historyNumber,
-              _gender, _incomeDiagnosis, token, widget.patient)
+              _gender, token, widget.patient)
           .then((success) {
         if (success == true) {
           Navigator.of(context).pop();

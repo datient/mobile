@@ -66,7 +66,6 @@ class PatientBloc {
       String createBirthDate,
       int createHistoryNumber,
       int createGender,
-      String createIncomeDiagnosis,
       String contactNumber,
       String secondContactNumber,
       token) async {
@@ -84,7 +83,6 @@ class PatientBloc {
           'birth_date': createBirthDate,
           'history_number': createHistoryNumber,
           'gender': createGender,
-          'income_diagnosis': createIncomeDiagnosis,
           'contact': contactNumber,
           'contact2': secondContactNumber,
         },
@@ -105,7 +103,6 @@ class PatientBloc {
       String editBirthDate,
       int editHistoryNumber,
       int editGender,
-      String editIncomeDiagnosis,
       token,
       Patient patient) async {
     final res = await http.put(
@@ -122,7 +119,6 @@ class PatientBloc {
           'birth_date': editBirthDate,
           'history_number': editHistoryNumber,
           'gender': editGender,
-          'income_diagnosis': editIncomeDiagnosis
         },
       ),
     );

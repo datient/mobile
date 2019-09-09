@@ -218,11 +218,38 @@ class _PatientInfoPageState extends State<PatientInfoPage>
     );
   }
 
-  Widget _buildPatientInfo() {
+    Widget _buildPatientInfoStream() {
+    PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
+    return StreamBuilder(
+        stream: patientBloc.isloading,
+        builder: (context, snapshot) {
+          return (snapshot.hasData && snapshot.data)
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : StreamBuilder(
+                  stream: patientBloc.specificPatient,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Center(
+                          child: Text(
+                        snapshot.error,
+                        style: TextStyle(fontSize: 18, color: Colors.grey),
+                      ));
+                    } else {
+                      return snapshot.hasData
+                          ? _buildPatientInfo(snapshot.data)
+                          : Container();
+                    }
+                  });
+        });
+  }
+
+  Widget _buildPatientInfo(Patient data) {
     final DatientBloc bloc = DatientProvider.of(context).bloc;
     final PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
     bloc.doctor.listen(
-        (value) => patientBloc.getPatientBed(widget.patient.dni, value.token));
+        (value) => patientBloc.getPatientBed(data.dni, value.token));
     return ListView(
       children: [
         Card(
@@ -243,7 +270,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
                       style: TextStyle(color: Colors.grey, fontSize: 15),
                     ),
                     Text(
-                      widget.patient.firstName,
+                      data.firstName,
                       style: TextStyle(fontSize: 20),
                     ),
                   ],
@@ -257,7 +284,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
                       style: TextStyle(color: Colors.grey, fontSize: 15),
                     ),
                     Text(
-                      widget.patient.lastName,
+                      data.lastName,
                       style: TextStyle(fontSize: 20),
                     ),
                   ],
@@ -271,7 +298,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
                       style: TextStyle(color: Colors.grey, fontSize: 15),
                     ),
                     Text(
-                      widget.patient.dni.toString(),
+                      data.dni.toString(),
                       style: TextStyle(fontSize: 20),
                     ),
                   ],
@@ -285,7 +312,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
                       style: TextStyle(color: Colors.grey, fontSize: 15),
                     ),
                     Text(
-                      widget.patient.birthDate,
+                      data.birthDate,
                       style: TextStyle(fontSize: 20),
                     ),
                   ],
@@ -299,13 +326,13 @@ class _PatientInfoPageState extends State<PatientInfoPage>
                       style: TextStyle(color: Colors.grey, fontSize: 15),
                     ),
                     Text(
-                      widget.patient.age.toString(),
+                      data.age.toString(),
                       style: TextStyle(fontSize: 20),
                     ),
                   ],
                 ),
                 Divider(),
-                _buildPatientContacts(),
+                _buildPatientContacts(data),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -314,7 +341,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
                       style: TextStyle(color: Colors.grey, fontSize: 15),
                     ),
                     Text(
-                      widget.patient.historyNumber.toString(),
+                      data.historyNumber.toString(),
                       style: TextStyle(fontSize: 20),
                     ),
                   ],
@@ -329,21 +356,6 @@ class _PatientInfoPageState extends State<PatientInfoPage>
                     ),
                     Text(
                       _patientGender,
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  ],
-                ),
-                Divider(),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Diagnóstico Inicial',
-                      style: TextStyle(color: Colors.grey, fontSize: 15),
-                    ),
-                    Text(
-                      widget.patient.incomeDiagnostic,
-                      maxLines: 3,
                       style: TextStyle(fontSize: 20),
                     ),
                   ],
@@ -387,9 +399,9 @@ class _PatientInfoPageState extends State<PatientInfoPage>
     );
   }
 
-  Widget _buildPatientContacts() {
-    if (widget.patient.contact != null &&
-        widget.patient.secondContact != null) {
+  Widget _buildPatientContacts(Patient data) {
+    if (data.contact != null &&
+        data.secondContact != null) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -401,7 +413,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
                 style: TextStyle(color: Colors.grey, fontSize: 15),
               ),
               Text(
-                widget.patient.contact.toString(),
+                data.contact.toString(),
                 style: TextStyle(fontSize: 20),
               ),
             ],
@@ -415,7 +427,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
                 style: TextStyle(color: Colors.grey, fontSize: 15),
               ),
               Text(
-                widget.patient.secondContact.toString(),
+                data.secondContact.toString(),
                 style: TextStyle(fontSize: 20),
               ),
             ],
@@ -423,8 +435,8 @@ class _PatientInfoPageState extends State<PatientInfoPage>
           Divider(),
         ],
       );
-    } else if (widget.patient.contact != null &&
-        widget.patient.secondContact == null) {
+    } else if (data.contact != null &&
+        data.secondContact == null) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -436,7 +448,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
                 style: TextStyle(color: Colors.grey, fontSize: 15),
               ),
               Text(
-                widget.patient.contact.toString(),
+                data.contact.toString(),
                 style: TextStyle(fontSize: 20),
               ),
             ],
@@ -444,8 +456,8 @@ class _PatientInfoPageState extends State<PatientInfoPage>
           Divider(),
         ],
       );
-    } else if (widget.patient.secondContact != null &&
-        widget.patient.contact == null) {
+    } else if (data.secondContact != null &&
+        data.contact == null) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -457,7 +469,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
                 style: TextStyle(color: Colors.grey, fontSize: 15),
               ),
               Text(
-                widget.patient.secondContact.toString(),
+                data.secondContact.toString(),
                 style: TextStyle(fontSize: 20),
               ),
             ],
@@ -777,7 +789,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
           body: TabBarView(
             controller: _tabController,
             children: [
-              Container(child: _buildPatientInfo()),
+              Container(child: _buildPatientInfoStream()),
               Container(child: _buildProgressStream()),
               Container(child: _buildFuturePlanStream()),
               Container(child: _buildStudyStream()),
