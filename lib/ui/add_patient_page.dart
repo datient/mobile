@@ -3,7 +3,6 @@ import 'package:datient/bloc/patient_bloc.dart';
 import 'package:datient/models/patient.dart';
 import 'package:datient/providers/datient_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
 
 class PatientAddPage extends StatefulWidget {

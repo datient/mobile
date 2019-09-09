@@ -19,7 +19,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  datetime_picker_formfield: any
   expandable_card: any
   http: any
   rxdart: ^0.22.0

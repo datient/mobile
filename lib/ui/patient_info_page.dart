@@ -50,7 +50,6 @@ class _PatientInfoPageState extends State<PatientInfoPage>
     final PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
     bloc.doctor.listen((value) =>
         patientBloc.getBedName(data.bed, value.token).then((bedName) {
-          print(bedName);
         }));
     return Text(
       data.bed.toString(),

@@ -4,7 +4,6 @@ import 'package:datient/models/doctor.dart';
 import 'package:datient/models/patient.dart';
 import 'package:datient/providers/datient_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
 
 class PatientEditPage extends StatefulWidget {
@@ -33,20 +32,6 @@ class _PatientEditPageState extends State<PatientEditPage> {
     const Gender('Femenino'),
   ];
   final GlobalKey<FormState> _createformKey = new GlobalKey<FormState>();
-  InputType inputType = InputType.date;
-  DateTime date;
-  @override
-  Widget _buildDatePicker() {
-    return DateTimePickerFormField(
-      inputType: inputType,
-      format: DateFormat('yyyy-MM-dd'),
-      decoration: InputDecoration(
-          icon: Icon(Icons.calendar_today),
-          labelText: 'Fecha de nacimiento',
-          hasFloatingPlaceholder: false),
-      onChanged: (dt) => setState(() => date = dt),
-    );
-  }
 
   Widget _buildPatientForm() {
     return Form(
@@ -80,7 +65,7 @@ class _PatientEditPageState extends State<PatientEditPage> {
                 hintText: 'Ingrese el DNI del paciente',
               ),
             ),
-            _buildDatePicker(),
+            // _buildDatePicker(),
             TextFormField(
               controller: _cHistoryNumber
                 ..text = widget.patient.historyNumber.toString(),
@@ -119,57 +104,57 @@ class _PatientEditPageState extends State<PatientEditPage> {
     );
   }
 
-  _validateAndSubmit(token) {
-    var formatter = new DateFormat('yyyy-MM-dd');
-    String formattedDate = formatter.format(date);
-    var patient = PatientBloc();
-    if (_createformKey.currentState.validate()) {
-      String _firstName = _cFirstName.value.text;
-      String _lastName = _cLastName.value.text;
-      int _dni = int.parse(_cDni.value.text);
-      String _birthdate = formattedDate;
-      int _historyNumber = int.parse(_cHistoryNumber.value.text);
-      int _gender = genderIndex;
-      patient
-          .editPatient(_firstName, _lastName, _dni, _birthdate, _historyNumber,
-              _gender, token, widget.patient)
-          .then((success) {
-        if (success == true) {
-          Navigator.of(context).pop();
-          return showDialog<void>(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Row(
-                  children: [
-                    Icon(Icons.info_outline),
-                    SizedBox(width: 10),
-                    Text('Paciente modificado'),
-                  ],
-                ),
-                content: SingleChildScrollView(
-                  child: ListBody(
-                    children: <Widget>[
-                      Text('El paciente ha sido modificado con exito'),
-                    ],
-                  ),
-                ),
-                actions: <Widget>[
-                  FlatButton(
-                    child: Text('Cerrar'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              );
-            },
-          );
-        } else {}
-      });
-    }
-  }
+  // _validateAndSubmit(token) {
+  //   var formatter = new DateFormat('yyyy-MM-dd');
+  //   //String formattedDate = formatter.format(date);
+  //   var patient = PatientBloc();
+  //   if (_createformKey.currentState.validate()) {
+  //     String _firstName = _cFirstName.value.text;
+  //     String _lastName = _cLastName.value.text;
+  //     int _dni = int.parse(_cDni.value.text);
+  //     //String _birthdate = formattedDate;
+  //     int _historyNumber = int.parse(_cHistoryNumber.value.text);
+  //     int _gender = genderIndex;
+  //     patient
+  //         .editPatient(_firstName, _lastName, _dni, _birthdate, _historyNumber,
+  //             _gender, token, widget.patient)
+  //         .then((success) {
+  //       if (success == true) {
+  //         Navigator.of(context).pop();
+  //         return showDialog<void>(
+  //           context: context,
+  //           barrierDismissible: false,
+  //           builder: (BuildContext context) {
+  //             return AlertDialog(
+  //               title: Row(
+  //                 children: [
+  //                   Icon(Icons.info_outline),
+  //                   SizedBox(width: 10),
+  //                   Text('Paciente modificado'),
+  //                 ],
+  //               ),
+  //               content: SingleChildScrollView(
+  //                 child: ListBody(
+  //                   children: <Widget>[
+  //                     Text('El paciente ha sido modificado con exito'),
+  //                   ],
+  //                 ),
+  //               ),
+  //               actions: <Widget>[
+  //                 FlatButton(
+  //                   child: Text('Cerrar'),
+  //                   onPressed: () {
+  //                     Navigator.of(context).pop();
+  //                   },
+  //                 ),
+  //               ],
+  //             );
+  //           },
+  //         );
+  //       } else {}
+  //     });
+  //   }
+  // }
 
   Widget build(BuildContext context) {
     final DatientBloc bloc = DatientProvider.of(context).bloc;
@@ -181,7 +166,7 @@ class _PatientEditPageState extends State<PatientEditPage> {
           IconButton(
             icon: Icon(Icons.edit),
             onPressed: () {
-              bloc.doctor.listen((value) => _validateAndSubmit(value.token));
+              // bloc.doctor.listen((value) => _validateAndSubmit(value.token));
             },
           )
         ],
