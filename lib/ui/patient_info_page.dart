@@ -584,7 +584,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
           _patientStatus = 'Peligro';
         }
         var _createdDate = DateTime.parse(progress.createdAt);
-        var dateFormatter = new DateFormat('yMd');
+        var dateFormatter = new DateFormat('dd-MM-yyyy');
         String formattedCreateDate = dateFormatter.format(_createdDate);
         return Padding(
           padding: EdgeInsets.all(8.0),
@@ -607,7 +607,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                         Container(
-                          width: 70,
+                          width: 60,
                         ),
                         _buildHasLeft(progress.hasLeft)
                       ],

@@ -41,7 +41,7 @@ class _BedPageState extends State<BedPage> {
   }
 
   Widget _buildHospitalization(Hospitalization data) {
-    var dateFormatter = new DateFormat('yMd');
+    var dateFormatter = new DateFormat('dd-MM-yyyy');
     var timeFormatter = new DateFormat('Hms');
     if (data.leftDate == null) {
       var entryDate = DateTime.parse(data.entryDate);
