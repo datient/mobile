@@ -52,7 +52,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
     //     patientBloc.getBedName(data.bed, value.token).then((bedName) {
     //     }));
     return Text(
-      data.bed.toString(),
+      '${data.bed.toString()}',
       style: TextStyle(fontSize: 20),
     );
   }
@@ -367,21 +367,24 @@ class _PatientInfoPageState extends State<PatientInfoPage>
                     ),
                     StreamBuilder(
                       stream: patientBloc.isloading,
-                      builder: (context, snapshot) {
-                        return snapshot.data
+                      builder: (context, AsyncSnapshot<bool> snapshot) {
+                        return snapshot.data && snapshot.hasData
                             ? Center(
                                 child: CircularProgressIndicator(),
                               )
                             : StreamBuilder(
                                 stream: patientBloc.patientBed,
                                 builder: (context, snapshot) {
+                                  if (snapshot.hasError) {
+                                    return Text(
+                                      snapshot.error,
+                                      style: TextStyle(
+                                          fontSize: 18, color: Colors.grey),
+                                    );
+                                  }
                                   return snapshot.hasData
                                       ? _buildBed(snapshot.data)
-                                      : Text(
-                                          'Ninguna cama asignada',
-                                          style: TextStyle(
-                                              fontSize: 18, color: Colors.grey),
-                                        );
+                                      : Container();
                                 },
                               );
                       },
@@ -550,7 +553,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
                   child: CircularProgressIndicator(),
                 )
               : StreamBuilder(
-                  stream: patientBloc.specificPatient,
+                  stream: patientBloc.patientProgress,
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
                       return Center(
@@ -699,6 +702,8 @@ class _PatientInfoPageState extends State<PatientInfoPage>
         (value) => patientBloc.getStudy(widget.patient.dni, value.token));
     bloc.doctor.listen(
         (value) => patientBloc.getFuturePlan(widget.patient.dni, value.token));
+    bloc.doctor.listen(
+        (value) => patientBloc.getProgress(widget.patient.dni, value.token));
     bloc.doctor.listen(
         (value) => patientBloc.getPatientBed(widget.patient.dni, value.token));
 

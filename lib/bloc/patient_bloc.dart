@@ -18,6 +18,7 @@ class PatientBloc {
   final _patientBedSubject = BehaviorSubject<Hospitalization>();
   final _patientStudySubject = BehaviorSubject<Patient>();
   final _patientFuturePlanSubject = BehaviorSubject<Patient>();
+  final _patientProgressSubject = BehaviorSubject<Patient>();
   final _isLoading = BehaviorSubject<bool>();
   Stream<List<Patient>> get patients => _patientSubject.stream;
   Stream<List<Patient>> get searchedPatients => _patientSearchSubject.stream;
@@ -26,6 +27,7 @@ class PatientBloc {
   Stream<bool> get isloading => _isLoading.stream;
   Stream<Patient> get patientStudy => _patientStudySubject.stream;
   Stream<Patient> get patientFuturePlan => _patientFuturePlanSubject.stream;
+  Stream<Patient> get patientProgress => _patientProgressSubject.stream;
 
   Future<List> getPatients(token) async {
     List list = [];
@@ -208,6 +210,34 @@ class PatientBloc {
     return patient;
   }
 
+    Future getProgress(dni, token) async {
+    Patient patient;
+    final response = await http.get(
+      'http://10.0.2.2:8000/api/patient/$dni/',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'JWT $token',
+      },
+    );
+    final extractdata = JSON.jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      _isLoading.sink.add(false);
+      patient = Patient.fromJson(extractdata);
+      _patientProgressSubject.sink.add(patient);
+      if (patient.futurePlans.isEmpty) {
+        _patientProgressSubject
+            .addError('No se han encontrado progresos');
+      }
+    } else if (response.statusCode == 404) {
+      _patientProgressSubject.sink.add(null);
+      _isLoading.sink.add(false);
+      _patientFuturePlanSubject
+          .addError('No se han encontrado progresos');
+    }
+    _isLoading.sink.add(false);
+    return patient;
+  }
+
   Future<dynamic> postFuturePlan(title, description, patientDni, token) async {
     final response = await http.post(
       'http://10.0.2.2:8000/api/plans/',
@@ -238,12 +268,10 @@ class PatientBloc {
         });
     final extractdata = JSON.jsonDecode(response.body);
     if (response.statusCode == 200) {
-      _isLoading.sink.add(false);
       hospitalization = Hospitalization.fromJson(extractdata);
       _patientBedSubject.sink.add(hospitalization);
     } else if (response.statusCode == 404) {
-      _patientBedSubject.sink.add(null);
-      _isLoading.sink.add(false);
+      _patientBedSubject.sink.addError('Ninguna cama asignada');
     }
     _isLoading.sink.add(false);
     return hospitalization;
