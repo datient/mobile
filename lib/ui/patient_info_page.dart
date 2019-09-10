@@ -504,35 +504,28 @@ class _PatientInfoPageState extends State<PatientInfoPage>
   }
 
   Widget _buildPatientStudies(Patient data) {
-    return (widget.patient.studies.isNotEmpty)
-        ? ListView.builder(
-            itemCount: data.studies.length,
-            itemBuilder: (BuildContext context, int index) {
-              Study studies = data.studies[index];
-              return Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Container(
-                  child: GestureDetector(
-                    child: Hero(
-                      tag: 'studyHero$index',
-                      child: Image.network(studies.image),
-                    ),
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (_) {
-                        return DetailScreen(image: studies.image, index: index);
-                      }));
-                    },
-                  ),
-                ),
-              );
-            },
-          )
-        : Center(
-            child: Text(
-              'No se han encontrado estudios',
-              style: TextStyle(fontSize: 18, color: Colors.grey),
+    return ListView.builder(
+      itemCount: data.studies.length,
+      itemBuilder: (BuildContext context, int index) {
+        Study studies = data.studies[index];
+        return Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Container(
+            child: GestureDetector(
+              child: Hero(
+                tag: 'studyHero$index',
+                child: Image.network(studies.image),
+              ),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (_) {
+                  return DetailScreen(image: studies.image, index: index);
+                }));
+              },
             ),
-          );
+          ),
+        );
+      },
+    );
   }
 
   Widget _buildHasLeft(data) {
@@ -706,8 +699,8 @@ class _PatientInfoPageState extends State<PatientInfoPage>
         (value) => patientBloc.getStudy(widget.patient.dni, value.token));
     bloc.doctor.listen(
         (value) => patientBloc.getFuturePlan(widget.patient.dni, value.token));
-    bloc.doctor
-        .listen((value) => patientBloc.getPatientBed(widget.patient.dni, value.token));
+    bloc.doctor.listen(
+        (value) => patientBloc.getPatientBed(widget.patient.dni, value.token));
 
     if (widget.patient.gender == 0) {
       _patientGender = 'Masculino';

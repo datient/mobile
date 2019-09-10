@@ -180,11 +180,19 @@ class _PatientEditPageState extends State<PatientEditPage> {
       String _birthdate = _formattedDate;
       int _historyNumber = int.parse(_cHistoryNumber.value.text);
       int _gender = genderIndex;
-      String contact = _cContact.value.text;
-      String secondContact = _cSecondContact.value.text;
+      String _contact = _cContact.value.text;
+      String _secondContact = _cSecondContact.value.text;
+
+      if (_contact.isEmpty) {
+        _contact = null;
+      }
+      if (_secondContact.isEmpty) {
+        _secondContact = null;
+      }
+
       patient
           .editPatient(_firstName, _lastName, _dni, _birthdate, _historyNumber,
-              _gender,contact,secondContact, token, widget.patient)
+              _gender, _contact, _secondContact, token, widget.patient)
           .then((success) {
         if (success == true) {
           Navigator.of(context).pop();

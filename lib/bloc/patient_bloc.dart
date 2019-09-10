@@ -121,6 +121,8 @@ class PatientBloc {
           'birth_date': editBirthDate,
           'history_number': editHistoryNumber,
           'gender': editGender,
+          'contact': editContact,
+          'contact2': editSecondContact,
         },
       ),
     );
@@ -192,6 +194,10 @@ class PatientBloc {
       _isLoading.sink.add(false);
       patient = Patient.fromJson(extractdata);
       _patientFuturePlanSubject.sink.add(patient);
+      if (patient.futurePlans.isEmpty) {
+        _patientFuturePlanSubject
+            .addError('No se han encontrado planes a futuro');
+      }
     } else if (response.statusCode == 404) {
       _patientFuturePlanSubject.sink.add(null);
       _isLoading.sink.add(false);
@@ -267,6 +273,9 @@ class PatientBloc {
       _isLoading.sink.add(false);
       patient = Patient.fromJson(extractdata);
       _patientStudySubject.sink.add(patient);
+      if (patient.studies.isEmpty) {
+        _patientStudySubject.addError('No se han encontrado estudios');
+      }
     } else if (response.statusCode == 404) {
       _patientStudySubject.sink.add(null);
       _isLoading.sink.add(false);
