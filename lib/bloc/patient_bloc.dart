@@ -224,7 +224,7 @@ class PatientBloc {
       _isLoading.sink.add(false);
       patient = Patient.fromJson(extractdata);
       _patientProgressSubject.sink.add(patient);
-      if (patient.futurePlans.isEmpty) {
+      if (patient.patientProgress.isEmpty) {
         _patientProgressSubject
             .addError('No se han encontrado progresos');
       }
