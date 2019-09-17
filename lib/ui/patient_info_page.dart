@@ -195,6 +195,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
             child: Padding(
               padding: EdgeInsets.all(12),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -598,6 +599,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
             child: Padding(
                 padding: EdgeInsets.all(12),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       children: [

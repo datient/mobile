@@ -158,6 +158,7 @@ class _BedPageState extends State<BedPage> {
             child: Padding(
                 padding: EdgeInsets.all(12),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Progreso ${formattedCreateDate}',
