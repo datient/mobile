@@ -9,7 +9,7 @@ import 'package:intl/intl.dart';
 
 class PatientProgressPage extends StatefulWidget {
   final Patient patient;
-  PatientProgressPage({Key key,this.patient}) : super(key: key);
+  PatientProgressPage({Key key, this.patient}) : super(key: key);
 
   @override
   _PatientProgressState createState() => _PatientProgressState();
@@ -140,9 +140,8 @@ class _PatientProgressState extends State<PatientProgressPage> {
     bloc.doctor.listen(
         (value) => patientBloc.getProgress(widget.patient.dni, value.token));
     return Scaffold(
-      body: Container(
-        child: _buildProgressStream(),
-      )
-    );
+        body: Container(
+      child: _buildProgressStream(),
+    ));
   }
 }

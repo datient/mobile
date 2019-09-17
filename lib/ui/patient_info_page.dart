@@ -8,7 +8,9 @@ import 'package:datient/models/patient.dart';
 import 'package:datient/models/progress.dart';
 import 'package:datient/models/study.dart';
 import 'package:datient/providers/datient_provider.dart';
+import 'package:datient/ui/patient_futureplan_page.dart';
 import 'package:datient/ui/patient_progress_page.dart';
+import 'package:datient/ui/patient_study_page.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'add_futureplan_page.dart';
@@ -150,73 +152,6 @@ class _PatientInfoPageState extends State<PatientInfoPage>
         },
       );
     }
-  }
-
-  Widget _buildFuturePlanStream() {
-    PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
-    return StreamBuilder(
-        stream: patientBloc.isloading,
-        builder: (context, snapshot) {
-          return (snapshot.hasData && snapshot.data)
-              ? Center(
-                  child: CircularProgressIndicator(),
-                )
-              : StreamBuilder(
-                  stream: patientBloc.patientFuturePlan,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Center(
-                          child: Text(
-                        snapshot.error,
-                        style: TextStyle(fontSize: 18, color: Colors.grey),
-                      ));
-                    } else {
-                      return snapshot.hasData
-                          ? _buildFuturePlan(snapshot.data)
-                          : Container();
-                    }
-                  });
-        });
-  }
-
-  Widget _buildFuturePlan(Patient data) {
-    return ListView.builder(
-      itemCount: data.futurePlans.length,
-      itemBuilder: (BuildContext context, int index) {
-        FuturePlan plans = data.futurePlans[index];
-        return Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Container(
-              child: Card(
-            elevation: 6,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
-            ),
-            margin: EdgeInsets.only(top: 4, bottom: 4),
-            child: Padding(
-              padding: EdgeInsets.all(12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        plans.title,
-                        style: TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                  Divider(),
-                  Text(plans.description),
-                ],
-              ),
-            ),
-          )),
-        );
-      },
-    );
   }
 
   Widget _buildPatientInfoStream() {
@@ -483,59 +418,6 @@ class _PatientInfoPageState extends State<PatientInfoPage>
       return Container();
     }
   }
-
-  Widget _buildStudyStream() {
-    PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
-    return StreamBuilder(
-        stream: patientBloc.isloading,
-        builder: (context, snapshot) {
-          return (snapshot.hasData && snapshot.data)
-              ? Center(
-                  child: CircularProgressIndicator(),
-                )
-              : StreamBuilder(
-                  stream: patientBloc.patientStudy,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Center(
-                          child: Text(
-                        snapshot.error,
-                        style: TextStyle(fontSize: 18, color: Colors.grey),
-                      ));
-                    } else {
-                      return snapshot.hasData
-                          ? _buildPatientStudies(snapshot.data)
-                          : Container();
-                    }
-                  });
-        });
-  }
-
-  Widget _buildPatientStudies(Patient data) {
-    return ListView.builder(
-      itemCount: data.studies.length,
-      itemBuilder: (BuildContext context, int index) {
-        Study studies = data.studies[index];
-        return Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Container(
-            child: GestureDetector(
-              child: Hero(
-                tag: 'studyHero$index',
-                child: Image.network(studies.image),
-              ),
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (_) {
-                  return DetailScreen(image: studies.image, index: index);
-                }));
-              },
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   Widget _buildFloatingActionButton() {
     if (_tabController.index == 0) {
       return FloatingActionButton(
@@ -587,10 +469,6 @@ class _PatientInfoPageState extends State<PatientInfoPage>
     PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
     bloc.doctor.listen((value) =>
         patientBloc.getSpecificPatients(value.token, widget.patient.dni));
-    bloc.doctor.listen(
-        (value) => patientBloc.getStudy(widget.patient.dni, value.token));
-    bloc.doctor.listen(
-        (value) => patientBloc.getFuturePlan(widget.patient.dni, value.token));
     bloc.doctor.listen(
         (value) => patientBloc.getPatientBed(widget.patient.dni, value.token));
 
@@ -672,8 +550,8 @@ class _PatientInfoPageState extends State<PatientInfoPage>
             children: [
               Container(child: _buildPatientInfoStream()),
               PatientProgressPage(patient: widget.patient),
-              Container(child: _buildFuturePlanStream()),
-              Container(child: _buildStudyStream()),
+              PatientFuturePlanPage(patient: widget.patient),
+              PatientStudyPage(patient: widget.patient),
             ],
           ),
           floatingActionButton: _buildFloatingActionButton()),
