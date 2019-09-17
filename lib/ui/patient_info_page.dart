@@ -8,6 +8,7 @@ import 'package:datient/models/patient.dart';
 import 'package:datient/models/progress.dart';
 import 'package:datient/models/study.dart';
 import 'package:datient/providers/datient_provider.dart';
+import 'package:datient/ui/patient_progress_page.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'add_futureplan_page.dart';
@@ -248,6 +249,9 @@ class _PatientInfoPageState extends State<PatientInfoPage>
   Widget _buildPatientInfo(Patient data) {
     final DatientBloc bloc = DatientProvider.of(context).bloc;
     final PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
+    var _birthDate = DateTime.parse(data.birthDate);
+    var dateFormatter = new DateFormat('dd-MM-yyyy');
+    String formattedBirthDate = dateFormatter.format(_birthDate);
     return ListView(
       children: [
         Card(
@@ -310,7 +314,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
                       style: TextStyle(color: Colors.grey, fontSize: 15),
                     ),
                     Text(
-                      data.birthDate,
+                      formattedBirthDate,
                       style: TextStyle(fontSize: 20),
                     ),
                   ],
@@ -532,123 +536,6 @@ class _PatientInfoPageState extends State<PatientInfoPage>
     );
   }
 
-  Widget _buildHasLeft(data) {
-    return data == true
-        ? Chip(
-            backgroundColor: Colors.red,
-            label: Text(
-              'Dado de alta',
-              style: TextStyle(color: Colors.white, fontSize: 15),
-            ),
-          )
-        : Container();
-  }
-
-  Widget _buildProgressStream() {
-    PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
-    return StreamBuilder(
-        stream: patientBloc.isloading,
-        builder: (context, snapshot) {
-          return (snapshot.hasData && snapshot.data)
-              ? Center(
-                  child: CircularProgressIndicator(),
-                )
-              : StreamBuilder(
-                  stream: patientBloc.patientProgress,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Center(
-                          child: Text(
-                        snapshot.error,
-                        style: TextStyle(fontSize: 18, color: Colors.grey),
-                      ));
-                    } else {
-                      return snapshot.hasData
-                          ? _buildProgress(snapshot.data)
-                          : Container();
-                    }
-                  });
-        });
-  }
-
-  Widget _buildProgress(Patient data) {
-    return ListView.builder(
-      itemCount: data.patientProgress.length,
-      itemBuilder: (BuildContext context, int index) {
-        Progress progress = data.patientProgress[index];
-        var _patientStatus;
-        if (progress.status == 0) {
-          _patientStatus = 'Bien';
-        } else if (progress.status == 1) {
-          _patientStatus = 'Precaución';
-        } else if (progress.status == 2) {
-          _patientStatus = 'Peligro';
-        }
-        var _createdDate = DateTime.parse(progress.createdAt);
-        var dateFormatter = new DateFormat('dd-MM-yyyy');
-        String formattedCreateDate = dateFormatter.format(_createdDate);
-        return Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Container(
-              child: Card(
-            elevation: 6,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
-            ),
-            margin: EdgeInsets.only(top: 4, bottom: 4),
-            child: Padding(
-                padding: EdgeInsets.all(12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          'Progreso $formattedCreateDate',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        Container(
-                          width: 60,
-                        ),
-                        _buildHasLeft(progress.hasLeft)
-                      ],
-                    ),
-                    Divider(),
-                    Text(
-                      'Diagnóstico',
-                      style: TextStyle(fontSize: 16, color: Colors.grey),
-                    ),
-                    Text(
-                      progress.diagnosis,
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    Divider(),
-                    Text(
-                      'Descripción',
-                      style: TextStyle(fontSize: 16, color: Colors.grey),
-                    ),
-                    Text(
-                      progress.description,
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    Divider(),
-                    Text(
-                      'Estado',
-                      style: TextStyle(fontSize: 16, color: Colors.grey),
-                    ),
-                    Text(
-                      _patientStatus,
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ],
-                )),
-          )),
-        );
-      },
-    );
-  }
-
   Widget _buildFloatingActionButton() {
     if (_tabController.index == 0) {
       return FloatingActionButton(
@@ -704,8 +591,6 @@ class _PatientInfoPageState extends State<PatientInfoPage>
         (value) => patientBloc.getStudy(widget.patient.dni, value.token));
     bloc.doctor.listen(
         (value) => patientBloc.getFuturePlan(widget.patient.dni, value.token));
-    bloc.doctor.listen(
-        (value) => patientBloc.getProgress(widget.patient.dni, value.token));
     bloc.doctor.listen(
         (value) => patientBloc.getPatientBed(widget.patient.dni, value.token));
 
@@ -786,7 +671,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
             controller: _tabController,
             children: [
               Container(child: _buildPatientInfoStream()),
-              Container(child: _buildProgressStream()),
+              PatientProgressPage(patient: widget.patient),
               Container(child: _buildFuturePlanStream()),
               Container(child: _buildStudyStream()),
             ],
