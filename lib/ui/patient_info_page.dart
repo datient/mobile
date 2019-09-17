@@ -1,12 +1,8 @@
 import 'dart:io';
 import 'package:datient/bloc/datient_bloc.dart';
 import 'package:datient/bloc/patient_bloc.dart';
-import 'package:datient/bloc/room_bloc.dart';
-import 'package:datient/models/future_plan.dart';
 import 'package:datient/models/hospitalization.dart';
 import 'package:datient/models/patient.dart';
-import 'package:datient/models/progress.dart';
-import 'package:datient/models/study.dart';
 import 'package:datient/providers/datient_provider.dart';
 import 'package:datient/ui/patient_futureplan_page.dart';
 import 'package:datient/ui/patient_progress_page.dart';
@@ -49,8 +45,6 @@ class _PatientInfoPageState extends State<PatientInfoPage>
   }
 
   _buildBed(Hospitalization data) {
-    final DatientBloc bloc = DatientProvider.of(context).bloc;
-    final PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
     // bloc.doctor.listen((value) =>
     //     patientBloc.getBedName(data.bed, value.token).then((bedName) {
     //     }));
@@ -182,7 +176,6 @@ class _PatientInfoPageState extends State<PatientInfoPage>
   }
 
   Widget _buildPatientInfo(Patient data) {
-    final DatientBloc bloc = DatientProvider.of(context).bloc;
     final PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
     var _birthDate = DateTime.parse(data.birthDate);
     var dateFormatter = new DateFormat('dd-MM-yyyy');

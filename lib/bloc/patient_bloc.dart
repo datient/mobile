@@ -1,9 +1,7 @@
 import 'dart:convert' as JSON;
 import 'dart:io';
-import 'package:datient/models/future_plan.dart';
 import 'package:datient/models/hospitalization.dart';
 import 'package:datient/models/patient.dart';
-import 'package:datient/models/study.dart';
 import 'package:http/http.dart' as http;
 import 'package:rxdart/rxdart.dart';
 import 'package:dio/dio.dart';
@@ -47,7 +45,7 @@ class PatientBloc {
   Future<Patient> getSpecificPatients(token, dni) async {
     Patient patient;
     final response = await http.get(
-      'http://10.0.2.2:8000/api/patient/${dni}',
+      'http://10.0.2.2:8000/api/patient/$dni',
       headers: {'Authorization': 'JWT $token'},
     );
     if (response.statusCode == 200) {
@@ -150,7 +148,7 @@ class PatientBloc {
   Future<List> searchPatient(token, dni) async {
     List list = [];
     final response = await http.get(
-      'http://10.0.2.2:8000/api/patient/?dni=${dni}',
+      'http://10.0.2.2:8000/api/patient/?dni=$dni',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'JWT $token',

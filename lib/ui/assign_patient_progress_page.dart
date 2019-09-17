@@ -1,13 +1,9 @@
-import 'package:datient/bloc/datient_bloc.dart';
 import 'package:datient/bloc/hospitalization_bloc.dart';
 import 'package:datient/models/bed.dart';
 import 'package:datient/models/hospitalization.dart';
 import 'package:datient/models/patient.dart';
 import 'package:datient/providers/datient_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-
-import 'bed_page.dart';
 
 class AssignPatientProgressPage extends StatefulWidget {
   final Bed bed;
@@ -208,7 +204,6 @@ class _AssignPatientProgressPageState extends State<AssignPatientProgressPage> {
   }
 
   Widget build(BuildContext context) {
-    final DatientBloc bloc = DatientProvider.of(context).bloc;
     return Scaffold(
       appBar: AppBar(
         title: Text('Ingresar paciente'),

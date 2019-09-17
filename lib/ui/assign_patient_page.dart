@@ -1,15 +1,10 @@
 import 'package:datient/bloc/datient_bloc.dart';
 import 'package:datient/bloc/patient_bloc.dart';
 import 'package:datient/models/bed.dart';
-import 'package:datient/models/doctor.dart';
-import 'package:datient/models/hospitalization.dart';
 import 'package:datient/models/patient.dart';
 import 'package:datient/providers/datient_provider.dart';
 import 'package:datient/ui/assign_patient_progress_page.dart';
-import 'package:datient/ui/patient_info_page.dart';
 import 'package:flutter/material.dart';
-
-import 'bed_page.dart';
 
 class PatientAssignPage extends StatefulWidget {
   final Bed bed;

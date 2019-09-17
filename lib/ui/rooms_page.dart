@@ -1,6 +1,5 @@
 import 'package:datient/models/doctor.dart';
 import 'package:datient/providers/datient_provider.dart';
-import 'package:datient/ui/patient_page.dart';
 import 'package:datient/ui/room_page.dart';
 import 'package:flutter/material.dart';
 

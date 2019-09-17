@@ -1,5 +1,4 @@
 import 'dart:convert' as JSON;
-import 'package:datient/models/bed.dart';
 import 'package:datient/models/room.dart';
 import 'package:http/http.dart' as http;
 import 'package:rxdart/rxdart.dart';

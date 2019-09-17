@@ -115,7 +115,7 @@ class DatientBloc {
   Future<Doctor> getSpecificDoctor(token, id) async {
     Doctor doctor;
     final response = await http.get(
-      'http://10.0.2.2:8000/api/doctor/${id}',
+      'http://10.0.2.2:8000/api/doctor/$id',
       headers: {'Authorization': 'JWT $token'},
     );
     if (response.statusCode == 200) {
@@ -148,6 +148,7 @@ class DatientBloc {
 
   dispose() {
     _doctorSubject.close();
+    _doctorSpecificSubject.close();
     this.dispose();
   }
 }

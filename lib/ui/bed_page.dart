@@ -201,8 +201,6 @@ class _BedPageState extends State<BedPage> {
   }
 
   Widget _buildDischargeFloatingActionButton(Hospitalization data) {
-    final bloc = DatientProvider.of(context).bloc;
-    final hospitalizationBloc = DatientProvider.of(context).hospitalizationBloc;
     if (data.leftDate == null) {
       return SpeedDial(
         animatedIcon: AnimatedIcons.menu_close,
