@@ -22,68 +22,19 @@ class _PatientAssignPageState extends State<PatientAssignPage> {
   @override
   void initState() {
     super.initState();
-    activeSearch = true;
+    activeSearch = false;
   }
 
   void _search(String queryString) {
     final bloc = DatientProvider.of(context).bloc;
     final patientBloc = DatientProvider.of(context).patientBloc;
     setState(() {
+      activeSearch =true;
       var search = _searchController.value.text;
       bloc.doctor
           .listen((value) => patientBloc.searchPatient(value.token, search));
     });
   }
-
-  // Widget _buildGuestList(data) {
-  //   return SizedBox(
-  //     height: 560,
-  //     child: Scrollbar(
-  //       child: ListView.builder(
-  //           itemCount: data.length,
-  //           itemBuilder: (BuildContext context, int index) {
-  //             Patient patients = data[index];
-  //             return Container(
-  //               child: GestureDetector(
-  //                 onTap: () {
-  //                   Navigator.of(context).pushReplacement(
-  //                     MaterialPageRoute(
-  //                       builder: (context) => AssignPatientProgressPage(
-  //                         patient: data[index],
-  //                         bed: widget.bed,
-  //                       ),
-  //                     ),
-  //                   );
-  //                 },
-  //                 child: Card(
-  //                   elevation: 6,
-  //                   child: Column(
-  //                     children: [
-  //                       SizedBox(height: 10),
-  //                       Row(
-  //                         children: [
-  //                           SizedBox(
-  //                             width: 10,
-  //                           ),
-  //                           Icon(Icons.person),
-  //                           SizedBox(width: 20),
-  //                           Text(
-  //                             patients.firstName + ' ' + patients.lastName,
-  //                             style: TextStyle(
-  //                                 fontSize: 18, fontWeight: FontWeight.bold),
-  //                           ),
-  //                         ],
-  //                       ),
-  //                       SizedBox(height: 10),
-  //                     ],
-  //                   ),
-  //                 ),
-  //               ),
-  //             );
-  //           }),
-  //     ),
-  //   );
-  // }
 
   Widget _buildGuestList(data) {
     return (data.length != 0)

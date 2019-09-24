@@ -69,6 +69,30 @@ class _PatientFuturePlanState extends State<PatientFuturePlanPage> {
                         style: TextStyle(
                             fontSize: 22, fontWeight: FontWeight.bold),
                       ),
+                      Spacer(),
+                      PopupMenuButton(
+                        icon: Icon(
+                          Icons.more_vert,
+                          color: Colors.grey,
+                        ),
+                        itemBuilder: (_) => <PopupMenuItem<String>>[
+                          PopupMenuItem<String>(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                ),
+                                Text(
+                                  'Eliminar',
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      )
                     ],
                   ),
                   Divider(),
@@ -88,8 +112,7 @@ class _PatientFuturePlanState extends State<PatientFuturePlanPage> {
     bloc.doctor.listen(
         (value) => patientBloc.getFuturePlan(widget.patient.dni, value.token));
     return Scaffold(
-        body: Container(
-      child: _buildFuturePlanStream()),
+      body: Container(child: _buildFuturePlanStream()),
     );
   }
 }
