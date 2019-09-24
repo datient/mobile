@@ -198,11 +198,18 @@ class _PatientAssignPageState extends State<PatientAssignPage> {
         children: [
           Padding(
             padding: EdgeInsets.all(8.0),
-            child: TextField(
-              onChanged: _search,
-              controller: _searchController,
-              decoration: InputDecoration(
-                suffixIcon: Icon(Icons.search),
+            child: SizedBox(
+              height: 40,
+              child: TextField(
+                onChanged: _search,
+                controller: _searchController,
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.all(8),
+                  suffixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(
+                    borderRadius: new BorderRadius.circular(25.0),
+                  ),
+                ),
               ),
             ),
           ),
