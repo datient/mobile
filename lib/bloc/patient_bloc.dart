@@ -91,8 +91,8 @@ class PatientBloc {
     if (res.statusCode == 201) {
       return true;
     } else {
-      print(res.body);
-      return false;
+      var responseError = JSON.jsonDecode(res.body);
+      return responseError['detail'];
     }
   }
 
@@ -129,7 +129,8 @@ class PatientBloc {
     if (res.statusCode == 200) {
       return true;
     } else {
-      print(res.body);
+      var responseError = JSON.jsonDecode(res.body);
+      return responseError['detail'];
     }
   }
 
@@ -208,7 +209,7 @@ class PatientBloc {
     return patient;
   }
 
-    Future getProgress(dni, token) async {
+  Future getProgress(dni, token) async {
     Patient patient;
     final response = await http.get(
       'http://10.0.2.2:8000/api/patient/$dni/',
@@ -223,14 +224,12 @@ class PatientBloc {
       patient = Patient.fromJson(extractdata);
       _patientProgressSubject.sink.add(patient);
       if (patient.patientProgress.isEmpty) {
-        _patientProgressSubject
-            .addError('No se han encontrado progresos');
+        _patientProgressSubject.addError('No se han encontrado progresos');
       }
     } else if (response.statusCode == 404) {
       _patientProgressSubject.sink.add(null);
       _isLoading.sink.add(false);
-      _patientFuturePlanSubject
-          .addError('No se han encontrado progresos');
+      _patientFuturePlanSubject.addError('No se han encontrado progresos');
     }
     _isLoading.sink.add(false);
     return patient;
@@ -253,10 +252,13 @@ class PatientBloc {
     );
     if (response.statusCode == 201) {
       return true;
+    } else {
+      var responseError = JSON.jsonDecode(response.body);
+      return responseError['detail'];
     }
   }
 
-    Future<dynamic> deleteFuturePlan(id, token) async {
+  Future<dynamic> deleteFuturePlan(id, token) async {
     final response = await http.delete(
       'http://10.0.2.2:8000/api/plans/$id',
       headers: {
@@ -266,7 +268,7 @@ class PatientBloc {
     );
     if (response.statusCode == 301) {
       print(response.body);
-    }else{
+    } else {
       print(response.body);
     }
   }

@@ -94,7 +94,8 @@ class HospitalizationBloc {
       dischargePatientHospitalization(patientDni, bed, doctor, token);
       return true;
     } else {
-      print(response.body);
+      var responseError = JSON.jsonDecode(response.body);
+      return responseError['detail'];
     }
   }
 
@@ -117,12 +118,11 @@ class HospitalizationBloc {
     );
     if (response.statusCode == 201) {
       return true;
-    } else {
-      print(response.body);
-    }
+    } else {}
   }
 
-  Future <dynamic>assignPatient(diagnosis,description,status,patient,int doctorId, int bedId,token) async {
+  Future<dynamic> assignPatient(diagnosis, description, status, patient,
+      int doctorId, int bedId, token) async {
     final response = await http.post(
       'http://10.0.2.2:8000/api/hospitalization/',
       headers: {

@@ -50,8 +50,7 @@ class _PatientStudyState extends State<PatientStudyPage> {
         Study studies = data.studies[index];
         return Padding(
           padding: EdgeInsets.all(8.0),
-          child: Stack(
-            children: [
+          child: 
               Container(
                 child: GestureDetector(
                   child: Hero(
@@ -64,8 +63,6 @@ class _PatientStudyState extends State<PatientStudyPage> {
                     }));
                   },
                 ),
-              ),
-            ],
           ),
         );
       },
