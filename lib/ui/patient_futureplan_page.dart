@@ -3,6 +3,7 @@ import 'package:datient/bloc/patient_bloc.dart';
 import 'package:datient/models/future_plan.dart';
 import 'package:datient/models/patient.dart';
 import 'package:datient/providers/datient_provider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PatientFuturePlanPage extends StatefulWidget {
@@ -43,6 +44,8 @@ class _PatientFuturePlanState extends State<PatientFuturePlanPage> {
   }
 
   Widget _buildFuturePlan(Patient data) {
+    DatientBloc bloc = DatientProvider.of(context).bloc;
+    PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
     return ListView.builder(
       itemCount: data.futurePlans.length,
       itemBuilder: (BuildContext context, int index) {
@@ -97,6 +100,13 @@ class _PatientFuturePlanState extends State<PatientFuturePlanPage> {
                   ),
                   Divider(),
                   Text(plans.description),
+                  CupertinoButton(
+                    child: Text('prueba'),
+                    onPressed: () {
+                      bloc.doctor.listen((value) => patientBloc.deleteFuturePlan(
+                          plans.id, value.token));
+                    },
+                  )
                 ],
               ),
             ),

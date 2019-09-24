@@ -152,9 +152,11 @@ class _PatientAssignPageState extends State<PatientAssignPage> {
             child: SizedBox(
               height: 40,
               child: TextField(
+                keyboardType: TextInputType.number,
                 onChanged: _search,
                 controller: _searchController,
                 decoration: InputDecoration(
+                  hintText: 'Buscar paciente por DNI',
                   contentPadding: EdgeInsets.all(8),
                   suffixIcon: Icon(Icons.search),
                   border: OutlineInputBorder(

@@ -40,10 +40,11 @@ class _BedPageState extends State<PatientPage> {
       return AppBar(
         leading: Icon(Icons.search),
         title: TextField(
+          keyboardType: TextInputType.number,
           onChanged: _search,
           controller: _searchController,
           decoration: InputDecoration(
-            hintText: 'Buscar paciente',
+            hintText: 'Buscar paciente por DNI',
             hintStyle: TextStyle(
               color: Colors.white,
             ),

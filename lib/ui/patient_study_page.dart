@@ -50,18 +50,22 @@ class _PatientStudyState extends State<PatientStudyPage> {
         Study studies = data.studies[index];
         return Padding(
           padding: EdgeInsets.all(8.0),
-          child: Container(
-            child: GestureDetector(
-              child: Hero(
-                tag: 'studyHero$index',
-                child: Image.network(studies.image),
+          child: Stack(
+            children: [
+              Container(
+                child: GestureDetector(
+                  child: Hero(
+                    tag: 'studyHero$index',
+                    child: Image.network(studies.image),
+                  ),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) {
+                      return DetailScreen(image: studies.image, index: index);
+                    }));
+                  },
+                ),
               ),
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (_) {
-                  return DetailScreen(image: studies.image, index: index);
-                }));
-              },
-            ),
+            ],
           ),
         );
       },
