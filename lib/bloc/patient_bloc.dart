@@ -178,6 +178,8 @@ class PatientBloc {
     );
     if (response.statusCode == 201) {
       return true;
+    } else {
+      return false;
     }
   }
 
@@ -269,27 +271,27 @@ class PatientBloc {
     if (response.statusCode == 301) {
       print(response.body);
     } else {
-      print(response.body);
+      var responseError = JSON.jsonDecode(response.body);
+      return responseError['detail'];
     }
   }
 
-  Future<dynamic> editFuturePlan(id,title,description,patient,token) async {
-    final response = await http.put(
-      'http://10.0.2.2:8000/api/plans/$id/',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'JWT $token',
-      },
-      body: JSON.jsonEncode({
-        'title': title,
-        'description': description,
-        'patient': patient,
-      })
-    );
+  Future<dynamic> editFuturePlan(id, title, description, patient, token) async {
+    final response = await http.put('http://10.0.2.2:8000/api/plans/$id/',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'JWT $token',
+        },
+        body: JSON.jsonEncode({
+          'title': title,
+          'description': description,
+          'patient': patient,
+        }));
     if (response.statusCode == 200) {
       return true;
     } else {
-      print(response.body);
+      var responseError = JSON.jsonDecode(response.body);
+      return responseError['detail'];
     }
   }
 

@@ -10,7 +10,7 @@ class FuturePlanEditPage extends StatefulWidget {
   final FuturePlan plan;
   final Patient patient;
 
-  FuturePlanEditPage({Key key, this.plan,this.patient}) : super(key: key);
+  FuturePlanEditPage({Key key, this.plan, this.patient}) : super(key: key);
   @override
   _FuturePlanEditPageState createState() => _FuturePlanEditPageState();
 }
@@ -60,7 +60,8 @@ class _FuturePlanEditPageState extends State<FuturePlanEditPage> {
       String _title = _cTitle.value.text;
       String _description = _cDescription.value.text;
       patient
-          .editFuturePlan(widget.plan.id, _title, _description,widget.patient.dni, token)
+          .editFuturePlan(
+              widget.plan.id, _title, _description, widget.patient.dni, token)
           .then((success) {
         if (success == true) {
           Navigator.of(context).pop();
@@ -69,6 +70,8 @@ class _FuturePlanEditPageState extends State<FuturePlanEditPage> {
             barrierDismissible: false,
             builder: (BuildContext context) {
               return AlertDialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
                 title: Row(
                   children: [
                     Icon(Icons.info_outline),
@@ -101,6 +104,8 @@ class _FuturePlanEditPageState extends State<FuturePlanEditPage> {
             barrierDismissible: false,
             builder: (BuildContext context) {
               return AlertDialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
                 title: Row(
                   children: [
                     Icon(Icons.info_outline),

@@ -135,6 +135,8 @@ class _DischargePatientPageState extends State<DischargePatientPage> {
             barrierDismissible: false,
             builder: (BuildContext context) {
               return AlertDialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
                 title: Row(
                   children: [
                     Icon(Icons.info_outline),

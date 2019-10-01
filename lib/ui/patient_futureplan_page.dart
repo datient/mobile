@@ -58,15 +58,58 @@ class _PatientFuturePlanState extends State<PatientFuturePlanPage> {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => FuturePlanEditPage(
-                  plan: data.futurePlans[index],
-                  patient: data
-                ),
+                    plan: data.futurePlans[index], patient: data),
               ),
             );
           }
           if (choice == 'delete') {
-            bloc.doctor.listen(
-                (value) => patientBloc.deleteFuturePlan(plans.id, value.token));
+            showDialog<void>(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  title: Row(
+                    children: [
+                      Icon(Icons.info_outline),
+                      SizedBox(width: 10),
+                      Text('Confirmación de accion'),
+                    ],
+                  ),
+                  content: SingleChildScrollView(
+                    child: ListBody(
+                      children: <Widget>[
+                        Divider(),
+                        Text(
+                          'Esta seguro que desea eliminar el plan futuro?',
+                          style: TextStyle(fontSize: 18),
+                        )
+                      ],
+                    ),
+                  ),
+                  actions: <Widget>[
+                    FlatButton(
+                      textColor: Colors.white,
+                      child: Text('Confirmar'),
+                      color: Colors.green,
+                      onPressed: () {
+                        bloc.doctor.listen((value) => patientBloc
+                            .deleteFuturePlan(plans.id, value.token));
+                      },
+                    ),
+                    FlatButton(
+                      textColor: Colors.white,
+                      child: Text('Cancelar'),
+                      color: Colors.red,
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
           }
         }
 
@@ -135,7 +178,10 @@ class _PatientFuturePlanState extends State<PatientFuturePlanPage> {
                     ],
                   ),
                   Divider(),
-                  Text(plans.description),
+                  Text(
+                    plans.description,
+                    style: TextStyle(fontSize: 18),
+                  ),
                 ],
               ),
             ),
