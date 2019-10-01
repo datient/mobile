@@ -6,6 +6,8 @@ import 'package:datient/providers/datient_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'edit_futureplan_page.dart';
+
 class PatientFuturePlanPage extends StatefulWidget {
   final Patient patient;
   PatientFuturePlanPage({Key key, this.patient}) : super(key: key);
@@ -44,12 +46,30 @@ class _PatientFuturePlanState extends State<PatientFuturePlanPage> {
   }
 
   Widget _buildFuturePlan(Patient data) {
-    DatientBloc bloc = DatientProvider.of(context).bloc;
-    PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
     return ListView.builder(
       itemCount: data.futurePlans.length,
       itemBuilder: (BuildContext context, int index) {
         FuturePlan plans = data.futurePlans[index];
+
+        void chooseAction(choice) {
+          DatientBloc bloc = DatientProvider.of(context).bloc;
+          PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
+          if (choice == 'edit') {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => FuturePlanEditPage(
+                  plan: data.futurePlans[index],
+                  patient: data
+                ),
+              ),
+            );
+          }
+          if (choice == 'delete') {
+            bloc.doctor.listen(
+                (value) => patientBloc.deleteFuturePlan(plans.id, value.token));
+          }
+        }
+
         return Padding(
           padding: EdgeInsets.all(8.0),
           child: Container(
@@ -74,12 +94,28 @@ class _PatientFuturePlanState extends State<PatientFuturePlanPage> {
                       ),
                       Spacer(),
                       PopupMenuButton(
+                        onSelected: chooseAction,
                         icon: Icon(
                           Icons.more_vert,
                           color: Colors.grey,
                         ),
                         itemBuilder: (_) => <PopupMenuItem<String>>[
                           PopupMenuItem<String>(
+                            value: 'edit',
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.edit,
+                                ),
+                                Text(
+                                  'Editar',
+                                ),
+                              ],
+                            ),
+                          ),
+                          PopupMenuItem<String>(
+                            value: 'delete',
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -100,13 +136,6 @@ class _PatientFuturePlanState extends State<PatientFuturePlanPage> {
                   ),
                   Divider(),
                   Text(plans.description),
-                  CupertinoButton(
-                    child: Text('prueba'),
-                    onPressed: () {
-                      bloc.doctor.listen((value) => patientBloc.deleteFuturePlan(
-                          plans.id, value.token));
-                    },
-                  )
                 ],
               ),
             ),

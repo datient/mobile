@@ -260,7 +260,7 @@ class PatientBloc {
 
   Future<dynamic> deleteFuturePlan(id, token) async {
     final response = await http.delete(
-      'http://10.0.2.2:8000/api/plans/$id',
+      'http://10.0.2.2:8000/api/plans/$id/',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'JWT $token',
@@ -268,6 +268,26 @@ class PatientBloc {
     );
     if (response.statusCode == 301) {
       print(response.body);
+    } else {
+      print(response.body);
+    }
+  }
+
+  Future<dynamic> editFuturePlan(id,title,description,patient,token) async {
+    final response = await http.put(
+      'http://10.0.2.2:8000/api/plans/$id/',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'JWT $token',
+      },
+      body: JSON.jsonEncode({
+        'title': title,
+        'description': description,
+        'patient': patient,
+      })
+    );
+    if (response.statusCode == 200) {
+      return true;
     } else {
       print(response.body);
     }
