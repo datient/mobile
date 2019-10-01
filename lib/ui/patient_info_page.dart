@@ -411,6 +411,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
       return Container();
     }
   }
+
   Widget _buildFloatingActionButton() {
     if (_tabController.index == 0) {
       return FloatingActionButton(
@@ -449,14 +450,6 @@ class _PatientInfoPageState extends State<PatientInfoPage>
   }
 
   Widget build(BuildContext context) {
-    var _createdDate = DateTime.parse(widget.patient.createdDate);
-    var _updatedDate = DateTime.parse(widget.patient.updatedDate);
-    var dateFormatter = new DateFormat('dd-MM-yyyy');
-    var timeFormatter = new DateFormat('Hms');
-    String formattedCreateDate = dateFormatter.format(_createdDate);
-    String formattedTimeCreateDate = timeFormatter.format(_createdDate);
-    String formattedUpdateDate = dateFormatter.format(_updatedDate);
-    String formattedTimeUpdateDate = timeFormatter.format(_updatedDate);
     var _fullname = widget.patient.firstName + ' ' + widget.patient.lastName;
     final bloc = DatientProvider.of(context).bloc;
     PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
@@ -476,56 +469,43 @@ class _PatientInfoPageState extends State<PatientInfoPage>
           appBar: AppBar(
             title: Text(_fullname),
             actions: [
-              IconButton(
-                icon: Icon(Icons.more_vert),
-                onPressed: () {
-                  showDialog<void>(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15)),
-                        title: Row(
-                          children: [
-                            Icon(Icons.info_outline),
-                            SizedBox(width: 10),
-                            Text('Detalles'),
-                          ],
+              PopupMenuButton(
+                onSelected: chooseAction,
+                icon: Icon(
+                  Icons.more_vert,
+                ),
+                itemBuilder: (_) => <PopupMenuItem<String>>[
+                  PopupMenuItem<String>(
+                    value: 'detail',
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.info_outline,
                         ),
-                        content: SingleChildScrollView(
-                          child: ListBody(
-                            children: <Widget>[
-                              Text(
-                                'Fecha de creación',
-                                style: TextStyle(color: Colors.grey),
-                              ),
-                              Text(formattedCreateDate +
-                                  ' a las ' +
-                                  formattedTimeCreateDate),
-                              Divider(),
-                              Text(
-                                'Última actualización',
-                                style: TextStyle(color: Colors.grey),
-                              ),
-                              Text(formattedUpdateDate +
-                                  ' a las ' +
-                                  formattedTimeUpdateDate),
-                            ],
-                          ),
+                        Text(
+                          'Detalles',
                         ),
-                        actions: <Widget>[
-                          FlatButton(
-                            child: Text('Cerrar'),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                },
+                      ],
+                    ),
+                  ),
+                  PopupMenuItem<String>(
+                    value: 'delete',
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.delete,
+                          color: Colors.red,
+                        ),
+                        Text(
+                          'Eliminar',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               )
             ],
             bottom: TabBar(
@@ -549,6 +529,71 @@ class _PatientInfoPageState extends State<PatientInfoPage>
           ),
           floatingActionButton: _buildFloatingActionButton()),
     );
+  }
+
+  void chooseAction(choice) {
+    if (choice == 'detail') {
+      var _createdDate = DateTime.parse(widget.patient.createdDate);
+      var _updatedDate = DateTime.parse(widget.patient.updatedDate);
+      var dateFormatter = new DateFormat('dd-MM-yyyy');
+      var timeFormatter = new DateFormat('Hms');
+      String formattedCreateDate = dateFormatter.format(_createdDate);
+      String formattedTimeCreateDate = timeFormatter.format(_createdDate);
+      String formattedUpdateDate = dateFormatter.format(_updatedDate);
+      String formattedTimeUpdateDate = timeFormatter.format(_updatedDate);
+      showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            title: Row(
+              children: [
+                Icon(Icons.info_outline),
+                SizedBox(width: 10),
+                Text('Detalles'),
+              ],
+            ),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text(
+                    'Fecha de creación',
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                  Text(formattedCreateDate +
+                      ' a las ' +
+                      formattedTimeCreateDate),
+                  Divider(),
+                  Text(
+                    'Última actualización',
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                  Text(formattedUpdateDate +
+                      ' a las ' +
+                      formattedTimeUpdateDate),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Cerrar'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+    if (choice == 'delete') {
+      final bloc = DatientProvider.of(context).bloc;
+      PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
+      bloc.doctor.listen((value) =>
+          patientBloc.deletePatient(widget.patient.dni,value.token));
+    }
   }
 }
 

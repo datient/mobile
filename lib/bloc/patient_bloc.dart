@@ -134,6 +134,21 @@ class PatientBloc {
     }
   }
 
+  Future<dynamic> deletePatient(dni, token) async {
+    final response = await http.delete(
+      'http://10.0.2.2:8000/api/patient/$dni/',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'JWT $token',
+      },
+    );
+    if (response.statusCode == 301) {
+      print(response.body);
+    } else {
+      print(response.body);
+    }
+  }
+
   Future getHospitalizedPatient(token, Hospitalization hospitalization) async {
     final res = await http.get(
       'http://10.0.2.2:8000/api/patient/${hospitalization.hospitalizedPatient}/',
