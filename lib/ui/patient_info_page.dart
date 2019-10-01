@@ -589,11 +589,104 @@ class _PatientInfoPageState extends State<PatientInfoPage>
       );
     }
     if (choice == 'delete') {
-      final bloc = DatientProvider.of(context).bloc;
-      PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
-      bloc.doctor.listen((value) =>
-          patientBloc.deletePatient(widget.patient.dni,value.token));
+      showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            title: Row(
+              children: [
+                Icon(Icons.info_outline),
+                SizedBox(width: 10),
+                Text('Confirmación de accion'),
+              ],
+            ),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Divider(),
+                  Text(
+                    'Esta seguro que desea eliminar el paciente?',
+                    style: TextStyle(fontSize: 18),
+                  )
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                textColor: Colors.white,
+                child: Text('Confirmar'),
+                color: Colors.green,
+                onPressed: () {
+                  _deletePatient();
+                },
+              ),
+              FlatButton(
+                textColor: Colors.white,
+                child: Text('Cancelar'),
+                color: Colors.red,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
     }
+  }
+
+  _deletePatient() {
+    final bloc = DatientProvider.of(context).bloc;
+    PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
+    bloc.doctor.listen(
+      (value) =>
+          patientBloc.deletePatient(widget.patient.dni, value.token).then(
+        (success) {
+          if (success == true) {
+            Navigator.of(context).pop();
+            showDialog<void>(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  title: Row(
+                    children: [
+                      Icon(Icons.info_outline),
+                      SizedBox(width: 10),
+                      Text('Paciente eliminado'),
+                    ],
+                  ),
+                  content: SingleChildScrollView(
+                    child: ListBody(
+                      children: <Widget>[
+                        Divider(),
+                        Text(
+                          'El paciente ha sido eliminado con exito',
+                          style: TextStyle(fontSize: 18),
+                        )
+                      ],
+                    ),
+                  ),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text('Cerrar'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          } else {}
+        },
+      ),
+    );
   }
 }
 

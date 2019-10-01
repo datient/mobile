@@ -142,8 +142,8 @@ class PatientBloc {
         'Authorization': 'JWT $token',
       },
     );
-    if (response.statusCode == 301) {
-      print(response.body);
+    if (response.statusCode == 204) {
+      return true;
     } else {
       print(response.body);
     }
@@ -283,8 +283,8 @@ class PatientBloc {
         'Authorization': 'JWT $token',
       },
     );
-    if (response.statusCode == 301) {
-      print(response.body);
+    if (response.statusCode == 204) {
+      return true;
     } else {
       var responseError = JSON.jsonDecode(response.body);
       return responseError['detail'];
