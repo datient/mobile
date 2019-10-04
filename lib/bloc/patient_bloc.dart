@@ -42,6 +42,17 @@ class PatientBloc {
     return list;
   }
 
+    Future<dynamic> getPatientPdf(dni,token) async {
+    final response = await http.get(
+      'http://10.0.2.2:8000/pdf/$dni',
+      headers: {'Authorization': 'JWT $token'},
+    );
+    if (response.statusCode == 200) {
+      print(response.body);
+    }
+    
+  }
+
   Future<Patient> getSpecificPatients(token, dni) async {
     Patient patient;
     final response = await http.get(
