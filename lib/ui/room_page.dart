@@ -13,7 +13,28 @@ class RoomPage extends StatefulWidget {
 }
 
 class _RoomPageState extends State<RoomPage> {
-  @override
+  Widget _buildIsAvailable(Bed bed) {
+    return bed.isAvailable
+        ? Row(
+            children: [
+              Icon(
+                Icons.check_circle,
+                color: Colors.green,
+              ),
+              Text('Disponible')
+            ],
+          )
+        : Row(
+            children: [
+              Icon(
+                Icons.cancel,
+                color: Colors.red,
+              ),
+              Text('Ocupado')
+            ],
+          );
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -24,30 +45,41 @@ class _RoomPageState extends State<RoomPage> {
         itemBuilder: (BuildContext context, int index) {
           Bed beds = widget.room.beds[index];
 
-          return Container(
-            child: GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => BedPage(
-                      bed: widget.room.beds[index],
+          return Padding(
+            padding: EdgeInsets.only(bottom: 4),
+            child: Container(
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => BedPage(
+                        bed: widget.room.beds[index],
+                      ),
+                    ),
+                  );
+                },
+                child: Card(
+                  elevation: 6,
+                  child: Padding(
+                    padding: EdgeInsets.all(12),
+                    child: Row(
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.hotel),
+                            SizedBox(width: 20),
+                            Text(
+                              beds.bedName,
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                        Spacer(),
+                        _buildIsAvailable(beds),
+                      ],
                     ),
                   ),
-                );
-              },
-              child: Card(
-                elevation: 6,
-                child: Column(
-                  children: [
-                    SizedBox(height: 20),
-                    Icon(Icons.hotel),
-                    Text(
-                      beds.bedName,
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 20),
-                  ],
                 ),
               ),
             ),
