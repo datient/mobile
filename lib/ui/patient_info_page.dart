@@ -5,6 +5,7 @@ import 'package:datient/models/hospitalization.dart';
 import 'package:datient/models/patient.dart';
 import 'package:datient/providers/datient_provider.dart';
 import 'package:datient/ui/patient_futureplan_page.dart';
+import 'package:datient/ui/patient_pdf_page.dart';
 import 'package:datient/ui/patient_progress_page.dart';
 import 'package:datient/ui/patient_study_page.dart';
 import 'package:flutter/material.dart';
@@ -490,6 +491,20 @@ class _PatientInfoPageState extends State<PatientInfoPage>
                     ),
                   ),
                   PopupMenuItem<String>(
+                    value: 'create_pdf',
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.picture_as_pdf,
+                        ),
+                        Text(
+                          'Generar PDF',
+                        ),
+                      ],
+                    ),
+                  ),
+                  PopupMenuItem<String>(
                     value: 'delete',
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -636,6 +651,15 @@ class _PatientInfoPageState extends State<PatientInfoPage>
         },
       );
     }
+    if (choice == 'create_pdf') {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => PatientPdfPage(
+            patient: widget.patient,
+          ),
+        ),
+      );
+    }
   }
 
   _deletePatient() {
@@ -646,6 +670,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
           patientBloc.deletePatient(widget.patient.dni, value.token).then(
         (success) {
           if (success == true) {
+            Navigator.of(context).pop();
             Navigator.of(context).pop();
             showDialog<void>(
               context: context,

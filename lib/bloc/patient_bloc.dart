@@ -49,6 +49,8 @@ class PatientBloc {
     );
     if (response.statusCode == 200) {
       print(response.body);
+    }else{
+      print(response.body);
     }
     
   }

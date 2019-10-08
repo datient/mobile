@@ -27,6 +27,7 @@ dependencies:
   flutter_speed_dial: ^1.2.1
   image_picker: any
   dio: any
+  flutter_plugin_pdf_viewer: any
   flutter_localizations:
     sdk: flutter
 

@@ -9,7 +9,9 @@
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="Datient"
-        android:icon="@mipmap/datient_icon">
+        android:icon="@mipmap/datient_icon"
+        android:usesCleartextTraffic="true">
+
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
