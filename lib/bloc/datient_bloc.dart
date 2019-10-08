@@ -92,7 +92,7 @@ class DatientBloc {
     String registerPassword,
     String registerPasswordConfirm,
   ) async {
-    final res = await http.post(
+    final response = await http.post(
       'http://10.0.2.2:8000/accounts/register/',
       headers: {'Content-Type': 'application/json'},
       body: JSON.jsonEncode(
@@ -106,10 +106,10 @@ class DatientBloc {
         },
       ),
     );
-    if (res.statusCode == 201) {
+    if (response.statusCode == 201) {
       return true;
     }
-    print(res.body);
+    print(response.body);
   }
 
   Future<Doctor> getSpecificDoctor(token, id) async {

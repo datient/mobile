@@ -82,7 +82,7 @@ class PatientBloc {
       String contactNumber,
       String secondContactNumber,
       token) async {
-    final res = await http.post(
+    final response = await http.post(
       'http://10.0.2.2:8000/api/patient/',
       headers: {
         'Content-Type': 'application/json',
@@ -101,10 +101,10 @@ class PatientBloc {
         },
       ),
     );
-    if (res.statusCode == 201) {
+    if (response.statusCode == 201) {
       return true;
     } else {
-      var responseError = JSON.jsonDecode(res.body);
+      var responseError = JSON.jsonDecode(response.body);
       return responseError['detail'];
     }
   }
@@ -120,7 +120,7 @@ class PatientBloc {
       editSecondContact,
       token,
       Patient patient) async {
-    final res = await http.put(
+    final response = await http.put(
       'http://10.0.2.2:8000/api/patient/${patient.dni}/',
       headers: {
         'Content-Type': 'application/json',
@@ -139,10 +139,10 @@ class PatientBloc {
         },
       ),
     );
-    if (res.statusCode == 200) {
+    if (response.statusCode == 200) {
       return true;
     } else {
-      var responseError = JSON.jsonDecode(res.body);
+      var responseError = JSON.jsonDecode(response.body);
       return responseError['detail'];
     }
   }
@@ -163,14 +163,14 @@ class PatientBloc {
   }
 
   Future getHospitalizedPatient(token, Hospitalization hospitalization) async {
-    final res = await http.get(
+    final response = await http.get(
       'http://10.0.2.2:8000/api/patient/${hospitalization.hospitalizedPatient}/',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'JWT $token',
       },
     );
-    print(res.body);
+    print(response.body);
     return true;
   }
 

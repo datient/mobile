@@ -481,7 +481,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
                   PopupMenuItem<String>(
                     value: 'detail',
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Icon(
                           Icons.info_outline,
@@ -495,7 +495,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
                   PopupMenuItem<String>(
                     value: 'create_pdf',
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Icon(
                           Icons.picture_as_pdf,
@@ -509,7 +509,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
                   PopupMenuItem<String>(
                     value: 'delete',
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Icon(
                           Icons.delete,

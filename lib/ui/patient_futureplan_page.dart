@@ -17,7 +17,7 @@ class PatientFuturePlanPage extends StatefulWidget {
 }
 
 class _PatientFuturePlanState extends State<PatientFuturePlanPage> {
-  @override
+
   Widget _buildFuturePlanStream() {
     PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
     return StreamBuilder(
@@ -146,7 +146,7 @@ class _PatientFuturePlanState extends State<PatientFuturePlanPage> {
                           PopupMenuItem<String>(
                             value: 'edit',
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Icon(
                                   Icons.edit,
@@ -160,7 +160,7 @@ class _PatientFuturePlanState extends State<PatientFuturePlanPage> {
                           PopupMenuItem<String>(
                             value: 'delete',
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Icon(
                                   Icons.delete,

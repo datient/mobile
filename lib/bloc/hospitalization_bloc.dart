@@ -45,6 +45,7 @@ class HospitalizationBloc {
       _hospitalizationErrorSubject.add(responseError);
       patientBloc.setNull();
     }
+    return hospitalization;
   }
 
   Future<dynamic> createHospitalization(int patientDni, String diagnosis,
@@ -165,6 +166,7 @@ class HospitalizationBloc {
         },
       ),
     );
+    print(response.body);
   }
 
   dispose() {
