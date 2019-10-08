@@ -10,7 +10,6 @@ import 'package:datient/ui/edit_patient_page.dart';
 import 'package:datient/ui/home_page.dart';
 import 'package:datient/ui/login_page.dart';
 import 'package:datient/ui/patient_page.dart';
-import 'package:datient/ui/patient_pdf_page.dart';
 import 'package:datient/ui/room_page.dart';
 import 'package:datient/ui/add_hospitalization_page.dart';
 import 'package:flutter/material.dart';
@@ -51,7 +50,6 @@ class MyApp extends StatelessWidget {
           '/patientassign': (BuildContext context) => PatientAssignPage(),
           '/hospitalizationadd': (BuildContext context) =>
               HospitalizationAddPage(),
-          '/pdfview': (BuildContext context) => PatientPdfPage(),
         },
       ),
     );

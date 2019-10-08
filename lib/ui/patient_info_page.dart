@@ -5,14 +5,16 @@ import 'package:datient/models/hospitalization.dart';
 import 'package:datient/models/patient.dart';
 import 'package:datient/providers/datient_provider.dart';
 import 'package:datient/ui/patient_futureplan_page.dart';
-import 'package:datient/ui/patient_pdf_page.dart';
 import 'package:datient/ui/patient_progress_page.dart';
 import 'package:datient/ui/patient_study_page.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'add_futureplan_page.dart';
 import 'edit_patient_page.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 
 class PatientInfoPage extends StatefulWidget {
   final Patient patient;
@@ -546,6 +548,15 @@ class _PatientInfoPageState extends State<PatientInfoPage>
     );
   }
 
+   _launchURL(dni) async {
+  var url = 'http://10.0.2.2:8000/pdf/$dni';
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
+  }
+}
+
   void chooseAction(choice) {
     if (choice == 'detail') {
       var _createdDate = DateTime.parse(widget.patient.createdDate);
@@ -652,13 +663,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
       );
     }
     if (choice == 'create_pdf') {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => PatientPdfPage(
-            patient: widget.patient,
-          ),
-        ),
-      );
+      _launchURL(widget.patient.dni);
     }
   }
 
