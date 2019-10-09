@@ -19,10 +19,10 @@ class _HomePageState extends State<HomePage> {
       children: [
         UserAccountsDrawerHeader(
           accountName: Text(
-            data.firstName + ' ' + data.lastName,
+            '${data.firstName} ${data.lastName}',
             style: TextStyle(fontSize: 18),
           ),
-          accountEmail: Text(data.email),
+          accountEmail: Text('${data.email}'),
           currentAccountPicture: CircleAvatar(
             backgroundColor: Theme.of(context).platform == TargetPlatform.iOS
                 ? Colors.blue

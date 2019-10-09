@@ -47,147 +47,104 @@ class _StatisticsPageState extends State<StatisticsPage> {
         appBar: AppBar(
           title: Text('Estadisticas'),
         ),
-        body: _buildStatsStream()
-        // body: AspectRatio(
-        //   aspectRatio: 0.69,
-        //   child: Card(
-        //     color: Colors.white,
-        //     child: Row(
-        //       children: <Widget>[
-        //         const SizedBox(
-        //           height: 18,
-        //         ),
-        //         Expanded(
-        //           child: AspectRatio(
-        //             aspectRatio: 1,
-        //             child: FlChart(
-        //               chart: PieChart(
-        //                 PieChartData(
-        //                     pieTouchData: PieTouchData(
-        //                         touchResponseStreamSink:
-        //                             pieTouchedResultStreamController.sink),
-        //                     borderData: FlBorderData(
-        //                       show: false,
-        //                     ),
-        //                     sectionsSpace: 0,
-        //                     centerSpaceRadius: 40,
-        //                     sections: showingSections()),
-        //               ),
-        //             ),
-        //           ),
-        //         ),
-        //         Column(
-        //           mainAxisSize: MainAxisSize.max,
-        //           mainAxisAlignment: MainAxisAlignment.end,
-        //           crossAxisAlignment: CrossAxisAlignment.start,
-        //           children: const <Widget>[
-        //             Indicator(
-        //               color: Color(0xff0293ee),
-        //               text: 'First',
-        //               isSquare: true,
-        //             ),
-        //             SizedBox(
-        //               height: 4,
-        //             ),
-        //             Indicator(
-        //               color: Color(0xfff8b250),
-        //               text: 'Second',
-        //               isSquare: true,
-        //             ),
-        //             SizedBox(
-        //               height: 4,
-        //             ),
-        //             Indicator(
-        //               color: Color(0xff845bef),
-        //               text: 'Third',
-        //               isSquare: true,
-        //             ),
-        //             SizedBox(
-        //               height: 4,
-        //             ),
-        //             Indicator(
-        //               color: Color(0xff13d38e),
-        //               text: 'Fourth',
-        //               isSquare: true,
-        //             ),
-        //             SizedBox(
-        //               height: 18,
-        //             ),
-        //           ],
-        //         ),
-        //         const SizedBox(
-        //           width: 28,
-        //         ),
-        //       ],
-        //     ),
-        //   ),
-        // ),
-        );
+        body: _buildStatsStream());
   }
-
-  List<PieChartSectionData> showingSections() {
-    return List.generate(4, (i) {
-      final isTouched = i == touchedIndex;
-      final double fontSize = isTouched ? 25 : 16;
-      final double radius = isTouched ? 60 : 50;
-      switch (i) {
-        case 0:
-          return PieChartSectionData(
-            color: const Color(0xff0293ee),
-            value: 40,
-            title: '40%',
-            radius: radius,
-            titleStyle: TextStyle(
-                fontSize: fontSize,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xffffffff)),
-          );
-        case 1:
-          return PieChartSectionData(
-            color: const Color(0xfff8b250),
-            value: 30,
-            title: '30%',
-            radius: radius,
-            titleStyle: TextStyle(
-                fontSize: fontSize,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xffffffff)),
-          );
-        case 2:
-          return PieChartSectionData(
-            color: const Color(0xff845bef),
-            value: 15,
-            title: '15%',
-            radius: radius,
-            titleStyle: TextStyle(
-                fontSize: fontSize,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xffffffff)),
-          );
-        case 3:
-          return PieChartSectionData(
-            color: const Color(0xff13d38e),
-            value: 15,
-            title: '15%',
-            radius: radius,
-            titleStyle: TextStyle(
-                fontSize: fontSize,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xffffffff)),
-          );
-        default:
-          return null;
-      }
-    });
-  }
-
   Widget _buildChart(data) {
-    return ListView.builder(
-      itemCount: data.length,
-      itemBuilder: (BuildContext context, int index) {
+    return AspectRatio(
+      aspectRatio: 0.69,
+      child: Card(
+        color: Colors.white,
+        child: Row(
+          children: <Widget>[
+            const SizedBox(
+              height: 18,
+            ),
+            Expanded(
+              child: AspectRatio(
+                aspectRatio: 1,
+                child: FlChart(
+                  chart: PieChart(
+                    PieChartData(
+                        pieTouchData: PieTouchData(
+                            touchResponseStreamSink:
+                                pieTouchedResultStreamController.sink),
+                        borderData: FlBorderData(
+                          show: false,
+                        ),
+                        sectionsSpace: 0,
+                        centerSpaceRadius: 40,
+                        sections: showingSections(data)),
+                  ),
+                ),
+              ),
+            ),
+            Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const <Widget>[
+            //     Indicator(
+            //       color: Color(0xff0293ee),
+            //       text: 'First',
+            //       isSquare: true,
+            //     ),
+            //     SizedBox(
+            //       height: 4,
+            //     ),
+            //     Indicator(
+            //       color: Color(0xfff8b250),
+            //       text: 'Second',
+            //       isSquare: true,
+            //     ),
+            //     SizedBox(
+            //       height: 4,
+            //     ),
+            //     Indicator(
+            //       color: Color(0xff845bef),
+            //       text: 'Third',
+            //       isSquare: true,
+            //     ),
+            //     SizedBox(
+            //       height: 4,
+            //     ),
+            //     Indicator(
+            //       color: Color(0xff13d38e),
+            //       text: 'Fourth',
+            //       isSquare: true,
+            //     ),
+            //     SizedBox(
+            //       height: 18,
+            //     ),
+              ],
+            ),
+            const SizedBox(
+              width: 28,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  List<PieChartSectionData> showingSections(data) {
+    return List.generate(
+      data.length,
+      (index) {
         Statistic statistics = data[index];
-        return Container(
-          child: Text('${statistics.diagnosis}'),
+        final isTouched = index == touchedIndex;
+        int intVar = statistics.percentage;
+        double doubleVar = intVar.toDouble();
+        final double fontSize = isTouched ? 25 : 16;
+        final double radius = isTouched ? 60 : 50;
+        return PieChartSectionData(
+          color: const Color(0xff0293ee),
+          value: doubleVar,
+          title: '${statistics.percentage}%',
+          radius: radius,
+          titleStyle: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: const Color(0xffffffff)),
         );
       },
     );

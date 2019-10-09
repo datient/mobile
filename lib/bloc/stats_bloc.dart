@@ -24,7 +24,6 @@ class StatsBloc {
       final extractdata = JSON.jsonDecode(response.body);
       list =
           extractdata['data'].map<Statistic>((json) => Statistic.fromJson(json)).toList();
-      print(list);
       _isLoading.sink.add(false);
       _statsSubject.sink.add(list);
     } else {
