@@ -35,6 +35,16 @@ class _HomePageState extends State<HomePage> {
         ),
         ListTile(
           onTap: () {
+            Navigator.of(context).pushNamed('/statistics');
+          },
+          title: Text(
+            'Estadísticas',
+            style: TextStyle(fontSize: 16, color: Colors.grey),
+          ),
+          trailing: Icon(Icons.insert_chart),
+        ),
+        ListTile(
+          onTap: () {
             bloc.signOut(data.token).then(
               (success) {
                 if (success != false) {

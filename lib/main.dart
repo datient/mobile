@@ -12,6 +12,7 @@ import 'package:datient/ui/login_page.dart';
 import 'package:datient/ui/patient_page.dart';
 import 'package:datient/ui/room_page.dart';
 import 'package:datient/ui/add_hospitalization_page.dart';
+import 'package:datient/ui/statistics_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
           '/patientassign': (BuildContext context) => PatientAssignPage(),
           '/hospitalizationadd': (BuildContext context) =>
               HospitalizationAddPage(),
+          '/statistics': (BuildContext context) => StatisticsPage(),
         },
       ),
     );
