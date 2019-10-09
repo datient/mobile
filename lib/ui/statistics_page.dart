@@ -49,12 +49,13 @@ class _StatisticsPageState extends State<StatisticsPage> {
         ),
         body: _buildStatsStream());
   }
+
   Widget _buildChart(data) {
     return AspectRatio(
       aspectRatio: 0.69,
       child: Card(
         color: Colors.white,
-        child: Row(
+        child: Column(
           children: <Widget>[
             const SizedBox(
               height: 18,
@@ -78,47 +79,19 @@ class _StatisticsPageState extends State<StatisticsPage> {
                 ),
               ),
             ),
-            Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const <Widget>[
-            //     Indicator(
-            //       color: Color(0xff0293ee),
-            //       text: 'First',
-            //       isSquare: true,
-            //     ),
-            //     SizedBox(
-            //       height: 4,
-            //     ),
-            //     Indicator(
-            //       color: Color(0xfff8b250),
-            //       text: 'Second',
-            //       isSquare: true,
-            //     ),
-            //     SizedBox(
-            //       height: 4,
-            //     ),
-            //     Indicator(
-            //       color: Color(0xff845bef),
-            //       text: 'Third',
-            //       isSquare: true,
-            //     ),
-            //     SizedBox(
-            //       height: 4,
-            //     ),
-            //     Indicator(
-            //       color: Color(0xff13d38e),
-            //       text: 'Fourth',
-            //       isSquare: true,
-            //     ),
-            //     SizedBox(
-            //       height: 18,
-            //     ),
-              ],
-            ),
-            const SizedBox(
-              width: 28,
+            Expanded(
+              child: Container(
+                child: ListView.builder(
+                    itemCount: data.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      Statistic statistics = data[index];
+                      return Indicator(
+                        color: Color(0xff0293ee),
+                        text: '${statistics.diagnosis}',
+                        isSquare: true,
+                      );
+                    }),
+              ),
             ),
           ],
         ),
