@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:datient/bloc/stats_bloc.dart';
+import 'package:datient/providers/datient_provider.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'indicator.dart';
@@ -37,9 +39,14 @@ class _StatisticsPageState extends State<StatisticsPage> {
   }
 
   Widget build(BuildContext context) {
+    final bloc = DatientProvider.of(context).bloc;
+    StatsBloc statsBloc = DatientProvider.of(context).statsBloc;
+    bloc.doctor.listen((value) => statsBloc.getStats(value.token));
     return Scaffold(
-      appBar: AppBar(title: Text('Estadisticas'),),
-          body: AspectRatio(
+      appBar: AppBar(
+        title: Text('Estadisticas'),
+      ),
+      body: AspectRatio(
         aspectRatio: 0.69,
         child: Card(
           color: Colors.white,
@@ -171,4 +178,4 @@ class _StatisticsPageState extends State<StatisticsPage> {
       }
     });
   }
-  }
+}

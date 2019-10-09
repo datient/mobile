@@ -2,6 +2,7 @@ import 'package:datient/bloc/datient_bloc.dart';
 import 'package:datient/bloc/hospitalization_bloc.dart';
 import 'package:datient/bloc/patient_bloc.dart';
 import 'package:datient/bloc/room_bloc.dart';
+import 'package:datient/bloc/stats_bloc.dart';
 import 'package:datient/providers/datient_provider.dart';
 import 'package:datient/ui/add_patient_page.dart';
 import 'package:datient/ui/assign_patient_page.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
       roomBloc: RoomBloc(),
       patientBloc: PatientBloc(),
       hospitalizationBloc: HospitalizationBloc(),
+      statsBloc: StatsBloc(),
       child: MaterialApp(
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
