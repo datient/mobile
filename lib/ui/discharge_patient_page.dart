@@ -24,7 +24,7 @@ class _DischargePatientPageState extends State<DischargePatientPage> {
   Status selectedStatus;
   List<Status> statuses = <Status>[
     const Status('Bien'),
-    const Status('Precaucion'),
+    const Status('Precaución'),
     const Status('Peligro'),
   ];
   final GlobalKey<FormState> _createformKey = new GlobalKey<FormState>();
@@ -40,8 +40,8 @@ class _DischargePatientPageState extends State<DischargePatientPage> {
               controller: _cDiagnosis,
               decoration: InputDecoration(
                 icon: Icon(Icons.assignment),
-                labelText: 'Diagnostico',
-                hintText: 'Ingrese el diagnostico de egreso del paciente',
+                labelText: 'Diagnóstico',
+                hintText: 'Ingrese el diagnóstico de egreso del paciente',
               ),
             ),
             DropdownButtonFormField<Status>(
@@ -70,8 +70,8 @@ class _DischargePatientPageState extends State<DischargePatientPage> {
               controller: _cDescription,
               decoration: InputDecoration(
                   icon: Icon(Icons.subject),
-                  labelText: 'Descripcion',
-                  hintText: 'Ingrese una descripcion de egreso'),
+                  labelText: 'Descripción',
+                  hintText: 'Ingrese una descripción de egreso'),
             ),
           ],
         ),
@@ -113,7 +113,7 @@ class _DischargePatientPageState extends State<DischargePatientPage> {
                 content: SingleChildScrollView(
                   child: ListBody(
                     children: <Widget>[
-                      Text('El paciente ha sido dado de alta con exito'),
+                      Text('El paciente ha sido dado de alta con éxito'),
                     ],
                   ),
                 ),
@@ -187,7 +187,7 @@ class _DischargePatientPageState extends State<DischargePatientPage> {
                       children: [
                         Icon(Icons.info_outline),
                         SizedBox(width: 10),
-                        Text('Confirmación de accion'),
+                        Text('Confirmación de acción'),
                       ],
                     ),
                     content: SingleChildScrollView(

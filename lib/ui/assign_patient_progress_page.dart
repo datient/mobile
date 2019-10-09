@@ -30,7 +30,7 @@ class _AssignPatientProgressPageState extends State<AssignPatientProgressPage> {
   Status selectedStatus;
   List<Status> statuses = <Status>[
     const Status('Bien'),
-    const Status('Precaucion'),
+    const Status('Precaución'),
     const Status('Peligro'),
   ];
   final GlobalKey<FormState> _createformKey = new GlobalKey<FormState>();
@@ -46,8 +46,8 @@ class _AssignPatientProgressPageState extends State<AssignPatientProgressPage> {
               controller: _cDiagnosis,
               decoration: InputDecoration(
                 icon: Icon(Icons.assignment),
-                labelText: 'Diagnostico',
-                hintText: 'Ingrese el diagnostico de ingreso del paciente',
+                labelText: 'Diagnóstico',
+                hintText: 'Ingrese el diagnóstico de ingreso del paciente',
               ),
             ),
             DropdownButtonFormField<Status>(
@@ -76,8 +76,8 @@ class _AssignPatientProgressPageState extends State<AssignPatientProgressPage> {
               controller: _cDescription,
               decoration: InputDecoration(
                   icon: Icon(Icons.subject),
-                  labelText: 'Descripcion',
-                  hintText: 'Ingrese una descripcion de ingreso'),
+                  labelText: 'Descripción',
+                  hintText: 'Ingrese una descripción de ingreso'),
             ),
           ],
         ),
@@ -123,7 +123,7 @@ class _AssignPatientProgressPageState extends State<AssignPatientProgressPage> {
                               widget.patient.firstName +
                               ' ' +
                               widget.patient.lastName +
-                              ' ha sido asignado con exito a la cama ' +
+                              ' ha sido asignado con éxito a la cama ' +
                               widget.bed.id.toString(),
                           style: TextStyle(fontSize: 18),
                         )
@@ -159,7 +159,7 @@ class _AssignPatientProgressPageState extends State<AssignPatientProgressPage> {
             children: [
               Icon(Icons.info_outline),
               SizedBox(width: 10),
-              Text('Confirmacion de accion'),
+              Text('Confirmación de acción'),
             ],
           ),
           content: SingleChildScrollView(

@@ -4,13 +4,16 @@ class Progress {
   var status;
   var createdAt;
   var hasLeft;
+  var income;
 
   Progress(
       {this.diagnosis,
       this.description,
       this.status,
       this.createdAt,
-      this.hasLeft});
+      this.hasLeft,
+      this.income,
+      });
 
   factory Progress.fromJson(Map<String, dynamic> json) {
     return Progress(
@@ -19,6 +22,7 @@ class Progress {
       status: json['status'],
       createdAt: json['created_at'],
       hasLeft: json['has_left'],
+      income: json['income'],
     );
   }
 }

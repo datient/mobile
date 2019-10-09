@@ -108,7 +108,7 @@ class _BedPageState extends State<BedPage> {
                 ),
                 Divider(),
                 Text(
-                  'Dias internado',
+                  'Días internado',
                   style: TextStyle(fontSize: 16, color: Colors.grey),
                 ),
                 Text(
@@ -331,7 +331,7 @@ class _BedPageState extends State<BedPage> {
             title: Text('${widget.bed.bedName}'),
             bottom: TabBar(
               tabs: [
-                Tab(icon: Icon(Icons.assignment), text: 'Informacion'),
+                Tab(icon: Icon(Icons.assignment), text: 'Información'),
                 Tab(icon: Icon(Icons.timeline), text: 'Progreso'),
               ],
             ),

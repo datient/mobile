@@ -111,15 +111,15 @@ class _PatientAddPageState extends State<PatientAddPage> {
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 icon: Icon(Icons.book),
-                labelText: 'Numero de historial',
-                hintText: 'Ingrese el numero de historial',
+                labelText: 'Número de historial',
+                hintText: 'Ingrese el número de historial',
               ),
             ),
             DropdownButtonFormField<Gender>(
               decoration: InputDecoration(
                 icon: Icon(Icons.people),
               ),
-              hint: Text('Seleccione su genero'),
+              hint: Text('Seleccione su género'),
               value: selectedGender,
               onChanged: (Gender newValue) {
                 setState(() {
@@ -142,8 +142,8 @@ class _PatientAddPageState extends State<PatientAddPage> {
               controller: _cContact,
               decoration: InputDecoration(
                 icon: Icon(Icons.contact_phone),
-                labelText: 'Numero de contacto (Opcional)',
-                hintText: 'Ingrese el numero de contacto',
+                labelText: 'Número de contacto (Opcional)',
+                hintText: 'Ingrese el número de contacto',
               ),
             ),
             TextFormField(
@@ -151,8 +151,8 @@ class _PatientAddPageState extends State<PatientAddPage> {
               controller: _cSecondContact,
               decoration: InputDecoration(
                 icon: Icon(Icons.contact_phone),
-                labelText: '2do Numero de contacto (Opcional)',
-                hintText: 'Ingrese el numero de contacto',
+                labelText: '2do Número de contacto (Opcional)',
+                hintText: 'Ingrese el número de contacto',
               ),
             ),
           ],
@@ -211,7 +211,7 @@ class _PatientAddPageState extends State<PatientAddPage> {
                 content: SingleChildScrollView(
                   child: ListBody(
                     children: <Widget>[
-                      Text('El paciente ha sido registrado con exito'),
+                      Text('El paciente ha sido registrado con éxito'),
                     ],
                   ),
                 ),

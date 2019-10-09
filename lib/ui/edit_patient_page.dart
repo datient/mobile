@@ -118,15 +118,15 @@ class _PatientEditPageState extends State<PatientEditPage> {
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 icon: Icon(Icons.book),
-                labelText: 'Numero de historial',
-                hintText: 'Ingrese el numero de historial',
+                labelText: 'Número de historial',
+                hintText: 'Ingrese el número de historial',
               ),
             ),
             DropdownButtonFormField<Gender>(
               decoration: InputDecoration(
                 icon: Icon(Icons.people),
               ),
-              hint: Text('Seleccione su genero'),
+              hint: Text('Seleccione su género'),
               value: selectedGender,
               onChanged: (Gender newValue) {
                 setState(() {
@@ -149,8 +149,8 @@ class _PatientEditPageState extends State<PatientEditPage> {
               keyboardType: TextInputType.phone,
               decoration: InputDecoration(
                 icon: Icon(Icons.contact_phone),
-                labelText: 'Numero de contacto (Opcional)',
-                hintText: 'Ingrese el numero de contacto',
+                labelText: 'Número de contacto (Opcional)',
+                hintText: 'Ingrese el número de contacto',
               ),
             ),
             TextFormField(
@@ -158,8 +158,8 @@ class _PatientEditPageState extends State<PatientEditPage> {
               keyboardType: TextInputType.phone,
               decoration: InputDecoration(
                 icon: Icon(Icons.contact_phone),
-                labelText: '2do Numero de contacto (Opcional)',
-                hintText: 'Ingrese el numero de contacto',
+                labelText: '2do Número de contacto (Opcional)',
+                hintText: 'Ingrese el número de contacto',
               ),
             ),
           ],
@@ -210,7 +210,7 @@ class _PatientEditPageState extends State<PatientEditPage> {
                 content: SingleChildScrollView(
                   child: ListBody(
                     children: <Widget>[
-                      Text('El paciente ha sido modificado con exito'),
+                      Text('El paciente ha sido modificado con éxito'),
                     ],
                   ),
                 ),

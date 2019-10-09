@@ -80,10 +80,9 @@ class _PatientProgressState extends State<PatientProgressPage> {
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
-                        Container(
-                          width: 60,
-                        ),
-                        _buildHasLeft(progress.hasLeft)
+                        Spacer(),
+                        _buildHasLeft(progress.hasLeft),
+                        _buildHasEntered(progress.income)
                       ],
                     ),
                     Divider(),
@@ -127,6 +126,18 @@ class _PatientProgressState extends State<PatientProgressPage> {
             backgroundColor: Colors.red,
             label: Text(
               'Dado de alta',
+              style: TextStyle(color: Colors.white, fontSize: 15),
+            ),
+          )
+        : Container();
+  }
+
+    Widget _buildHasEntered(data) {
+    return data == true
+        ? Chip(
+            backgroundColor: Colors.green,
+            label: Text(
+              'Ingreso',
               style: TextStyle(color: Colors.white, fontSize: 15),
             ),
           )

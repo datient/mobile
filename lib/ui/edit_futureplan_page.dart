@@ -36,16 +36,16 @@ class _FuturePlanEditPageState extends State<FuturePlanEditPage> {
               controller: _cTitle,
               decoration: InputDecoration(
                 icon: Icon(Icons.title),
-                labelText: 'Titulo',
-                hintText: 'Ingrese el titulo',
+                labelText: 'Título',
+                hintText: 'Ingrese el título',
               ),
             ),
             TextFormField(
               controller: _cDescription,
               decoration: InputDecoration(
                 icon: Icon(Icons.description),
-                labelText: 'Descripcion',
-                hintText: 'Ingrese la descripcion',
+                labelText: 'Descripción',
+                hintText: 'Ingrese la descripción',
               ),
             ),
           ],

@@ -378,7 +378,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Telefono de contacto',
+                'Teléfono de contacto',
                 style: TextStyle(color: Colors.grey, fontSize: 15),
               ),
               Text(
@@ -398,7 +398,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Segundo telefono de contacto',
+                'Segundo teléfono de contacto',
                 style: TextStyle(color: Colors.grey, fontSize: 15),
               ),
               Text(
