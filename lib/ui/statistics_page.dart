@@ -88,7 +88,10 @@ class _StatisticsPageState extends State<StatisticsPage> {
                       return Indicator(
                         color: Color(0xff0293ee),
                         text: '${statistics.diagnosis}',
-                        isSquare: true,
+                        isSquare: false,
+                        size: touchedIndex == index ? 18 : 16,
+                        textColor:
+                            touchedIndex == index ? Colors.black : Colors.grey,
                       );
                     }),
               ),
