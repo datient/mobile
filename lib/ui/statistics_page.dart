@@ -86,7 +86,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                     itemBuilder: (BuildContext context, int index) {
                       Statistic statistics = data[index];
                       return Indicator(
-                        color: Color(0xff0293ee),
+                        color: Color(int.parse(statistics.color.substring(1, 7), radix: 16) + 0xFF000000),
                         text: '${statistics.diagnosis}',
                         isSquare: false,
                         size: touchedIndex == index ? 18 : 16,
@@ -113,7 +113,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
         final double fontSize = isTouched ? 25 : 16;
         final double radius = isTouched ? 60 : 50;
         return PieChartSectionData(
-          color: const Color(0xff0293ee),
+          color: Color(int.parse(statistics.color.substring(1, 7), radix: 16) + 0xFF000000),
           value: doubleVar,
           title: '${statistics.percentage}%',
           radius: radius,

@@ -1,4 +1,5 @@
 import 'dart:convert' as JSON;
+import 'dart:convert';
 import 'package:datient/bloc/patient_bloc.dart';
 import 'package:datient/bloc/room_bloc.dart';
 import 'package:datient/models/doctor.dart';
@@ -60,7 +61,7 @@ class DatientBloc {
       patientBloc.getPatients(token);
       return true;
     } else {
-      var responseError = JSON.jsonDecode(response.body);
+      var responseError = JSON.jsonDecode(utf8.decode(response.bodyBytes));
       return responseError['non_field_errors'][0];
     }
   }
