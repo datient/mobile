@@ -161,7 +161,7 @@ class _BedPageState extends State<BedPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Progreso ${formattedCreateDate}',
+                      'Progreso $formattedCreateDate',
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),

@@ -34,7 +34,6 @@ class _AssignPatientProgressPageState extends State<AssignPatientProgressPage> {
     const Status('Peligro'),
   ];
   final GlobalKey<FormState> _createformKey = new GlobalKey<FormState>();
-  @override
   Widget _buildHospitalizationForm() {
     return Form(
       key: _createformKey,

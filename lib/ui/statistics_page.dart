@@ -88,12 +88,16 @@ class _StatisticsPageState extends State<StatisticsPage> {
                       return Padding(
                         padding: EdgeInsets.all(2),
                         child: Indicator(
-                          color: Color(int.parse(statistics.color.substring(1, 7), radix: 16) + 0xFF000000),
+                          color: Color(int.parse(
+                                  statistics.color.substring(1, 7),
+                                  radix: 16) +
+                              0xFF000000),
                           text: '${statistics.diagnosis}: ${statistics.total}',
                           isSquare: false,
                           size: touchedIndex == index ? 18 : 16,
-                          textColor:
-                              touchedIndex == index ? Colors.black : Colors.grey,
+                          textColor: touchedIndex == index
+                              ? Colors.black
+                              : Colors.grey,
                         ),
                       );
                     }),
@@ -116,7 +120,8 @@ class _StatisticsPageState extends State<StatisticsPage> {
         final double fontSize = isTouched ? 25 : 16;
         final double radius = isTouched ? 60 : 50;
         return PieChartSectionData(
-          color: Color(int.parse(statistics.color.substring(1, 7), radix: 16) + 0xFF000000),
+          color: Color(int.parse(statistics.color.substring(1, 7), radix: 16) +
+              0xFF000000),
           value: doubleVar,
           title: '${statistics.percentage}%',
           radius: radius,
@@ -154,5 +159,10 @@ class _StatisticsPageState extends State<StatisticsPage> {
                     }
                   });
         });
+  }
+
+  dispose() {
+    pieTouchedResultStreamController.close();
+    this.dispose();
   }
 }

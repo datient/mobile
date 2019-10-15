@@ -15,7 +15,6 @@ class PatientProgressPage extends StatefulWidget {
 }
 
 class _PatientProgressState extends State<PatientProgressPage> {
-  @override
   Widget _buildProgressStream() {
     PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
     return StreamBuilder(

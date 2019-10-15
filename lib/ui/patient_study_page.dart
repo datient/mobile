@@ -15,7 +15,6 @@ class PatientStudyPage extends StatefulWidget {
 }
 
 class _PatientStudyState extends State<PatientStudyPage> {
-  @override
   Widget _buildStudyStream() {
     PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
     return StreamBuilder(

@@ -4,7 +4,6 @@ import 'package:datient/models/future_plan.dart';
 import 'package:datient/models/patient.dart';
 import 'package:datient/providers/datient_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class FuturePlanEditPage extends StatefulWidget {
   final FuturePlan plan;
@@ -23,6 +22,7 @@ class _FuturePlanEditPageState extends State<FuturePlanEditPage> {
   void initState() {
     _cTitle..text = widget.plan.title;
     _cDescription..text = widget.plan.description;
+    super.initState();
   }
 
   Widget _buildFuturePlanForm() {

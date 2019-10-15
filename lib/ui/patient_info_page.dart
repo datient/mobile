@@ -25,7 +25,6 @@ class PatientInfoPage extends StatefulWidget {
 
 class _PatientInfoPageState extends State<PatientInfoPage>
     with SingleTickerProviderStateMixin {
-  @override
   var _patientGender;
   TabController _tabController;
 

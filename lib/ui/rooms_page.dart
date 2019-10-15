@@ -1,6 +1,4 @@
-import 'package:datient/models/bed.dart';
 import 'package:datient/models/doctor.dart';
-import 'package:datient/models/room.dart';
 import 'package:datient/providers/datient_provider.dart';
 import 'package:datient/ui/room_page.dart';
 import 'package:flutter/material.dart';

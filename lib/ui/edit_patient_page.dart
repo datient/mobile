@@ -50,6 +50,7 @@ class _PatientEditPageState extends State<PatientEditPage> {
     if (_cContact != null) {
       _cSecondContact..text = widget.patient.secondContact;
     }
+    super.initState();
   }
 
   void _showPicker() {
