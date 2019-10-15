@@ -1,4 +1,5 @@
 import 'dart:convert' as JSON;
+import 'dart:convert';
 import 'dart:io';
 import 'package:datient/models/hospitalization.dart';
 import 'package:datient/models/patient.dart';
@@ -104,7 +105,7 @@ class PatientBloc {
     if (response.statusCode == 201) {
       return true;
     } else {
-      var responseError = JSON.jsonDecode(response.body);
+      var responseError = JSON.jsonDecode(utf8.decode(response.bodyBytes));
       return responseError['detail'];
     }
   }
@@ -142,7 +143,7 @@ class PatientBloc {
     if (response.statusCode == 200) {
       return true;
     } else {
-      var responseError = JSON.jsonDecode(response.body);
+      var responseError = JSON.jsonDecode(utf8.decode(response.bodyBytes));
       return responseError['detail'];
     }
   }
@@ -283,7 +284,7 @@ class PatientBloc {
     if (response.statusCode == 201) {
       return true;
     } else {
-      var responseError = JSON.jsonDecode(response.body);
+      var responseError = JSON.jsonDecode(utf8.decode(response.bodyBytes));
       return responseError['detail'];
     }
   }
@@ -299,7 +300,7 @@ class PatientBloc {
     if (response.statusCode == 204) {
       return true;
     } else {
-      var responseError = JSON.jsonDecode(response.body);
+      var responseError = JSON.jsonDecode(utf8.decode(response.bodyBytes));
       return responseError['detail'];
     }
   }
@@ -318,7 +319,7 @@ class PatientBloc {
     if (response.statusCode == 200) {
       return true;
     } else {
-      var responseError = JSON.jsonDecode(response.body);
+      var responseError = JSON.jsonDecode(utf8.decode(response.bodyBytes));
       return responseError['detail'];
     }
   }
@@ -331,7 +332,7 @@ class PatientBloc {
           'Content-Type': 'application/json',
           'Authorization': 'JWT $token',
         });
-    final extractdata = JSON.jsonDecode(response.body);
+    final extractdata = JSON.jsonDecode(utf8.decode(response.bodyBytes));
     if (response.statusCode == 200) {
       hospitalization = Hospitalization.fromJson(extractdata);
       _patientBedSubject.sink.add(hospitalization);

@@ -72,7 +72,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                         borderData: FlBorderData(
                           show: false,
                         ),
-                        sectionsSpace: 0,
+                        sectionsSpace: 2,
                         centerSpaceRadius: 40,
                         sections: showingSections(data)),
                   ),
@@ -87,7 +87,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                       Statistic statistics = data[index];
                       return Indicator(
                         color: Color(int.parse(statistics.color.substring(1, 7), radix: 16) + 0xFF000000),
-                        text: '${statistics.diagnosis}',
+                        text: '${statistics.diagnosis}: ${statistics.total}',
                         isSquare: false,
                         size: touchedIndex == index ? 18 : 16,
                         textColor:

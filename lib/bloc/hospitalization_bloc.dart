@@ -1,4 +1,5 @@
 import 'dart:convert' as JSON;
+import 'dart:convert';
 import 'package:datient/bloc/patient_bloc.dart';
 import 'package:datient/models/hospitalization.dart';
 import 'package:http/http.dart' as http;
@@ -68,7 +69,7 @@ class HospitalizationBloc {
     if (response.statusCode == 201) {
       return true;
     } else {
-      var responseError = JSON.jsonDecode(response.body);
+      var responseError = JSON.jsonDecode(utf8.decode(response.bodyBytes));
       return responseError;
     }
   }
@@ -95,7 +96,7 @@ class HospitalizationBloc {
       dischargePatientHospitalization(patientDni, bed, doctor, token);
       return true;
     } else {
-      var responseError = JSON.jsonDecode(response.body);
+      var responseError = JSON.jsonDecode(utf8.decode(response.bodyBytes));
       return responseError['detail'];
     }
   }
