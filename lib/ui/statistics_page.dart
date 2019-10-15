@@ -53,51 +53,54 @@ class _StatisticsPageState extends State<StatisticsPage> {
   Widget _buildChart(data) {
     return AspectRatio(
       aspectRatio: 0.69,
-      child: Card(
-        color: Colors.white,
-        child: Column(
-          children: <Widget>[
-            const SizedBox(
-              height: 18,
-            ),
-            Expanded(
-              child: AspectRatio(
-                aspectRatio: 1,
-                child: FlChart(
-                  chart: PieChart(
-                    PieChartData(
-                        pieTouchData: PieTouchData(
-                            touchResponseStreamSink:
-                                pieTouchedResultStreamController.sink),
-                        borderData: FlBorderData(
-                          show: false,
-                        ),
-                        sectionsSpace: 2,
-                        centerSpaceRadius: 40,
-                        sections: showingSections(data)),
-                  ),
+      child: Column(
+        children: <Widget>[
+          const SizedBox(
+            height: 18,
+          ),
+          Expanded(
+            child: AspectRatio(
+              aspectRatio: 3,
+              child: FlChart(
+                chart: PieChart(
+                  PieChartData(
+                      pieTouchData: PieTouchData(
+                          touchResponseStreamSink:
+                              pieTouchedResultStreamController.sink),
+                      borderData: FlBorderData(
+                        show: false,
+                      ),
+                      sectionsSpace: 2,
+                      centerSpaceRadius: 40,
+                      sections: showingSections(data)),
                 ),
               ),
             ),
-            Expanded(
+          ),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
               child: Container(
                 child: ListView.builder(
                     itemCount: data.length,
                     itemBuilder: (BuildContext context, int index) {
                       Statistic statistics = data[index];
-                      return Indicator(
-                        color: Color(int.parse(statistics.color.substring(1, 7), radix: 16) + 0xFF000000),
-                        text: '${statistics.diagnosis}: ${statistics.total}',
-                        isSquare: false,
-                        size: touchedIndex == index ? 18 : 16,
-                        textColor:
-                            touchedIndex == index ? Colors.black : Colors.grey,
+                      return Padding(
+                        padding: EdgeInsets.all(2),
+                        child: Indicator(
+                          color: Color(int.parse(statistics.color.substring(1, 7), radix: 16) + 0xFF000000),
+                          text: '${statistics.diagnosis}: ${statistics.total}',
+                          isSquare: false,
+                          size: touchedIndex == index ? 18 : 16,
+                          textColor:
+                              touchedIndex == index ? Colors.black : Colors.grey,
+                        ),
                       );
                     }),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

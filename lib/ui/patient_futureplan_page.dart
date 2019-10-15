@@ -17,7 +17,6 @@ class PatientFuturePlanPage extends StatefulWidget {
 }
 
 class _PatientFuturePlanState extends State<PatientFuturePlanPage> {
-
   Widget _buildFuturePlanStream() {
     PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
     return StreamBuilder(
@@ -94,8 +93,83 @@ class _PatientFuturePlanState extends State<PatientFuturePlanPage> {
                       child: Text('Confirmar'),
                       color: Colors.green,
                       onPressed: () {
-                        bloc.doctor.listen((value) => patientBloc
-                            .deleteFuturePlan(plans.id, value.token));
+                        bloc.doctor.listen(
+                          (value) => patientBloc
+                              .deleteFuturePlan(plans.id, value.token)
+                              .then(
+                            (success) {
+                              if (success == true) {
+                                Navigator.of(context).pop();
+                                return showDialog<void>(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Row(
+                                        children: [
+                                          Icon(Icons.info_outline),
+                                          SizedBox(width: 10),
+                                          Text('Paciente eliminado'),
+                                        ],
+                                      ),
+                                      content: SingleChildScrollView(
+                                        child: ListBody(
+                                          children: <Widget>[
+                                            Text(
+                                                'Estudio complementario eliminado con éxito'),
+                                          ],
+                                        ),
+                                      ),
+                                      actions: <Widget>[
+                                        FlatButton(
+                                          child: Text('Cerrar'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              } else {
+                                Navigator.of(context).pop();
+                                return showDialog<void>(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15)),
+                                      title: Row(
+                                        children: [
+                                          Icon(Icons.info_outline),
+                                          SizedBox(width: 10),
+                                          Text('Ha ocurrido un error'),
+                                        ],
+                                      ),
+                                      content: SingleChildScrollView(
+                                        child: ListBody(
+                                          children: <Widget>[
+                                            Text(success),
+                                          ],
+                                        ),
+                                      ),
+                                      actions: <Widget>[
+                                        FlatButton(
+                                          child: Text('Cerrar'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              }
+                            },
+                          ),
+                        );
                       },
                     ),
                     FlatButton(

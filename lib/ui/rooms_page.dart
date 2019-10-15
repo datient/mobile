@@ -1,4 +1,6 @@
+import 'package:datient/models/bed.dart';
 import 'package:datient/models/doctor.dart';
+import 'package:datient/models/room.dart';
 import 'package:datient/providers/datient_provider.dart';
 import 'package:datient/ui/room_page.dart';
 import 'package:flutter/material.dart';
@@ -42,6 +44,7 @@ class _RoomsPageState extends State<RoomsPage> {
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
+                    // _buildBedsAvailable(data[index].beds),
                   ],
                 ),
               ),
@@ -51,6 +54,16 @@ class _RoomsPageState extends State<RoomsPage> {
       ),
     );
   }
+
+  // Widget _buildBedsAvailable(List<Bed> beds) {
+  //   for (int i = 0; i < beds.length; i++) {
+  //     if (beds[i].isAvailable == true){
+  //       return Text('Camas disponibles');
+  //     }else{
+  //       return Text('Sala ocupada');
+  //     }
+  //   }
+  // }
 
   Widget _buildRoomPage(bloc, roomBloc) {
     return Container(

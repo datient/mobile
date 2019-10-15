@@ -43,17 +43,16 @@ class PatientBloc {
     return list;
   }
 
-    Future<dynamic> getPatientPdf(dni,token) async {
+  Future<dynamic> getPatientPdf(dni, token) async {
     final response = await http.get(
       'http://10.0.2.2:8000/pdf/$dni',
       headers: {'Authorization': 'JWT $token'},
     );
     if (response.statusCode == 200) {
       print(response.body);
-    }else{
+    } else {
       print(response.body);
     }
-    
   }
 
   Future<Patient> getSpecificPatients(token, dni) async {
@@ -376,6 +375,22 @@ class PatientBloc {
     }
     _isLoading.sink.add(false);
     return patient;
+  }
+
+  Future<dynamic> deleteStudy(id, token) async {
+    final response = await http.delete(
+      'http://10.0.2.2:8000/api/study/$id/',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'JWT $token',
+      },
+    );
+    if (response.statusCode == 204) {
+      return true;
+    } else {
+      var responseError = JSON.jsonDecode(utf8.decode(response.bodyBytes));
+      return responseError['detail'];
+    }
   }
 
   Future setNull() async {
