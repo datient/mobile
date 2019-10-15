@@ -15,7 +15,6 @@ import 'edit_patient_page.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
 class PatientInfoPage extends StatefulWidget {
   final Patient patient;
   PatientInfoPage({Key key, this.patient}) : super(key: key);
@@ -547,14 +546,14 @@ class _PatientInfoPageState extends State<PatientInfoPage>
     );
   }
 
-   _launchURL(dni) async {
-  var url = 'http://10.0.2.2:8000/pdf/$dni';
-  if (await canLaunch(url)) {
-    await launch(url);
-  } else {
-    throw 'Could not launch $url';
+  _launchURL(dni) async {
+    var url = 'http://10.0.2.2:8000/pdf/$dni';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
-}
 
   void chooseAction(choice) {
     if (choice == 'detail') {
@@ -712,7 +711,41 @@ class _PatientInfoPageState extends State<PatientInfoPage>
                 );
               },
             );
-          } else {}
+          } else {
+            Navigator.of(context).pop();
+            return showDialog<void>(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  title: Row(
+                    children: [
+                      Icon(Icons.info_outline),
+                      SizedBox(width: 10),
+                      Text('Ha ocurrido un error'),
+                    ],
+                  ),
+                  content: SingleChildScrollView(
+                    child: ListBody(
+                      children: <Widget>[
+                        Text(success),
+                      ],
+                    ),
+                  ),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text('Cerrar'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          }
         },
       ),
     );

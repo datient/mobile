@@ -130,6 +130,7 @@ class _DischargePatientPageState extends State<DischargePatientPage> {
           );
         } else {
           Navigator.of(context).pop();
+          Navigator.of(context).pop();
           return showDialog<void>(
             context: context,
             barrierDismissible: false,

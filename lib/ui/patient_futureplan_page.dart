@@ -109,14 +109,14 @@ class _PatientFuturePlanState extends State<PatientFuturePlanPage> {
                                         children: [
                                           Icon(Icons.info_outline),
                                           SizedBox(width: 10),
-                                          Text('Paciente eliminado'),
+                                          Text('Plan futuro eliminado'),
                                         ],
                                       ),
                                       content: SingleChildScrollView(
                                         child: ListBody(
                                           children: <Widget>[
                                             Text(
-                                                'Estudio complementario eliminado con éxito'),
+                                                'Plan Futuro eliminado con éxito'),
                                           ],
                                         ),
                                       ),

@@ -160,9 +160,4 @@ class _StatisticsPageState extends State<StatisticsPage> {
                   });
         });
   }
-
-  dispose() {
-    pieTouchedResultStreamController.close();
-    this.dispose();
-  }
 }

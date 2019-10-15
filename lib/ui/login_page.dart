@@ -18,6 +18,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  var hasError = false;
   var hierarchyIndex;
   Hierarchy selectedHierarchy;
   List<Hierarchy> hierarchies = <Hierarchy>[
@@ -54,6 +55,7 @@ class _LoginPageState extends State<LoginPage> {
                     controller: _mailController,
                     validator: (value) {
                       if (value.isEmpty || !value.contains('@')) {
+                        hasError = true;
                         return 'Por favor, ingrese su correo electrónico';
                       }
                     },

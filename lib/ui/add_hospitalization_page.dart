@@ -91,7 +91,7 @@ class _HospitalizationAddPageState extends State<HospitalizationAddPage> {
           .then((success) {
         if (success == true) {
           Navigator.of(context).pop();
-          showDialog<void>(
+          return showDialog<void>(
             context: context,
             barrierDismissible: false,
             builder: (BuildContext context) {

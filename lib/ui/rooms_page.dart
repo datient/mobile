@@ -1,3 +1,4 @@
+import 'package:datient/models/bed.dart';
 import 'package:datient/models/doctor.dart';
 import 'package:datient/providers/datient_provider.dart';
 import 'package:datient/ui/room_page.dart';
@@ -9,14 +10,23 @@ class RoomsPage extends StatefulWidget {
 }
 
 class _RoomsPageState extends State<RoomsPage> {
+  bool bedIsAvailable;
   var token;
   Doctor doctor = Doctor();
+
+  // void initState() {
+  //   super.initState();
+  //   setState(() {
+  //     bedIsAvailable = false;
+  //   });
+  // }
 
   Widget _buildRoomList(data) {
     return Scrollbar(
       child: GridView.count(
         crossAxisCount: 2,
         children: List.generate(data.length, (index) {
+          // checkBedsAvailable(data[index].beds);
           return Container(
             child: GestureDetector(
               onTap: () {
@@ -42,7 +52,7 @@ class _RoomsPageState extends State<RoomsPage> {
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
-                    // _buildBedsAvailable(data[index].beds),
+                    // _buildBedIsAvailable()
                   ],
                 ),
               ),
@@ -53,14 +63,19 @@ class _RoomsPageState extends State<RoomsPage> {
     );
   }
 
-  // Widget _buildBedsAvailable(List<Bed> beds) {
+  // Future checkBedsAvailable(List<Bed> beds) async {
   //   for (int i = 0; i < beds.length; i++) {
-  //     if (beds[i].isAvailable == true){
-  //       return Text('Camas disponibles');
-  //     }else{
-  //       return Text('Sala ocupada');
+  //     if (beds[i].isAvailable == true) {
+  //       bedIsAvailable = true;
+  //     } else {
+  //       bedIsAvailable = false;
+  //       print('${beds[i].bedName}: $bedIsAvailable');
   //     }
   //   }
+  // }
+
+  // Widget _buildBedIsAvailable() {
+  //   return bedIsAvailable ? Text('Available') : Text('Full');
   // }
 
   Widget _buildRoomPage(bloc, roomBloc) {

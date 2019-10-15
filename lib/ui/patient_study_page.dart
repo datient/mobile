@@ -83,8 +83,82 @@ class _PatientStudyState extends State<PatientStudyPage> {
                       child: Text('Confirmar'),
                       color: Colors.green,
                       onPressed: () {
-                        bloc.doctor.listen((value) =>
-                            patientBloc.deleteStudy(studies.id, value.token));
+                        bloc.doctor.listen(
+                          (value) => patientBloc
+                              .deleteStudy(studies.id, value.token)
+                              .then((success) {
+                            if (success == true) {
+                              Navigator.of(context).pop();
+                              return showDialog<void>(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Row(
+                                      children: [
+                                        Icon(Icons.info_outline),
+                                        SizedBox(width: 10),
+                                        Text(
+                                            'Estudio eliminado'),
+                                      ],
+                                    ),
+                                    content: SingleChildScrollView(
+                                      child: ListBody(
+                                        children: <Widget>[
+                                          Text(
+                                              'Estudio complementario eliminado con éxito'),
+                                        ],
+                                      ),
+                                    ),
+                                    actions: <Widget>[
+                                      FlatButton(
+                                        child: Text('Cerrar'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            } else {
+                              Navigator.of(context).pop();
+                              return showDialog<void>(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                    title: Row(
+                                      children: [
+                                        Icon(Icons.info_outline),
+                                        SizedBox(width: 10),
+                                        Text('Ha ocurrido un error'),
+                                      ],
+                                    ),
+                                    content: SingleChildScrollView(
+                                      child: ListBody(
+                                        children: <Widget>[
+                                          Text(success),
+                                        ],
+                                      ),
+                                    ),
+                                    actions: <Widget>[
+                                      FlatButton(
+                                        child: Text('Cerrar'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            }
+                          }),
+                        );
                       },
                     ),
                     FlatButton(
@@ -101,6 +175,8 @@ class _PatientStudyState extends State<PatientStudyPage> {
             );
           }
         }
+
+        Future deleteStudy() {}
 
         return Padding(
           padding: EdgeInsets.all(8.0),

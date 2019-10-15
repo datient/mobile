@@ -70,7 +70,7 @@ class HospitalizationBloc {
       return true;
     } else {
       var responseError = JSON.jsonDecode(utf8.decode(response.bodyBytes));
-      return responseError;
+      return responseError['detail'];
     }
   }
 
@@ -145,12 +145,12 @@ class HospitalizationBloc {
       assignPatientProgress(diagnosis, description, status, patient, token);
       return true;
     } else {
-      print(response.body);
-      return false;
+      var responseError = JSON.jsonDecode(utf8.decode(response.bodyBytes));
+      return responseError['detail'];
     }
   }
 
-  Future assignPatientProgress(
+  Future<dynamic> assignPatientProgress(
       diagnosis, description, status, patient, token) async {
     final response = await http.post(
       'http://10.0.2.2:8000/api/progress/',
@@ -167,7 +167,6 @@ class HospitalizationBloc {
         },
       ),
     );
-    print(response.body);
   }
 
   dispose() {
