@@ -1,5 +1,6 @@
 import 'package:datient/models/bed.dart';
 import 'package:datient/models/doctor.dart';
+import 'package:datient/models/room.dart';
 import 'package:datient/providers/datient_provider.dart';
 import 'package:datient/ui/room_page.dart';
 import 'package:flutter/material.dart';
@@ -10,23 +11,15 @@ class RoomsPage extends StatefulWidget {
 }
 
 class _RoomsPageState extends State<RoomsPage> {
-  bool bedIsAvailable;
   var token;
   Doctor doctor = Doctor();
 
-  // void initState() {
-  //   super.initState();
-  //   setState(() {
-  //     bedIsAvailable = false;
-  //   });
-  // }
-
   Widget _buildRoomList(data) {
+    checkRoomIsAvailable(data);
     return Scrollbar(
       child: GridView.count(
         crossAxisCount: 2,
         children: List.generate(data.length, (index) {
-          // checkBedsAvailable(data[index].beds);
           return Container(
             child: GestureDetector(
               onTap: () {
@@ -52,7 +45,30 @@ class _RoomsPageState extends State<RoomsPage> {
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
-                    // _buildBedIsAvailable()
+                    SizedBox(
+                      height: 10,
+                    ),
+                    data[index].isAvailable
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.check_circle,
+                                color: Colors.green,
+                              ),
+                              Text('Disponible')
+                            ],
+                          )
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.cancel,
+                                color: Colors.red,
+                              ),
+                              Text('Ocupado')
+                            ],
+                          )
                   ],
                 ),
               ),
@@ -63,20 +79,17 @@ class _RoomsPageState extends State<RoomsPage> {
     );
   }
 
-  // Future checkBedsAvailable(List<Bed> beds) async {
-  //   for (int i = 0; i < beds.length; i++) {
-  //     if (beds[i].isAvailable == true) {
-  //       bedIsAvailable = true;
-  //     } else {
-  //       bedIsAvailable = false;
-  //       print('${beds[i].bedName}: $bedIsAvailable');
-  //     }
-  //   }
-  // }
+  checkRoomIsAvailable(List<Room> rooms) {
+    rooms.forEach((room) {
+      room.beds.forEach((bed) {
+        if (bed.isAvailable == true) {
+          room.isAvailable = true;
+        }
+      });
+    });
+  }
 
-  // Widget _buildBedIsAvailable() {
-  //   return bedIsAvailable ? Text('Available') : Text('Full');
-  // }
+  Future checkRoomIsFull() async {}
 
   Widget _buildRoomPage(bloc, roomBloc) {
     return Container(

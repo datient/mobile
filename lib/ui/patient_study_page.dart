@@ -251,3 +251,30 @@ class _PatientStudyState extends State<PatientStudyPage> {
     );
   }
 }
+
+class DetailScreen extends StatelessWidget {
+  final String image;
+  final int index;
+  DetailScreen({Key key, this.image, this.index}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        body: GestureDetector(
+          child: Center(
+            child: Hero(
+              tag: 'studyHero$index',
+              child: RotatedBox(
+                quarterTurns: 1,
+                child: Image.network(image),
+              ),
+            ),
+          ),
+          onTap: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+    );
+  }
+}
