@@ -94,12 +94,14 @@ class _PatientStudyState extends State<PatientStudyPage> {
                                 barrierDismissible: false,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
                                     title: Row(
                                       children: [
                                         Icon(Icons.info_outline),
                                         SizedBox(width: 10),
-                                        Text(
-                                            'Estudio eliminado'),
+                                        Text('Estudio eliminado'),
                                       ],
                                     ),
                                     content: SingleChildScrollView(
@@ -176,64 +178,61 @@ class _PatientStudyState extends State<PatientStudyPage> {
           }
         }
 
-        Future deleteStudy() {}
-
         return Padding(
           padding: EdgeInsets.all(8.0),
           child: Container(
-            child: GestureDetector(
-              child: Hero(
-                tag: 'studyHero$index',
-                child: Card(
-                    color: Colors.blue,
-                    child: Column(children: [
-                      Row(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 6),
-                            child: Text(
-                              'Estudio ${studies.id}',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 18),
+            child: Card(
+                color: Colors.blue,
+                child: Column(children: [
+                  Row(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(left: 6),
+                        child: Text(
+                          'Estudio ${studies.id}',
+                          style: TextStyle(color: Colors.white, fontSize: 18),
+                        ),
+                      ),
+                      Spacer(),
+                      PopupMenuButton(
+                        onSelected: chooseAction,
+                        icon: Icon(
+                          Icons.more_vert,
+                          color: Colors.white,
+                        ),
+                        itemBuilder: (_) => <PopupMenuItem<String>>[
+                          PopupMenuItem<String>(
+                            value: 'delete',
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                ),
+                                Text(
+                                  'Eliminar',
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              ],
                             ),
                           ),
-                          Spacer(),
-                          PopupMenuButton(
-                            onSelected: chooseAction,
-                            icon: Icon(
-                              Icons.more_vert,
-                              color: Colors.white,
-                            ),
-                            itemBuilder: (_) => <PopupMenuItem<String>>[
-                              PopupMenuItem<String>(
-                                value: 'delete',
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Icon(
-                                      Icons.delete,
-                                      color: Colors.red,
-                                    ),
-                                    Text(
-                                      'Eliminar',
-                                      style: TextStyle(color: Colors.red),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          )
                         ],
-                      ),
-                      Image.network(studies.image),
-                    ])),
-              ),
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (_) {
-                  return DetailScreen(image: studies.image, index: index);
-                }));
-              },
-            ),
+                      )
+                    ],
+                  ),
+                  GestureDetector(
+                    child: Hero(
+                      tag: 'studyHero$index',
+                      child: Image.network(studies.image),
+                    ),
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (_) {
+                        return DetailScreen(image: studies.image, index: index);
+                      }));
+                    },
+                  ),
+                ])),
           ),
         );
       },
