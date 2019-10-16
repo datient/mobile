@@ -188,6 +188,7 @@ class _BedPageState extends State<PatientPage> {
           onPressed: () {
             Navigator.of(context).pushNamed('/patientadd');
           },
+          tooltip: 'Nuevo paciente',
           child: Icon(Icons.person_add)),
     );
   }

@@ -136,6 +136,9 @@ class _RoomsPageState extends State<RoomsPage> {
             Scaffold.of(context).openDrawer();
           },
         ),
+        actions: [
+          
+        ],
       ),
       body: _buildRoomPage(bloc, roomBloc),
     );
