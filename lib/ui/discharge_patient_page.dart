@@ -28,7 +28,7 @@ class _DischargePatientPageState extends State<DischargePatientPage> {
     const Status('Peligro'),
   ];
   final GlobalKey<FormState> _createformKey = new GlobalKey<FormState>();
-  @override
+
   Widget _buildHospitalizationForm() {
     return Form(
       key: _createformKey,

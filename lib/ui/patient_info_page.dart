@@ -97,12 +97,19 @@ class _PatientInfoPageState extends State<PatientInfoPage>
                   bloc.doctor.listen((value) => patientBloc
                           .postStudy(_image, widget.patient.dni, value.token)
                           .then((success) {
+                        DatientBloc bloc = DatientProvider.of(context).bloc;
+                        PatientBloc patientBloc =
+                            DatientProvider.of(context).patientBloc;
+                        bloc.doctor.listen((value) => patientBloc.getStudy(
+                            widget.patient.dni, value.token));
                         Navigator.of(context).pop();
                         return showDialog<void>(
                           context: context,
                           barrierDismissible: false,
                           builder: (BuildContext context) {
                             return AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15)),
                               title: Row(
                                 children: [
                                   Icon(Icons.info_outline),

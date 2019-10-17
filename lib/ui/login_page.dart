@@ -129,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
               hierarchy, registerPassword, registerConfirmPassword)
           .then((success) {
         if (success == true) {
-          Navigator.of(context).popAndPushNamed('/');
+          Navigator.of(context).popAndPushNamed('/login');
           return showDialog<void>(
             context: context,
             barrierDismissible: false,

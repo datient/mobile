@@ -89,8 +89,6 @@ class _RoomsPageState extends State<RoomsPage> {
     });
   }
 
-  Future checkRoomIsFull() async {}
-
   Widget _buildRoomPage(bloc, roomBloc) {
     return Container(
       child: Column(
@@ -118,6 +116,15 @@ class _RoomsPageState extends State<RoomsPage> {
     );
   }
 
+void chooseAction(choice){
+  if (choice == 'available'){
+
+  }
+  if (choice == 'full'){
+
+  }
+}
+
   @override
   Widget build(BuildContext context) {
     final bloc = DatientProvider.of(context).bloc;
@@ -137,7 +144,22 @@ class _RoomsPageState extends State<RoomsPage> {
           },
         ),
         actions: [
-          
+          PopupMenuButton(
+            icon: Icon(Icons.filter_list),
+            onSelected: chooseAction,
+            itemBuilder: (_) => [
+              CheckedPopupMenuItem(
+                checked: chooseAction == 'available',
+                value: 'available',
+                child: new Text('Filtrar disponibles'),
+              ),
+              CheckedPopupMenuItem(
+                checked: chooseAction == 'full',
+                value: 'full',
+                child: new Text('Filtrar ocupadas'),
+              ),
+            ],
+          ),
         ],
       ),
       body: _buildRoomPage(bloc, roomBloc),
