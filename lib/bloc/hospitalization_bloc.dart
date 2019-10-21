@@ -141,7 +141,6 @@ class HospitalizationBloc {
       ),
     );
     if (response.statusCode == 201) {
-      print(response.body);
       assignPatientProgress(diagnosis, description, status, patient, token);
       return true;
     } else {
@@ -164,6 +163,7 @@ class HospitalizationBloc {
           'description': description,
           'status': status,
           'patient': patient,
+          'income': true,
         },
       ),
     );
