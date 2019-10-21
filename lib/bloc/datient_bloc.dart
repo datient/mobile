@@ -109,8 +109,11 @@ class DatientBloc {
     );
     if (response.statusCode == 201) {
       return true;
+    } else {
+      print(response.body);
+      var responseError = JSON.jsonDecode(utf8.decode(response.bodyBytes));
+      return responseError;
     }
-    print(response.body);
   }
 
   Future<Doctor> getSpecificDoctor(token, id) async {

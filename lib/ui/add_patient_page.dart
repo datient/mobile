@@ -33,7 +33,8 @@ class _PatientAddPageState extends State<PatientAddPage> {
     const Gender('Femenino'),
   ];
   final GlobalKey<FormState> _createformKey = new GlobalKey<FormState>();
-  var selectedDate;
+  DateTime selectedDate = DateTime.now();
+  String dniError;
 
   void _showPicker() {
     var formatter = new DateFormat('dd-MM-yyyy');
@@ -85,8 +86,14 @@ class _PatientAddPageState extends State<PatientAddPage> {
             ),
             TextFormField(
               controller: _cDni,
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Ingrese un DNI válido';
+                }
+              },
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
+                errorText: dniError,
                 icon: Icon(Icons.picture_in_picture),
                 labelText: 'DNI',
                 hintText: 'Ingrese el DNI del paciente',
@@ -98,6 +105,11 @@ class _PatientAddPageState extends State<PatientAddPage> {
               },
               child: AbsorbPointer(
                 child: TextFormField(
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Ingrese una fecha de nacimiento válida';
+                    }
+                  },
                   controller: _cBirthDate,
                   decoration: InputDecoration(
                     labelText: 'Fecha de nacimiento',
@@ -107,6 +119,11 @@ class _PatientAddPageState extends State<PatientAddPage> {
               ),
             ),
             TextFormField(
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Ingrese un número de historial válido';
+                }
+              },
               controller: _cHistoryNumber,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
@@ -227,39 +244,11 @@ class _PatientAddPageState extends State<PatientAddPage> {
             },
           );
         } else {
-          Navigator.of(context).pop();
-          return showDialog<void>(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
-                title: Row(
-                  children: [
-                    Icon(Icons.info_outline),
-                    SizedBox(width: 10),
-                    Text('Ha ocurrido un error'),
-                  ],
-                ),
-                content: SingleChildScrollView(
-                  child: ListBody(
-                    children: <Widget>[
-                      Text(success),
-                    ],
-                  ),
-                ),
-                actions: <Widget>[
-                  FlatButton(
-                    child: Text('Cerrar'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              );
-            },
-          );
+          if (success['dni']!= null){
+            setState(() {
+              dniError = success['dni'].toString();
+            });
+          }
         }
       });
     }
