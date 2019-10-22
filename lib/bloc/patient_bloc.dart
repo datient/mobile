@@ -143,8 +143,9 @@ class PatientBloc {
     if (response.statusCode == 200) {
       return true;
     } else {
+      print(response.body);
       var responseError = JSON.jsonDecode(utf8.decode(response.bodyBytes));
-      return responseError['detail'];
+      return responseError;
     }
   }
 

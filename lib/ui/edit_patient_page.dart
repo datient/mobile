@@ -35,6 +35,7 @@ class _PatientEditPageState extends State<PatientEditPage> {
   final GlobalKey<FormState> _editformKey = new GlobalKey<FormState>();
   var selectedDate;
   var formatter = new DateFormat('dd-MM-yyyy');
+  String genderError;
 
   void initState() {
     _cFirstName..text = widget.patient.firstName;
@@ -140,8 +141,7 @@ class _PatientEditPageState extends State<PatientEditPage> {
             ),
             DropdownButtonFormField<Gender>(
               decoration: InputDecoration(
-                icon: Icon(Icons.people),
-              ),
+                  icon: Icon(Icons.people), errorText: genderError),
               hint: Text('Seleccione su género'),
               value: selectedGender,
               onChanged: (Gender newValue) {
@@ -215,6 +215,8 @@ class _PatientEditPageState extends State<PatientEditPage> {
             barrierDismissible: false,
             builder: (BuildContext context) {
               return AlertDialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
                 title: Row(
                   children: [
                     Icon(Icons.info_outline),
@@ -241,39 +243,50 @@ class _PatientEditPageState extends State<PatientEditPage> {
             },
           );
         } else {
-          Navigator.of(context).pop();
-          return showDialog<void>(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
-                title: Row(
-                  children: [
-                    Icon(Icons.info_outline),
-                    SizedBox(width: 10),
-                    Text('Ha ocurrido un error'),
-                  ],
-                ),
-                content: SingleChildScrollView(
-                  child: ListBody(
-                    children: <Widget>[
-                      Text(success),
+          if (success['gender'] != null) {
+            List _genderError = success['gender'];
+            genderError = '';
+            _genderError.forEach((error) {
+              setState(() {
+                genderError += '$error ';
+              });
+            });
+          }
+          if (success['detail'] != null) {
+            Navigator.of(context).pop();
+            return showDialog<void>(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  title: Row(
+                    children: [
+                      Icon(Icons.info_outline),
+                      SizedBox(width: 10),
+                      Text('Ha ocurrido un error'),
                     ],
                   ),
-                ),
-                actions: <Widget>[
-                  FlatButton(
-                    child: Text('Cerrar'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
+                  content: SingleChildScrollView(
+                    child: ListBody(
+                      children: <Widget>[
+                        Text(success),
+                      ],
+                    ),
                   ),
-                ],
-              );
-            },
-          );
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text('Cerrar'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          }
         }
       });
     }

@@ -70,7 +70,7 @@ class HospitalizationBloc {
       return true;
     } else {
       var responseError = JSON.jsonDecode(utf8.decode(response.bodyBytes));
-      return responseError['detail'];
+      return responseError;
     }
   }
 
@@ -97,7 +97,7 @@ class HospitalizationBloc {
       return true;
     } else {
       var responseError = JSON.jsonDecode(utf8.decode(response.bodyBytes));
-      return responseError['detail'];
+      return responseError;
     }
   }
 
@@ -144,8 +144,9 @@ class HospitalizationBloc {
       assignPatientProgress(diagnosis, description, status, patient, token);
       return true;
     } else {
+      print(response.body);
       var responseError = JSON.jsonDecode(utf8.decode(response.bodyBytes));
-      return responseError['detail'];
+      return responseError;
     }
   }
 

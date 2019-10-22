@@ -35,6 +35,7 @@ class _PatientAddPageState extends State<PatientAddPage> {
   final GlobalKey<FormState> _createformKey = new GlobalKey<FormState>();
   DateTime selectedDate = DateTime.now();
   String dniError;
+  String genderError;
 
   void _showPicker() {
     var formatter = new DateFormat('dd-MM-yyyy');
@@ -134,6 +135,7 @@ class _PatientAddPageState extends State<PatientAddPage> {
             ),
             DropdownButtonFormField<Gender>(
               decoration: InputDecoration(
+                errorText: genderError,
                 icon: Icon(Icons.people),
               ),
               hint: Text('Seleccione su género'),
@@ -250,6 +252,15 @@ class _PatientAddPageState extends State<PatientAddPage> {
             _dniError.forEach((error) {
               setState(() {
                 dniError += '$error ';
+              });
+            });
+          }
+          if (success['gender'] != null) {
+            List _genderError = success['gender'];
+            genderError = '';
+            _genderError.forEach((error) {
+              setState(() {
+                genderError += '$error ';
               });
             });
           }

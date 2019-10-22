@@ -34,6 +34,8 @@ class _AssignPatientProgressPageState extends State<AssignPatientProgressPage> {
     const Status('Peligro'),
   ];
   final GlobalKey<FormState> _createformKey = new GlobalKey<FormState>();
+  String statusError;
+
   Widget _buildHospitalizationForm() {
     return Form(
       key: _createformKey,
@@ -56,6 +58,7 @@ class _AssignPatientProgressPageState extends State<AssignPatientProgressPage> {
             ),
             DropdownButtonFormField<Status>(
               decoration: InputDecoration(
+                errorText: statusError,
                 icon: Icon(Icons.traffic),
               ),
               hint: Text('Seleccione el estado de ingreso del paciente'),
@@ -152,39 +155,50 @@ class _AssignPatientProgressPageState extends State<AssignPatientProgressPage> {
             );
           } else {
             Navigator.of(context).pop();
-            Navigator.of(context).pop();
-            return showDialog<void>(
-              context: context,
-              barrierDismissible: false,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15)),
-                  title: Row(
-                    children: [
-                      Icon(Icons.info_outline),
-                      SizedBox(width: 10),
-                      Text('Ha ocurrido un error'),
-                    ],
-                  ),
-                  content: SingleChildScrollView(
-                    child: ListBody(
-                      children: <Widget>[
-                        Text(success),
+            if (success['status'] != null) {
+              List _statusError = success['status'];
+              statusError = '';
+              _statusError.forEach((error) {
+                setState(() {
+                  statusError += '$error ';
+                });
+              });
+            }
+            if (success['detail'] != null) {
+              Navigator.of(context).pop();
+              return showDialog<void>(
+                context: context,
+                barrierDismissible: false,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15)),
+                    title: Row(
+                      children: [
+                        Icon(Icons.info_outline),
+                        SizedBox(width: 10),
+                        Text('Ha ocurrido un error'),
                       ],
                     ),
-                  ),
-                  actions: <Widget>[
-                    FlatButton(
-                      child: Text('Cerrar'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
+                    content: SingleChildScrollView(
+                      child: ListBody(
+                        children: <Widget>[
+                          Text(success),
+                        ],
+                      ),
                     ),
-                  ],
-                );
-              },
-            );
+                    actions: <Widget>[
+                      FlatButton(
+                        child: Text('Cerrar'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            }
           }
         }),
       );

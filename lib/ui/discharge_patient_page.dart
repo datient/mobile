@@ -28,6 +28,9 @@ class _DischargePatientPageState extends State<DischargePatientPage> {
     const Status('Peligro'),
   ];
   final GlobalKey<FormState> _createformKey = new GlobalKey<FormState>();
+  String statusError;
+  String diagnosisError;
+  String descriptionError;
 
   Widget _buildHospitalizationForm() {
     return Form(
@@ -37,13 +40,9 @@ class _DischargePatientPageState extends State<DischargePatientPage> {
         child: Column(
           children: [
             TextFormField(
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Ingrese un diagnóstico válido';
-                }
-              },
               controller: _cDiagnosis,
               decoration: InputDecoration(
+                errorText: diagnosisError,
                 icon: Icon(Icons.assignment),
                 labelText: 'Diagnóstico',
                 hintText: 'Ingrese el diagnóstico de egreso del paciente',
@@ -51,6 +50,7 @@ class _DischargePatientPageState extends State<DischargePatientPage> {
             ),
             DropdownButtonFormField<Status>(
               decoration: InputDecoration(
+                errorText: statusError,
                 icon: Icon(Icons.traffic),
               ),
               hint: Text('Seleccione el estado de egreso del paciente'),
@@ -72,13 +72,9 @@ class _DischargePatientPageState extends State<DischargePatientPage> {
               }).toList(),
             ),
             TextFormField(
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Ingrese una descripción válida';
-                }
-              },
               controller: _cDescription,
               decoration: InputDecoration(
+                  errorText: descriptionError,
                   icon: Icon(Icons.subject),
                   labelText: 'Descripción',
                   hintText: 'Ingrese una descripción de egreso'),
@@ -142,39 +138,68 @@ class _DischargePatientPageState extends State<DischargePatientPage> {
           );
         } else {
           Navigator.of(context).pop();
-          Navigator.of(context).pop();
-          return showDialog<void>(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
-                title: Row(
-                  children: [
-                    Icon(Icons.info_outline),
-                    SizedBox(width: 10),
-                    Text('Ha ocurrido un error'),
-                  ],
-                ),
-                content: SingleChildScrollView(
-                  child: ListBody(
-                    children: <Widget>[
-                      Text(success),
+          if (success['status'] != null) {
+            List _statusError = success['status'];
+            statusError = '';
+            _statusError.forEach((error) {
+              setState(() {
+                statusError += '$error ';
+              });
+            });
+          }
+          if (success['diagnosis'] != null) {
+            List _diagnosisError = success['diagnosis'];
+            diagnosisError = '';
+            _diagnosisError.forEach((error) {
+              setState(() {
+                diagnosisError += '$error ';
+              });
+            });
+          }
+          if (success['description'] != null) {
+            List _descriptionError = success['description'];
+            descriptionError = '';
+            _descriptionError.forEach((error) {
+              setState(() {
+                descriptionError += '$error ';
+              });
+            });
+          }
+          if (success['detail'] != null) {
+            Navigator.of(context).pop();
+            return showDialog<void>(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  title: Row(
+                    children: [
+                      Icon(Icons.info_outline),
+                      SizedBox(width: 10),
+                      Text('Ha ocurrido un error'),
                     ],
                   ),
-                ),
-                actions: <Widget>[
-                  FlatButton(
-                    child: Text('Cerrar'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
+                  content: SingleChildScrollView(
+                    child: ListBody(
+                      children: <Widget>[
+                        Text(success),
+                      ],
+                    ),
                   ),
-                ],
-              );
-            },
-          );
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text('Cerrar'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          }
         }
       });
     }

@@ -37,7 +37,10 @@ class _LoginPageState extends State<LoginPage> {
   final _rpasswordController = TextEditingController();
   final _rpasswordconfirmController = TextEditingController();
   String emailError;
+  String nameError;
+  String lastNameError;
   String passwordError;
+  String hierarchyError;
 
   Widget loginForm(DatientBloc bloc) {
     return Form(
@@ -72,11 +75,6 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   TextFormField(
                     controller: _pwController,
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Por favor, ingrese su correo contraseña';
-                      }
-                    },
                     decoration: InputDecoration(
                         icon: Icon(Icons.lock),
                         labelText: 'Contraseña',
@@ -172,6 +170,24 @@ class _LoginPageState extends State<LoginPage> {
               });
             });
           }
+          if (success['first_name'] != null) {
+            List _nameError = success['first_name'];
+            nameError = '';
+            _nameError.forEach((error) {
+              setState(() {
+                nameError += '$error ';
+              });
+            });
+          }
+          if (success['last_name'] != null) {
+            List _lastNameError = success['last_name'];
+            lastNameError = '';
+            _lastNameError.forEach((error) {
+              setState(() {
+                lastNameError += '$error ';
+              });
+            });
+          }
           if (success['password'] != null) {
             List _pwError = success['password'];
             passwordError = '';
@@ -235,11 +251,6 @@ class _LoginPageState extends State<LoginPage> {
                   children: <Widget>[
                     TextFormField(
                       controller: _rmailController,
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return ('Por favor, Ingrese su correo electrónico');
-                        }
-                      },
                       decoration: InputDecoration(
                         errorMaxLines: 3,
                         errorText: emailError,
@@ -253,6 +264,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     DropdownButtonFormField<Hierarchy>(
                       decoration: InputDecoration(
+                        errorText: hierarchyError,
                         icon: Icon(Icons.star),
                       ),
                       hint: Text('Seleccione su jerarquía'),
@@ -275,12 +287,8 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     TextFormField(
                       controller: _rfirstnameController,
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return ('Por favor, ingrese su nombre');
-                        }
-                      },
                       decoration: InputDecoration(
+                        errorText: nameError,
                         icon: Icon(Icons.person),
                         labelText: 'Nombre',
                         hintStyle: TextStyle(color: Colors.grey[800]),
@@ -291,12 +299,8 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     TextFormField(
                       controller: _rlastnameController,
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return ('Por favor, ingrese su apellido');
-                        }
-                      },
                       decoration: InputDecoration(
+                        errorText: lastNameError,
                         icon: Icon(Icons.person),
                         labelText: 'Apellido',
                         hintStyle: TextStyle(color: Colors.grey[800]),
@@ -307,11 +311,6 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     TextFormField(
                       controller: _rpasswordController,
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return ('Por favor, ingrese su contraseña');
-                        }
-                      },
                       decoration: InputDecoration(
                           errorMaxLines: 4,
                           errorText: passwordError,
@@ -324,11 +323,6 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     TextFormField(
                       controller: _rpasswordconfirmController,
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return ('Por favor, vuelva a ingresar su contraseña');
-                        }
-                      },
                       decoration: InputDecoration(
                           icon: Icon(Icons.lock),
                           labelText: 'Confirme su contraseña',

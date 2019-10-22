@@ -77,11 +77,16 @@ class _BedProgressPageState extends State<BedProgressPage> {
                       'Estado',
                       style: TextStyle(fontSize: 16, color: Colors.grey),
                     ),
-                    Text(
-                      _patientStatus,
-                      style: TextStyle(fontSize: 18),
+                    Row(
+                      children: [
+                        Text(
+                          _patientStatus,
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        Spacer(),
+                        _buildTrafficLight(progress.status)
+                      ],
                     ),
-                    _buildTrafficLight(progress.status)
                   ],
                 )),
           )),
