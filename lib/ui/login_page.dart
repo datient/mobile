@@ -36,8 +36,8 @@ class _LoginPageState extends State<LoginPage> {
   final _rlastnameController = TextEditingController();
   final _rpasswordController = TextEditingController();
   final _rpasswordconfirmController = TextEditingController();
-  var emailError;
-  var passwordError;
+  String emailError;
+  String passwordError;
 
   Widget loginForm(DatientBloc bloc) {
     return Form(
@@ -164,12 +164,22 @@ class _LoginPageState extends State<LoginPage> {
           );
         } else {
           if (success['email'] != null) {
-            setState(() {
-              emailError = success['email'].toString();
+            List _emailError = success['email'];
+            emailError = '';
+            _emailError.forEach((error) {
+              setState(() {
+                emailError += '$error ';
+              });
             });
           }
           if (success['password'] != null) {
-            passwordError = success['password'].toString();
+            List _pwError = success['password'];
+            passwordError = '';
+            _pwError.forEach((error) {
+              setState(() {
+                passwordError += '$error ';
+              });
+            });
           }
         }
       });
@@ -231,6 +241,7 @@ class _LoginPageState extends State<LoginPage> {
                         }
                       },
                       decoration: InputDecoration(
+                        errorMaxLines: 3,
                         errorText: emailError,
                         icon: Icon(Icons.email),
                         labelText: 'Correo Electrónico',
@@ -302,6 +313,7 @@ class _LoginPageState extends State<LoginPage> {
                         }
                       },
                       decoration: InputDecoration(
+                          errorMaxLines: 4,
                           errorText: passwordError,
                           icon: Icon(Icons.lock),
                           labelText: 'Contraseña',

@@ -110,7 +110,7 @@ class DatientBloc {
     if (response.statusCode == 201) {
       return true;
     } else {
-      print(response.body);
+      // print(response.body);
       var responseError = JSON.jsonDecode(utf8.decode(response.bodyBytes));
       return responseError;
     }

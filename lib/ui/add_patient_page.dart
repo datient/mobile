@@ -244,9 +244,13 @@ class _PatientAddPageState extends State<PatientAddPage> {
             },
           );
         } else {
-          if (success['dni']!= null){
-            setState(() {
-              dniError = success['dni'].toString();
+          if (success['dni'] != null) {
+            List _dniError = success['dni'];
+            dniError = '';
+            _dniError.forEach((error) {
+              setState(() {
+                dniError += '$error ';
+              });
             });
           }
         }

@@ -32,7 +32,7 @@ class _PatientEditPageState extends State<PatientEditPage> {
     const Gender('Masculino'),
     const Gender('Femenino'),
   ];
-  final GlobalKey<FormState> _createformKey = new GlobalKey<FormState>();
+  final GlobalKey<FormState> _editformKey = new GlobalKey<FormState>();
   var selectedDate;
   var formatter = new DateFormat('dd-MM-yyyy');
 
@@ -69,12 +69,17 @@ class _PatientEditPageState extends State<PatientEditPage> {
 
   Widget _buildPatientForm() {
     return Form(
-      key: _createformKey,
+      key: _editformKey,
       child: Padding(
         padding: EdgeInsets.all(15),
         child: Column(
           children: [
             TextFormField(
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Ingrese un nombre válido';
+                }
+              },
               controller: _cFirstName,
               decoration: InputDecoration(
                 icon: Icon(Icons.person),
@@ -83,6 +88,11 @@ class _PatientEditPageState extends State<PatientEditPage> {
               ),
             ),
             TextFormField(
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Ingrese un apellido válido';
+                }
+              },
               controller: _cLastName,
               decoration: InputDecoration(
                 icon: Icon(Icons.person),
@@ -106,6 +116,11 @@ class _PatientEditPageState extends State<PatientEditPage> {
               },
               child: AbsorbPointer(
                 child: TextFormField(
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Ingrese una fecha de nacimiento válido';
+                    }
+                  },
                   controller: _cBirthDate,
                   decoration: InputDecoration(
                     labelText: 'Fecha de nacimiento',
@@ -173,7 +188,7 @@ class _PatientEditPageState extends State<PatientEditPage> {
     var _formatter = new DateFormat('yyyy-MM-dd');
     String _formattedDate = _formatter.format(selectedDate);
     var patient = PatientBloc();
-    if (_createformKey.currentState.validate()) {
+    if (_editformKey.currentState.validate()) {
       String _firstName = _cFirstName.value.text;
       String _lastName = _cLastName.value.text;
       int _dni = int.parse(_cDni.value.text);
@@ -189,7 +204,6 @@ class _PatientEditPageState extends State<PatientEditPage> {
       if (_secondContact.isEmpty) {
         _secondContact = null;
       }
-
       patient
           .editPatient(_firstName, _lastName, _dni, _birthdate, _historyNumber,
               _gender, _contact, _secondContact, token, widget.patient)
