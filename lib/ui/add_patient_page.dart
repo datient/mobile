@@ -253,6 +253,41 @@ class _PatientAddPageState extends State<PatientAddPage> {
               });
             });
           }
+          if (success['detail'] != null) {
+            Navigator.of(context).pop();
+            return showDialog<void>(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  title: Row(
+                    children: [
+                      Icon(Icons.info_outline),
+                      SizedBox(width: 10),
+                      Text('Ha ocurrido un error'),
+                    ],
+                  ),
+                  content: SingleChildScrollView(
+                    child: ListBody(
+                      children: <Widget>[
+                        Text('${success['detail']}'),
+                      ],
+                    ),
+                  ),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text('Cerrar'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          }
         }
       });
     }

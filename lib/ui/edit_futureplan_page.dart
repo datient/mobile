@@ -33,6 +33,11 @@ class _FuturePlanEditPageState extends State<FuturePlanEditPage> {
         child: Column(
           children: [
             TextFormField(
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Ingrese un título válido';
+                }
+              },
               controller: _cTitle,
               decoration: InputDecoration(
                 icon: Icon(Icons.title),
@@ -41,9 +46,14 @@ class _FuturePlanEditPageState extends State<FuturePlanEditPage> {
               ),
             ),
             TextFormField(
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Ingrese una descripción válida';
+                }
+              },
               controller: _cDescription,
               decoration: InputDecoration(
-                icon: Icon(Icons.description),
+                icon: Icon(Icons.subject),
                 labelText: 'Descripción',
                 hintText: 'Ingrese la descripción',
               ),

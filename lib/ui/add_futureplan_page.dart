@@ -23,7 +23,7 @@ class _FuturePlanAddPageState extends State<FuturePlanAddPage> {
   Status selectedStatus;
   List<Status> statuses = <Status>[
     const Status('Bien'),
-    const Status('Precaucion'),
+    const Status('Precaución'),
     const Status('Peligro'),
   ];
   final GlobalKey<FormState> _createformKey = new GlobalKey<FormState>();
@@ -35,20 +35,30 @@ class _FuturePlanAddPageState extends State<FuturePlanAddPage> {
         child: Column(
           children: [
             TextFormField(
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Ingrese un título válido';
+                }
+              },
               controller: _cTitle,
               decoration: InputDecoration(
                 icon: Icon(Icons.title),
-                labelText: 'Titulo',
-                hintText: 'Ingrese el titulo',
+                labelText: 'Título',
+                hintText: 'Ingrese el título',
               ),
             ),
             TextFormField(
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Ingrese una descripción válida';
+                }
+              },
               maxLines: null,
               controller: _cDescription,
               decoration: InputDecoration(
                   icon: Icon(Icons.subject),
-                  labelText: 'Descripcion',
-                  hintText: 'Ingrese una descripcion'),
+                  labelText: 'Descripción',
+                  hintText: 'Ingrese una descripción'),
             ),
           ],
         ),

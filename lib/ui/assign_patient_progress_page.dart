@@ -42,6 +42,11 @@ class _AssignPatientProgressPageState extends State<AssignPatientProgressPage> {
         child: Column(
           children: [
             TextFormField(
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Ingrese un diagnóstico valido';
+                }
+              },
               controller: _cDiagnosis,
               decoration: InputDecoration(
                 icon: Icon(Icons.assignment),
@@ -72,6 +77,11 @@ class _AssignPatientProgressPageState extends State<AssignPatientProgressPage> {
               }).toList(),
             ),
             TextFormField(
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Ingrese una descripción valida';
+                }
+              },
               controller: _cDescription,
               decoration: InputDecoration(
                   icon: Icon(Icons.subject),
