@@ -6,12 +6,8 @@ import 'package:datient/models/hospitalization.dart';
 import 'package:datient/models/patient.dart';
 import 'package:datient/models/progress.dart';
 import 'package:datient/providers/datient_provider.dart';
-import 'package:datient/ui/add_hospitalization_page.dart';
-import 'package:datient/ui/discharge_patient_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'assign_patient_page.dart';
 
 class BedDetailPage extends StatefulWidget {
   final Bed bed;
