@@ -34,8 +34,13 @@ class _PatientAddPageState extends State<PatientAddPage> {
   ];
   final GlobalKey<FormState> _createformKey = new GlobalKey<FormState>();
   DateTime selectedDate = DateTime.now();
+  String nameError;
+  String lastNameError;
   String dniError;
+  String dateError;
   String genderError;
+  String contactError;
+  String contact2Error;
 
   void _showPicker() {
     var formatter = new DateFormat('dd-MM-yyyy');

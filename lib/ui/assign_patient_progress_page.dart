@@ -35,6 +35,8 @@ class _AssignPatientProgressPageState extends State<AssignPatientProgressPage> {
   ];
   final GlobalKey<FormState> _createformKey = new GlobalKey<FormState>();
   String statusError;
+  String diagnosisError;
+  String descriptionError;
 
   Widget _buildHospitalizationForm() {
     return Form(
@@ -44,13 +46,9 @@ class _AssignPatientProgressPageState extends State<AssignPatientProgressPage> {
         child: Column(
           children: [
             TextFormField(
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Ingrese un diagnóstico valido';
-                }
-              },
               controller: _cDiagnosis,
               decoration: InputDecoration(
+                errorText: diagnosisError,
                 icon: Icon(Icons.assignment),
                 labelText: 'Diagnóstico',
                 hintText: 'Ingrese el diagnóstico de ingreso del paciente',
@@ -80,13 +78,9 @@ class _AssignPatientProgressPageState extends State<AssignPatientProgressPage> {
               }).toList(),
             ),
             TextFormField(
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Ingrese una descripción valida';
-                }
-              },
               controller: _cDescription,
               decoration: InputDecoration(
+                  errorText: descriptionError,
                   icon: Icon(Icons.subject),
                   labelText: 'Descripción',
                   hintText: 'Ingrese una descripción de ingreso'),
@@ -161,6 +155,24 @@ class _AssignPatientProgressPageState extends State<AssignPatientProgressPage> {
               _statusError.forEach((error) {
                 setState(() {
                   statusError += '$error ';
+                });
+              });
+            }
+            if (success['diagnosis'] != null) {
+              List _diagnosisError = success['diagnosis'];
+              diagnosisError = '';
+              _diagnosisError.forEach((error) {
+                setState(() {
+                  diagnosisError += '$error ';
+                });
+              });
+            }
+            if (success['description'] != null) {
+              List _descriptionError = success['description'];
+              descriptionError = '';
+              _descriptionError.forEach((error) {
+                setState(() {
+                  descriptionError += '$error ';
                 });
               });
             }

@@ -36,6 +36,8 @@ class _PatientEditPageState extends State<PatientEditPage> {
   var selectedDate;
   var formatter = new DateFormat('dd-MM-yyyy');
   String genderError;
+  String contactError;
+  String contact2Error;
 
   void initState() {
     _cFirstName..text = widget.patient.firstName;
@@ -164,6 +166,7 @@ class _PatientEditPageState extends State<PatientEditPage> {
               controller: _cContact,
               keyboardType: TextInputType.phone,
               decoration: InputDecoration(
+                errorText: contactError,
                 icon: Icon(Icons.contact_phone),
                 labelText: 'Número de contacto (Opcional)',
                 hintText: 'Ingrese el número de contacto',
@@ -173,6 +176,7 @@ class _PatientEditPageState extends State<PatientEditPage> {
               controller: _cSecondContact,
               keyboardType: TextInputType.phone,
               decoration: InputDecoration(
+                errorText: contact2Error,
                 icon: Icon(Icons.contact_phone),
                 labelText: '2do Número de contacto (Opcional)',
                 hintText: 'Ingrese el número de contacto',
@@ -249,6 +253,24 @@ class _PatientEditPageState extends State<PatientEditPage> {
             _genderError.forEach((error) {
               setState(() {
                 genderError += '$error ';
+              });
+            });
+          }
+          if (success['contact'] != null) {
+            List _contactError = success['contact'];
+            contactError = '';
+            _contactError.forEach((error) {
+              setState(() {
+                contactError += '$error ';
+              });
+            });
+          }
+          if (success['contact2'] != null) {
+            List _contact2Error = success['contact2'];
+            contact2Error = '';
+            _contact2Error.forEach((error) {
+              setState(() {
+                contact2Error += '$error ';
               });
             });
           }

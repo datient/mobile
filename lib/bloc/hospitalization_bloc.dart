@@ -120,7 +120,11 @@ class HospitalizationBloc {
     );
     if (response.statusCode == 201) {
       return true;
-    } else {}
+    } else {
+      var responseError = JSON.jsonDecode(utf8.decode(response.bodyBytes));
+      print(responseError);
+      return responseError;
+    }
   }
 
   Future<dynamic> assignPatient(diagnosis, description, status, patient,
@@ -141,8 +145,7 @@ class HospitalizationBloc {
       ),
     );
     if (response.statusCode == 201) {
-      assignPatientProgress(diagnosis, description, status, patient, token);
-      return true;
+      return assignPatientProgress(diagnosis, description, status, patient, token);
     } else {
       print(response.body);
       var responseError = JSON.jsonDecode(utf8.decode(response.bodyBytes));
@@ -168,6 +171,13 @@ class HospitalizationBloc {
         },
       ),
     );
+    if (response.statusCode == 201) {
+      return true;
+    } else {
+      print(response.body);
+      var responseError = JSON.jsonDecode(utf8.decode(response.bodyBytes));
+      return responseError;
+    }
   }
 
   dispose() {
