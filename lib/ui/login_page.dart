@@ -61,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
                     validator: (value) {
                       if (value.isEmpty || !value.contains('@')) {
                         hasError = true;
-                        return 'Por favor, ingrese su correo electrónico';
+                        return 'Ingrese su correo electrónico';
                       }
                     },
                     decoration: InputDecoration(
@@ -74,6 +74,12 @@ class _LoginPageState extends State<LoginPage> {
                     keyboardType: TextInputType.emailAddress,
                   ),
                   TextFormField(
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        hasError = true;
+                        return 'Ingrese su correo contraseña';
+                      }
+                    },
                     controller: _pwController,
                     decoration: InputDecoration(
                         icon: Icon(Icons.lock),
@@ -185,6 +191,15 @@ class _LoginPageState extends State<LoginPage> {
             _lastNameError.forEach((error) {
               setState(() {
                 lastNameError += '$error ';
+              });
+            });
+          }
+          if (success['hierarchy'] != null) {
+            List _hierarchyError = success['hierarchy'];
+            hierarchyError = '';
+            _hierarchyError.forEach((error) {
+              setState(() {
+                hierarchyError += '$error ';
               });
             });
           }
