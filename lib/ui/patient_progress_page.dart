@@ -107,9 +107,15 @@ class _PatientProgressState extends State<PatientProgressPage> {
                       'Estado',
                       style: TextStyle(fontSize: 16, color: Colors.grey),
                     ),
-                    Text(
-                      _patientStatus,
-                      style: TextStyle(fontSize: 18),
+                    Row(
+                      children: [
+                        Text(
+                          _patientStatus,
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        Spacer(),
+                        _buildTrafficLight(progress.status)
+                      ],
                     ),
                   ],
                 )),
@@ -117,6 +123,25 @@ class _PatientProgressState extends State<PatientProgressPage> {
         );
       },
     );
+  }
+
+  Widget _buildTrafficLight(status) {
+    if (status == 0) {
+      return Image.asset(
+        'assets/images/semaforobueno.png',
+        scale: 1.5,
+      );
+    } else if (status == 1) {
+      return Image.asset(
+        'assets/images/semaforoprecaucion.png',
+        scale: 1.5,
+      );
+    } else if (status == 2) {
+      return Image.asset(
+        'assets/images/semaforopeligro.png',
+        scale: 1.5,
+      );
+    }
   }
 
   Widget _buildHasLeft(data) {
@@ -131,7 +156,7 @@ class _PatientProgressState extends State<PatientProgressPage> {
         : Container();
   }
 
-    Widget _buildHasEntered(data) {
+  Widget _buildHasEntered(data) {
     return data == true
         ? Chip(
             backgroundColor: Colors.green,

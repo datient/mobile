@@ -19,8 +19,9 @@ class AssignPatientProgressPage extends StatefulWidget {
 }
 
 class Status {
-  const Status(this.name);
+  const Status(this.name, this.icon);
   final String name;
+  final Widget icon;
 }
 
 class _AssignPatientProgressPageState extends State<AssignPatientProgressPage> {
@@ -29,9 +30,27 @@ class _AssignPatientProgressPageState extends State<AssignPatientProgressPage> {
   var statusIndex;
   Status selectedStatus;
   List<Status> statuses = <Status>[
-    const Status('Bien'),
-    const Status('Precaución'),
-    const Status('Peligro'),
+    const Status(
+      'Bien',
+      Icon(
+        Icons.fiber_manual_record,
+        color: Colors.green,
+      ),
+    ),
+    const Status(
+      'Precaución',
+      Icon(
+        Icons.fiber_manual_record,
+        color: Colors.yellow,
+      ),
+    ),
+    const Status(
+      'Peligro',
+      Icon(
+        Icons.fiber_manual_record,
+        color: Colors.red,
+      ),
+    ),
   ];
   final GlobalKey<FormState> _createformKey = new GlobalKey<FormState>();
   String statusError;
@@ -70,9 +89,11 @@ class _AssignPatientProgressPageState extends State<AssignPatientProgressPage> {
               items: statuses.map((Status status) {
                 return new DropdownMenuItem<Status>(
                   value: status,
-                  child: new Text(
-                    status.name,
-                    style: new TextStyle(color: Colors.black),
+                  child: Row(
+                    children: [
+                      status.icon,
+                      Text(status.name),
+                    ],
                   ),
                 );
               }).toList(),
