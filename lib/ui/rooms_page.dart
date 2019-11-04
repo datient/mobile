@@ -13,6 +13,9 @@ class RoomsPage extends StatefulWidget {
 class _RoomsPageState extends State<RoomsPage> {
   var token;
   Doctor doctor = Doctor();
+  bool selectAll = true;
+  bool selectAvailable = false;
+  bool selectFull = false;
 
   Widget _buildRoomList(data) {
     checkRoomIsAvailable(data);
@@ -116,14 +119,29 @@ class _RoomsPageState extends State<RoomsPage> {
     );
   }
 
-void chooseAction(choice){
-  if (choice == 'available'){
-
+  void chooseAction(choice) {
+    if (choice == 'all') {
+      setState(() {
+        selectAll = true;
+        selectFull = false;
+        selectAvailable = false;
+      });
+    }
+    if (choice == 'available') {
+      setState(() {
+        selectAvailable = true;
+        selectAll = false;
+        selectFull = false;
+      });
+    }
+    if (choice == 'full') {
+      setState(() {
+        selectFull = true;
+        selectAll = false;
+        selectAvailable = false;
+      });
+    }
   }
-  if (choice == 'full'){
-
-  }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -149,14 +167,19 @@ void chooseAction(choice){
             onSelected: chooseAction,
             itemBuilder: (_) => [
               CheckedPopupMenuItem(
-                checked: chooseAction == 'available',
-                value: 'available',
-                child: new Text('Filtrar disponibles'),
+                checked: selectAll,
+                value: 'all',
+                child: new Text('Mostrar todo'),
               ),
               CheckedPopupMenuItem(
-                checked: chooseAction == 'full',
+                checked: selectAvailable,
+                value: 'available',
+                child: new Text('Mostrar disponibles'),
+              ),
+              CheckedPopupMenuItem(
+                checked: selectFull,
                 value: 'full',
-                child: new Text('Filtrar ocupadas'),
+                child: new Text('Mostrar ocupadas'),
               ),
             ],
           ),
