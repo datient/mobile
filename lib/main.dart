@@ -11,6 +11,7 @@ import 'package:datient/ui/edit_patient_page.dart';
 import 'package:datient/ui/home_page.dart';
 import 'package:datient/ui/login_page.dart';
 import 'package:datient/ui/patient_page.dart';
+import 'package:datient/ui/register_page.dart';
 import 'package:datient/ui/room_page.dart';
 import 'package:datient/ui/add_hospitalization_page.dart';
 import 'package:datient/ui/statistics_page.dart';
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
         home: Datient(),
         routes: <String, WidgetBuilder>{
           '/login': (BuildContext context) => LoginPage(),
+          '/register': (BuildContext context) => RegisterPage(),
           '/home': (BuildContext context) => HomePage(),
           '/room': (BuildContext context) => RoomPage(),
           '/bed': (BuildContext context) => BedPage(),

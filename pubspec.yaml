@@ -19,7 +19,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  expandable_card: any
   http: any
   rxdart: ^0.22.0
   shared_preferences: any

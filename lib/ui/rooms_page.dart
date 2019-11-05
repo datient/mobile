@@ -16,6 +16,7 @@ class _RoomsPageState extends State<RoomsPage> {
   bool selectAll = true;
   bool selectAvailable = false;
   bool selectFull = false;
+  List<Room> _roomsAvailable;
 
   Widget _buildRoomList(data) {
     checkRoomIsAvailable(data);
@@ -84,6 +85,9 @@ class _RoomsPageState extends State<RoomsPage> {
 
   checkRoomIsAvailable(List<Room> rooms) {
     rooms.forEach((room) {
+      for (int i = 0; i < room.id; i++) {
+        
+      }
       room.beds.forEach((bed) {
         if (bed.isAvailable == true) {
           room.isAvailable = true;
