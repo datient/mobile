@@ -89,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                     obscureText: true,
                   ),
                   Container(
-                    height: 40,
+                    height: 20,
                   )
                 ],
               ),
@@ -152,13 +152,21 @@ class _LoginPageState extends State<LoginPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text('No tienes una cuenta?'),
-        Container(width: 10,),
+        Text(
+          'No tienes una cuenta?',
+          style: TextStyle(fontSize: 15),
+        ),
+        Container(
+          width: 10,
+        ),
         RaisedButton(
           color: Colors.blue,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          child: Text('Registro',style: TextStyle(color: Colors.white),),
+          child: Text(
+            'Registro',
+            style: TextStyle(color: Colors.white, fontSize: 15),
+          ),
           onPressed: () {
             Navigator.of(context).pushNamed('/register');
           },

@@ -1,5 +1,3 @@
-import 'package:datient/bloc/patient_bloc.dart';
-import 'package:datient/bloc/room_bloc.dart';
 import 'package:datient/bloc/datient_bloc.dart';
 import 'package:datient/providers/datient_provider.dart';
 import 'package:flutter/material.dart';
@@ -61,6 +59,8 @@ class _RegisterPageState extends State<RegisterPage> {
             barrierDismissible: false,
             builder: (BuildContext context) {
               return AlertDialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
                 title: Row(
                   children: [
                     Icon(Icons.info_outline),
@@ -268,9 +268,7 @@ class _RegisterPageState extends State<RegisterPage> {
         title: Text('Registro'),
       ),
       body: ListView(
-        children: [
-          buildRegister()
-        ],
+        children: [buildRegister()],
       ),
     );
   }
