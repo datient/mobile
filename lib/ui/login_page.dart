@@ -27,14 +27,8 @@ class _LoginPageState extends State<LoginPage> {
   ];
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
-  final GlobalKey<FormState> _regformKey = new GlobalKey<FormState>();
   final _mailController = TextEditingController();
   final _pwController = TextEditingController();
-  final _rmailController = TextEditingController();
-  final _rfirstnameController = TextEditingController();
-  final _rlastnameController = TextEditingController();
-  final _rpasswordController = TextEditingController();
-  final _rpasswordconfirmController = TextEditingController();
   String emailError;
   String nameError;
   String lastNameError;

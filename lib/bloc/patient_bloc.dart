@@ -339,6 +339,7 @@ class PatientBloc {
       hospitalization = Hospitalization.fromJson(extractdata);
       _patientBedSubject.sink.add(hospitalization);
     } else if (response.statusCode == 404) {
+      _patientBedSubject.sink.add(null);
       _patientBedSubject.sink.addError('Ninguna cama asignada');
     }
     _isLoading.sink.add(false);

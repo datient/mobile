@@ -1,4 +1,3 @@
-import 'package:datient/models/bed.dart';
 import 'package:datient/models/doctor.dart';
 import 'package:datient/models/room.dart';
 import 'package:datient/providers/datient_provider.dart';
@@ -16,21 +15,26 @@ class _RoomsPageState extends State<RoomsPage> {
   bool selectAll = true;
   bool selectAvailable = false;
   bool selectFull = false;
-  List<Room> _roomsAvailable;
+  var filteredRoom;
+  List<Room> roomList;
 
   Widget _buildRoomList(data) {
+    roomList = data.toList();
     checkRoomIsAvailable(data);
+    if (selectAll == true){
+      filteredRoom = roomList;
+    }
     return Scrollbar(
       child: GridView.count(
         crossAxisCount: 2,
-        children: List.generate(data.length, (index) {
+        children: List.generate(filteredRoom.length, (index) {
           return Container(
             child: GestureDetector(
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => RoomPage(
-                      room: data[index],
+                      room: filteredRoom[index],
                     ),
                   ),
                 );
@@ -45,14 +49,14 @@ class _RoomsPageState extends State<RoomsPage> {
                       size: 80,
                     ),
                     Text(
-                      data[index].roomName,
+                      filteredRoom[index].roomName,
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(
                       height: 10,
                     ),
-                    data[index].isAvailable
+                    filteredRoom[index].isAvailable
                         ? Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -85,9 +89,6 @@ class _RoomsPageState extends State<RoomsPage> {
 
   checkRoomIsAvailable(List<Room> rooms) {
     rooms.forEach((room) {
-      for (int i = 0; i < room.id; i++) {
-        
-      }
       room.beds.forEach((bed) {
         if (bed.isAvailable == true) {
           room.isAvailable = true;
@@ -123,12 +124,16 @@ class _RoomsPageState extends State<RoomsPage> {
     );
   }
 
-  void chooseAction(choice) {
+  chooseAction(choice) {
     if (choice == 'all') {
       setState(() {
         selectAll = true;
         selectFull = false;
         selectAvailable = false;
+        filteredRoom = roomList
+            .where(
+                (room) => room.isAvailable == true || room.isAvailable == false)
+            .toList();
       });
     }
     if (choice == 'available') {
@@ -136,6 +141,8 @@ class _RoomsPageState extends State<RoomsPage> {
         selectAvailable = true;
         selectAll = false;
         selectFull = false;
+        filteredRoom =
+            roomList.where((room) => room.isAvailable == true).toList();
       });
     }
     if (choice == 'full') {
@@ -143,6 +150,8 @@ class _RoomsPageState extends State<RoomsPage> {
         selectFull = true;
         selectAll = false;
         selectAvailable = false;
+        filteredRoom =
+            roomList.where((room) => room.isAvailable == false).toList();
       });
     }
   }

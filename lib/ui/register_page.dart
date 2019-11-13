@@ -24,10 +24,7 @@ class _RegisterPageState extends State<RegisterPage> {
     const Hierarchy('Medico encargado del internado')
   ];
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   final GlobalKey<FormState> _regformKey = new GlobalKey<FormState>();
-  final _mailController = TextEditingController();
-  final _pwController = TextEditingController();
   final _rmailController = TextEditingController();
   final _rfirstnameController = TextEditingController();
   final _rlastnameController = TextEditingController();
@@ -258,10 +255,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = DatientProvider.of(context).bloc;
-    final roomBloc = DatientProvider.of(context).roomBloc;
-    final patientBloc = DatientProvider.of(context).patientBloc;
-
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(

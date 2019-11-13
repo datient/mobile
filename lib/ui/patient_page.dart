@@ -13,7 +13,6 @@ class PatientPage extends StatefulWidget {
 }
 
 class _BedPageState extends State<PatientPage> {
-  final _formKey = GlobalKey<FormState>();
   final _searchController = TextEditingController();
   bool activeSearch;
 
