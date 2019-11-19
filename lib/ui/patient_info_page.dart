@@ -307,12 +307,27 @@ class _PatientInfoPageState extends State<PatientInfoPage>
                       style: TextStyle(color: Colors.grey, fontSize: 15),
                     ),
                     StreamBuilder(
-                      stream: patientBloc.patientBed,
+                      stream: patientBloc.bedIsLoading,
                       builder: (context, snapshot) {
-                        return snapshot.hasData
-                            ? _buildBed(snapshot.data)
-                            : Center(
+                        return snapshot.data == true
+                            ? Center(
                                 child: CircularProgressIndicator(),
+                              )
+                            : StreamBuilder(
+                                stream: patientBloc.patientBed,
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasError) {
+                                    return Text(
+                                      '${snapshot.error}',
+                                      style: TextStyle(
+                                          fontSize: 18, color: Colors.grey),
+                                    );
+                                  } else {
+                                    return snapshot.hasData
+                                        ? _buildBed(snapshot.data)
+                                        : Container();
+                                  }
+                                },
                               );
                       },
                     ),
