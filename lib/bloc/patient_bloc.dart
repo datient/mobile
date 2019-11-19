@@ -10,6 +10,7 @@ import 'package:dio/dio.dart';
 class PatientBloc {
   PatientBloc() {
     _isLoading.add(true);
+    _bedIsLoading.add(true);
   }
   final _patientSubject = BehaviorSubject<List<Patient>>();
   final _patientSearchSubject = BehaviorSubject<List<Patient>>();
@@ -19,11 +20,13 @@ class PatientBloc {
   final _patientFuturePlanSubject = BehaviorSubject<Patient>();
   final _patientProgressSubject = BehaviorSubject<Patient>();
   final _isLoading = BehaviorSubject<bool>();
+  final _bedIsLoading = BehaviorSubject<bool>();
   Stream<List<Patient>> get patients => _patientSubject.stream;
   Stream<List<Patient>> get searchedPatients => _patientSearchSubject.stream;
   Stream<Patient> get specificPatient => _patientSpecificSubject.stream;
   Stream<Hospitalization> get patientBed => _patientBedSubject.stream;
   Stream<bool> get isloading => _isLoading.stream;
+  Stream<bool> get bedIsLoading => _bedIsLoading.stream;
   Stream<Patient> get patientStudy => _patientStudySubject.stream;
   Stream<Patient> get patientFuturePlan => _patientFuturePlanSubject.stream;
   Stream<Patient> get patientProgress => _patientProgressSubject.stream;
@@ -337,12 +340,14 @@ class PatientBloc {
     final extractdata = JSON.jsonDecode(utf8.decode(response.bodyBytes));
     if (response.statusCode == 200) {
       hospitalization = Hospitalization.fromJson(extractdata);
+      _bedIsLoading.sink.add(false);
       _patientBedSubject.sink.add(hospitalization);
     } else if (response.statusCode == 404) {
       _patientBedSubject.sink.add(null);
+      _bedIsLoading.sink.add(false);
       _patientBedSubject.sink.addError('Ninguna cama asignada');
     }
-    _isLoading.sink.add(false);
+    _bedIsLoading.sink.add(false);
     return hospitalization;
   }
 
@@ -411,6 +416,7 @@ class PatientBloc {
     _isLoading.close();
     _patientStudySubject.close();
     _patientFuturePlanSubject.close();
+    _bedIsLoading.close();
     this.dispose();
   }
 }

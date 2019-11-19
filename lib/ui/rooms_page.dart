@@ -176,6 +176,7 @@ class _RoomsPageState extends State<RoomsPage> {
         ),
         actions: [
           PopupMenuButton(
+            tooltip: 'Filtrar',
             icon: Icon(Icons.filter_list),
             onSelected: chooseAction,
             itemBuilder: (_) => [

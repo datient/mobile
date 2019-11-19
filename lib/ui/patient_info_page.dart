@@ -46,9 +46,6 @@ class _PatientInfoPageState extends State<PatientInfoPage>
   }
 
   _buildBed(Hospitalization data) {
-    // bloc.doctor.listen((value) =>
-    //     patientBloc.getBedName(data.bed, value.token).then((bedName) {
-    //     }));
     return Text(
       '${data.bed.toString()}',
       style: TextStyle(fontSize: 20),
@@ -184,7 +181,10 @@ class _PatientInfoPageState extends State<PatientInfoPage>
   }
 
   Widget _buildPatientInfo(Patient data) {
+    final bloc = DatientProvider.of(context).bloc;
     final PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
+    bloc.doctor.listen(
+        (value) => patientBloc.getPatientBed(widget.patient.dni, value.token));
     var _birthDate = DateTime.parse(data.birthDate);
     var dateFormatter = new DateFormat('dd-MM-yyyy');
     String formattedBirthDate = dateFormatter.format(_birthDate);
@@ -307,29 +307,15 @@ class _PatientInfoPageState extends State<PatientInfoPage>
                       style: TextStyle(color: Colors.grey, fontSize: 15),
                     ),
                     StreamBuilder(
-                      stream: patientBloc.isloading,
-                      builder: (context, AsyncSnapshot<bool> snapshot) {
-                        return snapshot.data && snapshot.hasData
-                            ? Center(
+                      stream: patientBloc.patientBed,
+                      builder: (context, snapshot) {
+                        return snapshot.hasData
+                            ? _buildBed(snapshot.data)
+                            : Center(
                                 child: CircularProgressIndicator(),
-                              )
-                            : StreamBuilder(
-                                stream: patientBloc.patientBed,
-                                builder: (context, snapshot) {
-                                  if (snapshot.hasError) {
-                                    return Text(
-                                      snapshot.error,
-                                      style: TextStyle(
-                                          fontSize: 18, color: Colors.grey),
-                                    );
-                                  }
-                                  return snapshot.hasData
-                                      ? _buildBed(snapshot.data)
-                                      : Container();
-                                },
                               );
                       },
-                    )
+                    ),
                   ],
                 ),
               ],
@@ -463,8 +449,6 @@ class _PatientInfoPageState extends State<PatientInfoPage>
     PatientBloc patientBloc = DatientProvider.of(context).patientBloc;
     bloc.doctor.listen((value) =>
         patientBloc.getSpecificPatients(value.token, widget.patient.dni));
-    bloc.doctor.listen(
-        (value) => patientBloc.getPatientBed(widget.patient.dni, value.token));
 
     if (widget.patient.gender == 0) {
       _patientGender = 'Masculino';
