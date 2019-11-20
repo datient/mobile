@@ -1,6 +1,7 @@
 import 'dart:convert' as JSON;
 import 'dart:convert';
 import 'dart:io';
+import 'package:datient/models/bed.dart';
 import 'package:datient/models/hospitalization.dart';
 import 'package:datient/models/patient.dart';
 import 'package:http/http.dart' as http;
@@ -15,7 +16,7 @@ class PatientBloc {
   final _patientSubject = BehaviorSubject<List<Patient>>();
   final _patientSearchSubject = BehaviorSubject<List<Patient>>();
   final _patientSpecificSubject = BehaviorSubject<Patient>();
-  final _patientBedSubject = BehaviorSubject<Hospitalization>();
+  final _patientBedSubject = BehaviorSubject<Bed>();
   final _patientStudySubject = BehaviorSubject<Patient>();
   final _patientFuturePlanSubject = BehaviorSubject<Patient>();
   final _patientProgressSubject = BehaviorSubject<Patient>();
@@ -24,7 +25,7 @@ class PatientBloc {
   Stream<List<Patient>> get patients => _patientSubject.stream;
   Stream<List<Patient>> get searchedPatients => _patientSearchSubject.stream;
   Stream<Patient> get specificPatient => _patientSpecificSubject.stream;
-  Stream<Hospitalization> get patientBed => _patientBedSubject.stream;
+  Stream<Bed> get patientBed => _patientBedSubject.stream;
   Stream<bool> get isloading => _isLoading.stream;
   Stream<bool> get bedIsLoading => _bedIsLoading.stream;
   Stream<Patient> get patientStudy => _patientStudySubject.stream;
@@ -341,7 +342,8 @@ class PatientBloc {
     if (response.statusCode == 200) {
       hospitalization = Hospitalization.fromJson(extractdata);
       _bedIsLoading.sink.add(false);
-      _patientBedSubject.sink.add(hospitalization);
+      // _patientBedSubject.sink.add(hospitalization);
+      return getBedName(hospitalization.bed, token);
     } else if (response.statusCode == 404) {
       _patientBedSubject.sink.add(null);
       _bedIsLoading.sink.add(false);
@@ -351,16 +353,21 @@ class PatientBloc {
     return hospitalization;
   }
 
-  Future getBedName(bed, token) async {
+  Future getBedName(bedNumber, token) async {
+    Bed bed;
     final response =
-        await http.get('http://10.0.2.2:8000/api/bed/$bed/', headers: {
+        await http.get('http://10.0.2.2:8000/api/bed/$bedNumber/', headers: {
       'Content-Type': 'application/json',
       'Authorization': 'JWT $token',
     });
     if (response.statusCode == 200) {
       final extractdata = JSON.jsonDecode(response.body);
-      return (extractdata['name']);
-    } else {}
+      bed = Bed.fromJson(extractdata);
+      _patientBedSubject.sink.add(bed);
+    } else {
+      print(response.body);
+    }
+    return bed;
   }
 
   Future getStudy(dni, token) async {
