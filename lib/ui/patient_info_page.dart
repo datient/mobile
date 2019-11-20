@@ -62,7 +62,9 @@ class _PatientInfoPageState extends State<PatientInfoPage>
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => BedPage(),
+                builder: (context) => BedPage(
+                  bed: data,
+                ),
               ),
             );
           },
