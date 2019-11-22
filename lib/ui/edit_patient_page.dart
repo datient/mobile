@@ -53,6 +53,10 @@ class _PatientEditPageState extends State<PatientEditPage> {
     if (_cContact != null) {
       _cSecondContact..text = widget.patient.secondContact;
     }
+    setState(() {
+      genderIndex = widget.patient.gender;
+      selectedGender = genders[widget.patient.gender];
+    });
     super.initState();
   }
 
