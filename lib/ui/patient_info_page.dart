@@ -314,10 +314,7 @@ class _PatientInfoPageState extends State<PatientInfoPage>
                       'Género',
                       style: TextStyle(color: Colors.grey, fontSize: 15),
                     ),
-                    Text(
-                      _patientGender,
-                      style: TextStyle(fontSize: 20),
-                    ),
+                    _buildGender(data),
                   ],
                 ),
                 Divider(),
@@ -361,6 +358,18 @@ class _PatientInfoPageState extends State<PatientInfoPage>
         )
       ],
     );
+  }
+
+  Widget _buildGender(Patient data) {
+    return (data.gender == 0)
+        ? Text(
+            'Masculino',
+            style: TextStyle(fontSize: 20),
+          )
+        : Text(
+            'Femenino',
+            style: TextStyle(fontSize: 20),
+          );
   }
 
   Widget _buildPatientContacts(Patient data) {
@@ -487,11 +496,11 @@ class _PatientInfoPageState extends State<PatientInfoPage>
     bloc.doctor.listen((value) =>
         patientBloc.getSpecificPatients(value.token, widget.patient.dni));
 
-    if (widget.patient.gender == 0) {
-      _patientGender = 'Masculino';
-    } else {
-      _patientGender = 'Femenino';
-    }
+    // if (widget.patient.gender == 0) {
+    //   _patientGender = 'Masculino';
+    // } else {
+    //   _patientGender = 'Femenino';
+    // }
     return DefaultTabController(
       length: 2,
       child: Scaffold(
