@@ -43,6 +43,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
     final bloc = DatientProvider.of(context).bloc;
     StatsBloc statsBloc = DatientProvider.of(context).statsBloc;
     bloc.doctor.listen((value) => statsBloc.getStats(value.token));
+    bloc.doctor.listen((value) => statsBloc.getTotalStats(value.token));
     return Scaffold(
         appBar: AppBar(
           title: Text('Estadisticas'),
@@ -51,10 +52,11 @@ class _StatisticsPageState extends State<StatisticsPage> {
   }
 
   Widget _buildChart(data) {
+    StatsBloc statsBloc = DatientProvider.of(context).statsBloc;
     return AspectRatio(
       aspectRatio: 0.69,
       child: Column(
-        children: <Widget>[
+        children: [
           const SizedBox(
             height: 18,
           ),
@@ -104,6 +106,30 @@ class _StatisticsPageState extends State<StatisticsPage> {
               ),
             ),
           ),
+          Container(
+            child: StreamBuilder(
+                stream: statsBloc.statsTotal,
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Center(
+                        child: Text(
+                      snapshot.error,
+                      style: TextStyle(fontSize: 18, color: Colors.grey),
+                    ));
+                  } else {
+                    return snapshot.hasData
+                        ? Chip(
+                          avatar: Icon(Icons.pie_chart,color:Colors.white),
+                          backgroundColor: Colors.blue,
+                            label: Text(
+                              'Total: ${snapshot.data}',
+                              style: TextStyle(fontSize: 20,color: Colors.white),
+                            ),
+                          )
+                        : Container();
+                  }
+                }),
+          )
         ],
       ),
     );
