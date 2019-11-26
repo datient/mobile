@@ -1,5 +1,4 @@
 import 'package:datient/bloc/datient_bloc.dart';
-import 'package:datient/providers/datient_provider.dart';
 import 'package:flutter/material.dart';
 
 class Hierarchy {
@@ -68,7 +67,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 content: SingleChildScrollView(
                   child: ListBody(
                     children: <Widget>[
-                      Text('El usuario ha sido registrado con exito'),
+                      Text(
+                          'El usuario ha sido registrado con éxito. Por favor, espere a que su cuenta sea activada por un miembro del equipo.'),
                     ],
                   ),
                 ),

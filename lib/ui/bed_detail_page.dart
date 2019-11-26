@@ -6,6 +6,7 @@ import 'package:datient/models/hospitalization.dart';
 import 'package:datient/models/patient.dart';
 import 'package:datient/models/progress.dart';
 import 'package:datient/providers/datient_provider.dart';
+import 'package:datient/ui/patient_info_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -23,9 +24,29 @@ class _BedDetailPageState extends State<BedDetailPage> {
   Patient patient;
 
   Widget _buildPatientName(Patient data) {
-    return Text(
-      data.firstName + ' ' + data.lastName,
-      style: TextStyle(fontSize: 18),
+    return Row(
+      children: [
+        Text(
+          data.firstName + ' ' + data.lastName,
+          style: TextStyle(fontSize: 18),
+        ),
+        IconButton(
+          icon: Icon(
+            Icons.launch,
+            color: Colors.blue,
+          ),
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => PatientInfoPage(
+                  patient: data,
+                ),
+              ),
+            );
+          },
+          tooltip: 'Ir al paciente',
+        )
+      ],
     );
   }
 
