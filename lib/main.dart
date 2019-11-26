@@ -1,133 +1,90 @@
+import 'package:datient/bloc/datient_bloc.dart';
+import 'package:datient/bloc/hospitalization_bloc.dart';
+import 'package:datient/bloc/patient_bloc.dart';
+import 'package:datient/bloc/room_bloc.dart';
+import 'package:datient/bloc/stats_bloc.dart';
+import 'package:datient/providers/datient_provider.dart';
+import 'package:datient/ui/add_patient_page.dart';
+import 'package:datient/ui/assign_patient_page.dart';
+import 'package:datient/ui/bed_page.dart';
+import 'package:datient/ui/edit_patient_page.dart';
+import 'package:datient/ui/home_page.dart';
+import 'package:datient/ui/login_page.dart';
+import 'package:datient/ui/patient_page.dart';
+import 'package:datient/ui/register_page.dart';
+import 'package:datient/ui/room_page.dart';
+import 'package:datient/ui/add_hospitalization_page.dart';
+import 'package:datient/ui/statistics_page.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:async';
-import 'dart:convert' as JSON;
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Datient',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return DatientProvider(
+      bloc: DatientBloc(),
+      roomBloc: RoomBloc(),
+      patientBloc: PatientBloc(),
+      hospitalizationBloc: HospitalizationBloc(),
+      statsBloc: StatsBloc(),
+      child: MaterialApp(
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: [
+          const Locale('en', 'US'),
+          const Locale('es'),
+        ],
+        title: 'Datient',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: Datient(),
+        routes: <String, WidgetBuilder>{
+          '/login': (BuildContext context) => LoginPage(),
+          '/register': (BuildContext context) => RegisterPage(),
+          '/home': (BuildContext context) => HomePage(),
+          '/room': (BuildContext context) => RoomPage(),
+          '/bed': (BuildContext context) => BedPage(),
+          '/patient': (BuildContext context) => PatientPage(),
+          '/patientadd': (BuildContext context) => PatientAddPage(),
+          '/patientedit': (BuildContext context) => PatientEditPage(),
+          '/patientassign': (BuildContext context) => PatientAssignPage(),
+          '/hospitalizationadd': (BuildContext context) =>
+              HospitalizationAddPage(),
+          '/statistics': (BuildContext context) => StatisticsPage(),
+        },
       ),
-      home: MyHomePage(title: 'Login'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
+class Datient extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _DatientState createState() => _DatientState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  var _token = 'token';
-
-  Future _getDoctors() async {
-    await http.get('http://10.0.2.2:8000/api/doctor/',
-        headers: {'Authorization': 'JWT ${_token}'}).then((res) {
-      print(res.body);
-    });
-  }
-
-  Future _getToken(email, password) async {
-    await http
-        .post('http://10.0.2.2:8000/token/',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.jsonEncode({'email': email, 'password': password}))
-        .then((res) {
-      setState(() {
-        _token = JSON.jsonDecode(res.body)['token'];
-      });
-    });
-  }
-
+class _DatientState extends State<Datient> {
   @override
   Widget build(BuildContext context) {
-    final mailcontroller = TextEditingController();
-    final pwcontroller = TextEditingController();
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.all(15.0),
-              child: TextFormField(
-                decoration: new InputDecoration(
-                  labelText: 'Correo Electronico',
-                    border: new OutlineInputBorder(
-                      borderRadius: const BorderRadius.all(
-                        const Radius.circular(10.0),
-                      ),
-                    ),
-                    filled: true,
-                    hintStyle: new TextStyle(color: Colors.grey[800]),
-                    hintText: "Ingrese su correo",
-                    fillColor: Colors.white70),
-                controller: mailcontroller,
-                keyboardType: TextInputType.emailAddress,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(15.0),
-              child: TextFormField(
-                decoration: new InputDecoration(
-                  labelText: 'Contraseña',
-                    border: new OutlineInputBorder(
-                      borderRadius: const BorderRadius.all(
-                        const Radius.circular(10.0),
-                      ),
-                    ),
-                    filled: true,
-                    hintStyle: new TextStyle(color: Colors.grey[800]),
-                    hintText: "Ingrese su contraseña",
-                    fillColor: Colors.white70),
-                obscureText: true,
-                controller: pwcontroller,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(15.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.all(15),
-                    child: RaisedButton(
-                      onPressed: () {
-                        _getToken(mailcontroller.text, pwcontroller.text);
-                      },
-                      child: Text('Iniciar Sesion'),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(15),
-                    child: RaisedButton(
-                      onPressed: () {},
-                      child: Text('Registrarse'),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            RaisedButton(
-              onPressed: () { _getDoctors();},
-              child: Text('Traer data'),
-            )
-          ],
-        ),
-      ),
+    final bloc = DatientProvider.of(context).bloc;
+    final roomBloc = DatientProvider.of(context).roomBloc;
+    final patient = DatientProvider.of(context).patientBloc;
+
+    return StreamBuilder(
+      stream: bloc.doctor,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.hasData && snapshot.data.token != null) {
+          String token = snapshot.data.token;
+          roomBloc.getRooms(token);
+          patient.getPatients(token);
+          return HomePage();
+        }
+        return LoginPage();
+      },
     );
   }
 }
