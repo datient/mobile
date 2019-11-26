@@ -16,7 +16,6 @@ class PatientAssignPage extends StatefulWidget {
 }
 
 class _PatientAssignPageState extends State<PatientAssignPage> {
-  final _formKey = GlobalKey<FormState>();
   bool activeSearch;
   final _searchController = TextEditingController();
   @override
