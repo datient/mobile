@@ -496,11 +496,6 @@ class _PatientInfoPageState extends State<PatientInfoPage>
     bloc.doctor.listen((value) =>
         patientBloc.getSpecificPatients(value.token, widget.patient.dni));
 
-    // if (widget.patient.gender == 0) {
-    //   _patientGender = 'Masculino';
-    // } else {
-    //   _patientGender = 'Femenino';
-    // }
     return DefaultTabController(
       length: 2,
       child: Scaffold(

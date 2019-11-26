@@ -87,6 +87,8 @@ class _PatientStudyState extends State<PatientStudyPage> {
                               .deleteStudy(studies.id, value.token)
                               .then((success) {
                             if (success == true) {
+                              bloc.doctor.listen((value) => patientBloc
+                                  .getStudy(widget.patient.dni, value.token));
                               Navigator.of(context).pop();
                               return showDialog<void>(
                                 context: context,

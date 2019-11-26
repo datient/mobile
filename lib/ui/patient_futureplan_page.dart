@@ -99,6 +99,9 @@ class _PatientFuturePlanState extends State<PatientFuturePlanPage> {
                               .then(
                             (success) {
                               if (success == true) {
+                                bloc.doctor.listen((value) =>
+                                    patientBloc.getFuturePlan(
+                                        widget.patient.dni, value.token));
                                 Navigator.of(context).pop();
                                 return showDialog<void>(
                                   context: context,
