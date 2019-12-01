@@ -25,7 +25,7 @@ class HospitalizationBloc {
     Hospitalization hospitalization;
 
     final response = await http.get(
-      'http://10.0.2.2:8000/api/hospitalization/$bedId/bed_filter/',
+      'http://159.65.222.187:8000/api/hospitalization/$bedId/bed_filter/',
       headers: {'Authorization': 'JWT $token'},
     );
 
@@ -52,7 +52,7 @@ class HospitalizationBloc {
   Future<dynamic> createHospitalization(int patientDni, String diagnosis,
       String description, int status, token) async {
     final response = await http.post(
-      'http://10.0.2.2:8000/api/progress/',
+      'http://159.65.222.187:8000/api/progress/',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'JWT $token',
@@ -77,7 +77,7 @@ class HospitalizationBloc {
   Future<dynamic> dischargePatient(bed, doctor, int patientDni,
       String diagnosis, String description, status, token) async {
     final response = await http.post(
-      'http://10.0.2.2:8000/api/progress/',
+      'http://159.65.222.187:8000/api/progress/',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'JWT $token',
@@ -104,7 +104,7 @@ class HospitalizationBloc {
   Future<dynamic> dischargePatientHospitalization(
       int dni, bed, doctor, token) async {
     final response = await http.post(
-      'http://10.0.2.2:8000/api/hospitalization/',
+      'http://159.65.222.187:8000/api/hospitalization/',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'JWT $token',
@@ -130,7 +130,7 @@ class HospitalizationBloc {
   Future<dynamic> assignPatient(diagnosis, description, status, patient,
       int doctorId, int bedId, token) async {
     final response = await http.post(
-      'http://10.0.2.2:8000/api/hospitalization/',
+      'http://159.65.222.187:8000/api/hospitalization/',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'JWT $token',
@@ -156,7 +156,7 @@ class HospitalizationBloc {
   Future<dynamic> assignPatientProgress(
       diagnosis, description, status, patient, token) async {
     final response = await http.post(
-      'http://10.0.2.2:8000/api/progress/',
+      'http://159.65.222.187:8000/api/progress/',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'JWT $token',

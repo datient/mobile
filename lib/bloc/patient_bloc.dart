@@ -35,7 +35,7 @@ class PatientBloc {
   Future<List> getPatients(token) async {
     List list = [];
     final response = await http.get(
-      'http://10.0.2.2:8000/api/patient/',
+      'http://159.65.222.187:8000/api/patient/',
       headers: {'Authorization': 'JWT $token'},
     );
 
@@ -49,7 +49,7 @@ class PatientBloc {
 
   Future<dynamic> getPatientPdf(dni, token) async {
     final response = await http.get(
-      'http://10.0.2.2:8000/pdf/$dni',
+      'http://159.65.222.187:8000/pdf/$dni',
       headers: {'Authorization': 'JWT $token'},
     );
     if (response.statusCode == 200) {
@@ -62,7 +62,7 @@ class PatientBloc {
   Future<Patient> getSpecificPatients(token, dni) async {
     Patient patient;
     final response = await http.get(
-      'http://10.0.2.2:8000/api/patient/$dni',
+      'http://159.65.222.187:8000/api/patient/$dni',
       headers: {'Authorization': 'JWT $token'},
     );
     if (response.statusCode == 200) {
@@ -87,7 +87,7 @@ class PatientBloc {
       String secondContactNumber,
       token) async {
     final response = await http.post(
-      'http://10.0.2.2:8000/api/patient/',
+      'http://159.65.222.187:8000/api/patient/',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'JWT $token',
@@ -126,7 +126,7 @@ class PatientBloc {
       token,
       Patient patient) async {
     final response = await http.put(
-      'http://10.0.2.2:8000/api/patient/${patient.dni}/',
+      'http://159.65.222.187:8000/api/patient/${patient.dni}/',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'JWT $token',
@@ -155,7 +155,7 @@ class PatientBloc {
 
   Future<dynamic> deletePatient(dni, token) async {
     final response = await http.delete(
-      'http://10.0.2.2:8000/api/patient/$dni/',
+      'http://159.65.222.187:8000/api/patient/$dni/',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'JWT $token',
@@ -171,7 +171,7 @@ class PatientBloc {
 
   Future getHospitalizedPatient(token, Hospitalization hospitalization) async {
     final response = await http.get(
-      'http://10.0.2.2:8000/api/patient/${hospitalization.hospitalizedPatient}/',
+      'http://159.65.222.187:8000/api/patient/${hospitalization.hospitalizedPatient}/',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'JWT $token',
@@ -184,7 +184,7 @@ class PatientBloc {
   Future<List> searchPatient(token, dni) async {
     List list = [];
     final response = await http.get(
-      'http://10.0.2.2:8000/api/patient/?dni=$dni',
+      'http://159.65.222.187:8000/api/patient/?dni=$dni',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'JWT $token',
@@ -203,7 +203,7 @@ class PatientBloc {
     FormData formData = new FormData.from(
         {'patient': patient, 'image': UploadFileInfo(image, image.path)});
     final response = await dio.post(
-      'http://10.0.2.2:8000/api/study/',
+      'http://159.65.222.187:8000/api/study/',
       data: formData,
       options: Options(
         method: 'POST',
@@ -221,7 +221,7 @@ class PatientBloc {
   Future getFuturePlan(dni, token) async {
     Patient patient;
     final response = await http.get(
-      'http://10.0.2.2:8000/api/patient/$dni/',
+      'http://159.65.222.187:8000/api/patient/$dni/',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'JWT $token',
@@ -249,7 +249,7 @@ class PatientBloc {
   Future getProgress(dni, token) async {
     Patient patient;
     final response = await http.get(
-      'http://10.0.2.2:8000/api/patient/$dni/',
+      'http://159.65.222.187:8000/api/patient/$dni/',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'JWT $token',
@@ -274,7 +274,7 @@ class PatientBloc {
 
   Future<dynamic> postFuturePlan(title, description, patientDni, token) async {
     final response = await http.post(
-      'http://10.0.2.2:8000/api/plans/',
+      'http://159.65.222.187:8000/api/plans/',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'JWT $token',
@@ -297,7 +297,7 @@ class PatientBloc {
 
   Future<dynamic> deleteFuturePlan(id, token) async {
     final response = await http.delete(
-      'http://10.0.2.2:8000/api/plans/$id/',
+      'http://159.65.222.187:8000/api/plans/$id/',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'JWT $token',
@@ -312,7 +312,7 @@ class PatientBloc {
   }
 
   Future<dynamic> editFuturePlan(id, title, description, patient, token) async {
-    final response = await http.put('http://10.0.2.2:8000/api/plans/$id/',
+    final response = await http.put('http://159.65.222.187:8000/api/plans/$id/',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'JWT $token',
@@ -333,7 +333,7 @@ class PatientBloc {
   Future getPatientBed(dni, token) async {
     Hospitalization hospitalization;
     final response = await http.get(
-        'http://10.0.2.2:8000/api/hospitalization/$dni/patient_filter/',
+        'http://159.65.222.187:8000/api/hospitalization/$dni/patient_filter/',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'JWT $token',
@@ -356,7 +356,7 @@ class PatientBloc {
   Future getBedName(bedNumber, token) async {
     Bed bed;
     final response =
-        await http.get('http://10.0.2.2:8000/api/bed/$bedNumber/', headers: {
+        await http.get('http://159.65.222.187:8000/api/bed/$bedNumber/', headers: {
       'Content-Type': 'application/json',
       'Authorization': 'JWT $token',
     });
@@ -373,7 +373,7 @@ class PatientBloc {
   Future getStudy(dni, token) async {
     Patient patient;
     final response =
-        await http.get('http://10.0.2.2:8000/api/patient/$dni/', headers: {
+        await http.get('http://159.65.222.187:8000/api/patient/$dni/', headers: {
       'Content-Type': 'application/json',
       'Authorization': 'JWT $token',
     });
@@ -395,7 +395,7 @@ class PatientBloc {
 
   Future<dynamic> deleteStudy(id, token) async {
     final response = await http.delete(
-      'http://10.0.2.2:8000/api/study/$id/',
+      'http://159.65.222.187:8000/api/study/$id/',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'JWT $token',

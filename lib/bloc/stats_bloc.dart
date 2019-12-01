@@ -18,7 +18,7 @@ class StatsBloc {
   Future<List> getStats(token) async {
     List list;
     final response = await http.get(
-      'http://10.0.2.2:8000/statistics/',
+      'http://159.65.222.187:8000/statistics/',
       headers: {'Authorization': 'JWT $token'},
     );
 
@@ -36,7 +36,7 @@ class StatsBloc {
 
     Future getTotalStats(token) async {
     final response = await http.get(
-      'http://10.0.2.2:8000/statistics/',
+      'http://159.65.222.187:8000/statistics/',
       headers: {'Authorization': 'JWT $token'},
     );
 

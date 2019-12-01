@@ -15,7 +15,7 @@ class RoomBloc {
     List list;
 
     final response = await http.get(
-      'http://10.0.2.2:8000/api/room/',
+      'http://159.65.222.187:8000/api/room/',
       headers: {'Authorization': 'JWT $token'},
     );
 
@@ -30,7 +30,7 @@ class RoomBloc {
   Future<Room> getSpecificRoom(id, token) async {
     Room room;
     final response = await http.get(
-      'http://10.0.2.2:8000/api/room/$id/',
+      'http://159.65.222.187:8000/api/room/$id/',
       headers: {'Authorization': 'JWT $token'},
     );
     if (response.statusCode == 200) {

@@ -26,7 +26,7 @@ class DatientBloc {
 
   automaticSignIn(token, userId) async {
     final response = await http.get(
-      'http://10.0.2.2:8000/api/doctor/$userId/',
+      'http://159.65.222.187:8000/api/doctor/$userId/',
       headers: {'Authorization': 'JWT $token'},
     );
 
@@ -44,7 +44,7 @@ class DatientBloc {
     PatientBloc patientBloc,
   ) async {
     final response = await http.post(
-      'http://10.0.2.2:8000/token/',
+      'http://159.65.222.187:8000/token/',
       headers: {'Content-Type': 'application/json'},
       body: JSON.jsonEncode({'email': mail, 'password': password}),
     );
@@ -68,7 +68,7 @@ class DatientBloc {
 
   Future<dynamic> signOut(token) async {
     final response = await http.post(
-      'http://10.0.2.2:8000/accounts/logout/',
+      'http://159.65.222.187:8000/accounts/logout/',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'JWT $token',
@@ -94,7 +94,7 @@ class DatientBloc {
     String registerPasswordConfirm,
   ) async {
     final response = await http.post(
-      'http://10.0.2.2:8000/accounts/register/',
+      'http://159.65.222.187:8000/accounts/register/',
       headers: {'Content-Type': 'application/json'},
       body: JSON.jsonEncode(
         {
@@ -118,7 +118,7 @@ class DatientBloc {
   Future<Doctor> getSpecificDoctor(token, id) async {
     Doctor doctor;
     final response = await http.get(
-      'http://10.0.2.2:8000/api/doctor/$id',
+      'http://159.65.222.187:8000/api/doctor/$id',
       headers: {'Authorization': 'JWT $token'},
     );
     if (response.statusCode == 200) {
